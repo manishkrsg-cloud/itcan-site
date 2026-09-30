@@ -67,7 +67,8 @@ try {
 const gzCache = new Map(); // abs path -> { mtimeMs, buf }
 
 function cacheControl(ext, urlPath) {
-  if (ext === '.html') return 'no-cache';
+  // HTML, CSS, JS and data always revalidate (cheap 304 via ETag), so a deploy shows up at once
+  if (['.html', '.css', '.js', '.mjs', '.json', '.webmanifest'].includes(ext)) return 'no-cache';
   if (urlPath.startsWith('/awards/')) return 'public, max-age=2592000, immutable';
   if (urlPath.startsWith('/assets/')) return 'public, max-age=604800';
   return 'public, max-age=3600';
