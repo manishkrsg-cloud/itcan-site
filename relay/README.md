@@ -8,6 +8,7 @@ Single-page site for ITCAN Pte Ltd, built on the Relay template's motion system:
 relay/
   server.js          zero-dependency Node server (gzip, ETag, CSP, /healthz)
   fetch-awards.mjs   Railway build step: downloads the 28 award photos
+  fetch-services.mjs Railway build step: downloads the 7 hero card images (AI art made with Higgsfield)
   public/            what is served (built output is committed)
   web/               front-end source, built into public/ (not used by Railway)
     html/            page partials (one per section)

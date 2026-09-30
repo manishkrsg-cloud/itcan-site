@@ -8,9 +8,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "node fetch-awards.mjs",
+    "build": "node fetch-awards.mjs && node fetch-services.mjs",
     "start": "node server.js",
-    "dev": "node fetch-awards.mjs && node server.js"
+    "dev": "node fetch-awards.mjs && node fetch-services.mjs && node server.js"
   },
   "optionalDependencies": {
     "sharp": "^0.33.5"

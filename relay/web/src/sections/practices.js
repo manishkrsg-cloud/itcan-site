@@ -1,144 +1,162 @@
-// 03 Practices: a dashed rail draws in, tiles pop as the edge reaches them, then a red
-// packet glides along the rail lighting each tile it passes, lap after lap.
-import { Spring, SPRING_SOFT, reduced, ticker, ease, tween } from "../core/engine.js";
-import { type } from "../core/prims.js";
-import { watchLoop, onSeen } from "../core/seen.js";
+// 03 Practices: nine practices orbit an ITCAN core on a tilted ring. The node that swings to
+// the front lights up and the panel beside it explains that practice. Hovering pauses the
+// ring; a drag spins it; a click, a tap or keyboard focus brings a practice to the front.
+// The frame loop only runs while the orbit is on screen.
+import { reduced } from "../core/engine.js";
+import { onView } from "../core/seen.js";
 
-const mixHex = (a, b, t) => {
-  const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16)), pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
-  return `rgb(${pa.map((v, i) => Math.round(v + (pb[i] - v) * t)).join(",")})`;
-};
+const TAU = Math.PI * 2, FRONT = Math.PI / 2, SPEED = -TAU / 54;
+const NS = "http://www.w3.org/2000/svg";
+const pad = (n) => String(n).padStart(2, "0");
+const wrapPi = (a) => { a = (a + Math.PI) % TAU; if (a < 0) a += TAU; return a - Math.PI; };
 
 export function initPractices() {
   const sec = document.getElementById("integrations");
   if (!sec) return;
-  const rail = sec.querySelector(".pr-rail"), svg = rail.querySelector("svg"), path = svg.querySelector(".pr-path");
-  const grad = svg.querySelector("#prGrad"), peakStop = grad.querySelector(".pr-peak");
-  const packet = rail.querySelector(".pr-packet"), trail = rail.querySelector(".pr-trail");
-  const ul = sec.querySelector(".pr-tiles");
-  const all = Array.from(ul.children);
+  const orbit = sec.querySelector("[data-orbit]");
+  if (!orbit) return;
+  const rings = Array.from(orbit.querySelectorAll(".pr-ring"));
+  const spokesG = orbit.querySelector(".pr-spokes");
+  const items = Array.from(orbit.querySelectorAll(".pr-nodes li"));
+  const btns = items.map((li) => li.querySelector(".pr-node"));
+  const N = items.length, step = TAU / N;
+  const dText = sec.querySelector(".pr-d-text"), dIco = sec.querySelector("[data-pr-ico]");
+  const dN = sec.querySelector("[data-pr-n]"), dName = sec.querySelector("[data-pr-name]"), dDesc = sec.querySelector("[data-pr-desc]");
+  const live = sec.querySelector("[data-pr-live]");
+  const spokes = items.map(() => { const l = document.createElementNS(NS, "line"); spokesG.appendChild(l); return l; });
 
-  // captions type in once seen (the 390 second line after the first)
-  const capMain = sec.querySelector(".pr-cap-1 span"), capA = sec.querySelector(".pr-cap-390a span"), capB = sec.querySelector(".pr-cap-390b span");
-  const tm = type(capMain), ta = type(capA), tb = type(capB);
-  if (!reduced) { tm.reset(); ta.reset(); tb.reset(); }
-  onSeen(sec, () => { tm.play(0); ta.play(0); tb.play(ta.length * 30); });
-
-  // per-tile state: pop spring + lit cross-fade spring
-  const state = all.map((li) => {
-    const tile = li.querySelector(".pr-tile"), idle = li.querySelector(".idle"), lit = li.querySelector(".lit");
-    const st = { li, tile, pop: 0, a: 0, popped: false };
-    const render = () => {
-      tile.style.opacity = st.pop >= 1 ? "1" : Math.max(0, st.pop);
-      tile.style.transform = `scale(${(0.8 + 0.2 * st.pop) * (1 + 0.06 * st.a)})`;
-      idle.style.opacity = 1 - st.a;
-      lit.style.opacity = st.a;
-    };
-    st.popS = new Spring(0, (v) => { st.pop = v; render(); });
-    st.aS = new Spring(0, (v) => { st.a = v; render(); });
-    st.render = render;
-    return st;
-  });
-  let tiles = [];
-  let railX = 0, railW = 1, tileX = 0, pitch = 1, size = 1, rest = 0;
+  // ---- geometry
+  let cx = 0, cy = 0, rx = 1, ry = 1;
   const measure = () => {
-    tiles = state.filter((s) => getComputedStyle(s.li).display !== "none");
-    railX = rail.offsetLeft; railW = rail.offsetWidth || 1;
-    tileX = ul.offsetLeft + (tiles[0] ? tiles[0].li.offsetLeft : 0);
-    size = tiles[0] ? tiles[0].li.offsetWidth : 60;
-    pitch = tiles[1] ? tiles[1].li.offsetLeft - tiles[0].li.offsetLeft : size;
-    rest = tileX + size + (pitch - size) * 0.675;
-    svg.setAttribute("viewBox", `0 0 ${railW} 2`);
-    path.setAttribute("d", `M0 1H${railW}`);
-    // hide the rail under every tile box
-    const stops = [];
-    tiles.forEach((t) => {
-      const l = ((ul.offsetLeft + t.li.offsetLeft - railX) / railW) * 100, r = l + (size / railW) * 100;
-      stops.push(`#000 ${l.toFixed(3)}%`, `transparent ${l.toFixed(3)}%`, `transparent ${r.toFixed(3)}%`, `#000 ${r.toFixed(3)}%`);
+    const W = orbit.clientWidth, H = orbit.clientHeight;
+    cx = W / 2; cy = H / 2;
+    rx = Math.min(W * (W < 520 ? 0.39 : 0.43), 330);
+    ry = Math.min(H * 0.3, rx * (W < 520 ? 0.5 : 0.4));
+    rings.forEach((r, k) => {
+      const f = k ? 1.16 : 1;
+      r.setAttribute("cx", cx); r.setAttribute("cy", cy);
+      r.setAttribute("rx", (rx * f).toFixed(1)); r.setAttribute("ry", (ry * f).toFixed(1));
     });
-    const m = `linear-gradient(90deg, #000 0%, ${stops.join(", ")}, #000 100%)`;
-    rail.style.maskImage = rail.style.webkitMaskImage = m;
-    setPacket(curX, curO);
   };
-  const centre = (i) => tileX + i * pitch + size / 2;
-  let curX = 0, curO = 0, litIdx = -1, trailK = 0;
-  function setPacket(x, o) {
-    curX = x; curO = o;
-    packet.style.left = "0px";
-    packet.style.transform = `translateX(${x - railX - 3}px)`;
-    packet.style.opacity = o;
-    if (trail) {
-      const tw = trail.offsetWidth || 160;
-      trail.style.transform = `translateX(${x - railX - tw}px)`;
-      trail.style.opacity = o * trailK;
+
+  // ---- the practice in front drives the panel
+  let frontIdx = -1, told = false;
+  const setFront = (i) => {
+    if (i === frontIdx) return;
+    if (frontIdx >= 0) { items[frontIdx].classList.remove("is-front"); spokes[frontIdx].classList.remove("-front"); }
+    frontIdx = i;
+    items[i].classList.add("is-front"); spokes[i].classList.add("-front");
+    const b = btns[i];
+    dN.textContent = pad(i + 1);
+    dName.textContent = b.dataset.name;
+    dDesc.textContent = b.dataset.desc;
+    dIco.innerHTML = b.querySelector(".pr-disc").innerHTML;
+    if (told) live.textContent = `${b.dataset.name}. ${b.dataset.desc}`;
+    if (!reduced) [dText, dIco].forEach((el) => { el.classList.remove("pr-swap"); void el.offsetWidth; el.classList.add("pr-swap"); });
+  };
+
+  // ---- paint every node for the current ring angle
+  let theta = FRONT;
+  const paint = () => {
+    let best = 0, bestS = -2;
+    for (let i = 0; i < N; i++) {
+      const a = theta + i * step, s = Math.sin(a);
+      const x = cx + rx * Math.cos(a), y = cy + ry * s, d = (s + 1) / 2;
+      const li = items[i];
+      li.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${(0.62 + 0.42 * d).toFixed(3)})`;
+      li.style.opacity = (0.34 + 0.66 * d).toFixed(3);
+      li.style.zIndex = String(10 + Math.round(d * 80));
+      li.style.setProperty("--d", d.toFixed(3));
+      const l = spokes[i];
+      l.setAttribute("x1", cx.toFixed(1)); l.setAttribute("y1", cy.toFixed(1));
+      l.setAttribute("x2", x.toFixed(1)); l.setAttribute("y2", y.toFixed(1));
+      l.setAttribute("stroke-opacity", (0.04 + 0.2 * d).toFixed(3));
+      if (s > bestS) { bestS = s; best = i; }
     }
-    const peak = (x - railX) / railW;
-    grad.setAttribute("x1", (peak - 0.1001) * railW);
-    grad.setAttribute("x2", (peak + 0.8999) * railW);
-    peakStop.setAttribute("stop-color", mixHex("#c2c2c2", "#ff3d48", o));
-  }
-  function light(i) {
-    if (i === litIdx) return;
-    litIdx = i;
-    tiles.forEach((t, k) => {
-      t.aS.start(k === i ? 1 : 0, { config: SPRING_SOFT });
-      if (k === i) { t.li.classList.remove("on"); void t.li.offsetWidth; t.li.classList.add("on"); }
-      else t.li.classList.remove("on");
-    });
-  }
-  measure();
-  new ResizeObserver(measure).observe(sec);
-
-  if (reduced) {
-    tiles.forEach((t) => { t.popS.set(1); });
-    svg.style.clipPath = "none";
-    setPacket(rest, 1); light(1);
-    return;
-  }
-
-  let drawTw = null, lapOff = null, forceT = 0;
-  const reset = () => {
-    drawTw && drawTw.stop(); lapOff && lapOff(); lapOff = null; clearTimeout(forceT);
-    svg.style.clipPath = "inset(0 100% 0 0)";
-    state.forEach((t) => { t.popped = false; t.popS.set(0); t.aS.set(0); });
-    litIdx = -1;
-    setPacket(rest, 0);
+    setFront(best);
   };
-  const start = () => {
-    measure();
-    drawTw = tween(1760, ease.inOutQuad, (p) => {
-      svg.style.clipPath = p >= 1 ? "none" : `inset(0 ${(1 - p) * 100}% 0 0)`;
-      const edge = railX + p * railW;
-      tiles.forEach((t) => {
-        if (!t.popped && edge >= ul.offsetLeft + t.li.offsetLeft) { t.popped = true; t.popS.start(1, { config: SPRING_SOFT }); }
-      });
-    }, () => { forceT = setTimeout(() => tiles.forEach((t) => { if (!t.popped) { t.popped = true; t.popS.start(1, { config: SPRING_SOFT }); } }), 160); });
-    lap();
+
+  // ---- motion: slow auto spin, eased stops, drag with momentum
+  let target = null, hover = false, hold = 0, k = reduced ? 0 : 1, dragging = false, vel = 0, coast = false;
+  const bring = (i, user = true) => {
+    const t = FRONT - i * step;
+    target = theta + wrapPi(t - theta);
+    hold = performance.now() + 3200;
+    if (user) told = true;
+    if (reduced) { theta = target; target = null; paint(); } else kick();
   };
-  const glide = (t) => { const k = 1 / (1 - 0.09); return t < 0.18 ? (k * t * t) / 0.36 : k * (t - 0.09); };
-  function lap() {
-    let step = 0, t0 = performance.now();
-    setPacket(centre(0), 0); light(0);
-    lapOff = ticker.add((now) => {
-      const e = now - t0;
-      if (step === 0) { if (e >= 30) { step = 1; t0 = now; } return; }
-      if (step === 1) {
-        const last = tiles.length - 1;
-        const t = Math.min(1, e / 5600);
-        const x = centre(0) + (centre(last) - centre(0)) * Math.min(1, glide(t));
-        trailK = Math.min(1, t / 0.18);
-        setPacket(x, Math.min(1, e / 360));
-        const i = Math.max(0, Math.min(last, Math.floor((x - tileX + 0.4 * size) / pitch)));
-        light(i);
-        if (e >= 5800) { step = 2; t0 = now; light(last); }
-        return;
+
+  let raf = 0, last = 0, inView = false;
+  const frame = (now) => {
+    raf = 0;
+    const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016);
+    last = now;
+    if (!dragging) {
+      if (target !== null) {
+        theta += (target - theta) * (1 - Math.exp(-dt * 7));
+        if (Math.abs(target - theta) < 0.0008) { theta = target; target = null; }
+      } else if (coast) {
+        theta += vel; vel *= Math.exp(-dt * 9);
+        hold = now + 2400;
+        // once the spin has nearly stopped, settle the nearest practice exactly in front
+        if (Math.abs(vel) < 0.004) { coast = false; vel = 0; target = theta + wrapPi(FRONT - frontIdx * step - theta); }
       }
-      if (step === 2) {
-        setPacket(curX, Math.max(0, 1 - e / 360));
-        if (e >= 360 + 380) { step = 0; t0 = now; trailK = 0; setPacket(centre(0), 0); light(0); }
-      }
+      const want = reduced || hover || now < hold ? 0 : 1;
+      k += (want - k) * Math.min(1, dt * 2.5);
+      theta += SPEED * k * dt;
+    }
+    paint();
+    if (inView && !reduced) raf = requestAnimationFrame(frame);
+    else if (inView && (target !== null || dragging)) raf = requestAnimationFrame(frame);
+  };
+  const kick = () => { if (!raf && inView) { last = 0; raf = requestAnimationFrame(frame); } };
+
+  orbit.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") hover = true; });
+  orbit.addEventListener("pointerleave", () => { hover = false; });
+
+  let sx = 0, lx = 0, moved = false, pid = 0;
+  orbit.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    dragging = true; moved = false; sx = lx = e.clientX; vel = 0; coast = false; target = null; pid = e.pointerId;
+    kick();
+  });
+  orbit.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - lx; lx = e.clientX;
+    if (!moved && Math.abs(e.clientX - sx) > 6) { moved = true; try { orbit.setPointerCapture(pid); } catch (err) { /* gone */ } }
+    if (!moved) return;
+    const d = -dx / Math.max(80, rx);
+    theta += d; vel = Math.max(-0.12, Math.min(0.12, d));
+    kick();
+  });
+  const release = () => {
+    if (!dragging) return;
+    dragging = false;
+    if (moved) { hold = performance.now() + 2400; told = true; coast = !reduced; if (reduced) bring(frontIdx); }
+    setTimeout(() => { moved = false; }, 0);
+    kick();
+  };
+  orbit.addEventListener("pointerup", release);
+  orbit.addEventListener("pointercancel", release);
+  orbit.addEventListener("lostpointercapture", release);
+
+  btns.forEach((b, i) => {
+    b.addEventListener("click", (e) => { if (moved) { e.preventDefault(); return; } bring(i); });
+    b.addEventListener("focus", () => { if (!dragging) bring(i); });
+    b.addEventListener("keydown", (e) => {
+      const go = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
+      if (!go) return;
+      e.preventDefault();
+      btns[(i + go + N) % N].focus({ preventScroll: true });
     });
-  }
-  reset();
-  watchLoop(sec, { arm: () => { sec.classList.add("is-live"); start(); }, disarm: () => { sec.classList.remove("is-live"); reset(); } });
+  });
+
+  measure(); paint();
+  orbit.classList.add("is-ready");
+  new ResizeObserver(() => { measure(); paint(); }).observe(orbit);
+  onView(orbit, (hit) => {
+    inView = hit;
+    sec.classList.toggle("is-live", hit && !reduced);
+    if (hit) kick(); else { cancelAnimationFrame(raf); raf = 0; }
+  });
 }
