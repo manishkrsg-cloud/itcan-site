@@ -1,0 +1,129 @@
+/* ------------------------------------------------------------ 10 footer */
+.footer { position: relative; padding: 6rem 5rem 2.75rem; overflow: clip; }
+.ft-glows { position: absolute; inset: 0; pointer-events: none; }
+.ft-glows i { position: absolute; border-radius: 50%; }
+.g-bloom { top: calc(-100 * var(--u)); left: calc(740 * var(--u)); width: calc(940 * var(--u)); height: calc(680 * var(--u)); background: radial-gradient(closest-side, rgba(229, 34, 46, 0.3), transparent); }
+.g-blue { top: calc(-288 * var(--u)); left: calc(40 * var(--u)); width: calc(1420 * var(--u)); height: calc(800 * var(--u)); background: radial-gradient(closest-side, rgba(109, 136, 255, 0.16), transparent); }
+.g-violet { top: calc(-68 * var(--u)); left: calc(780 * var(--u)); width: calc(960 * var(--u)); height: calc(700 * var(--u)); background: radial-gradient(closest-side, rgba(170, 70, 200, 0.14), transparent); }
+.ft-sentinel { position: absolute; left: 0; width: 1px; pointer-events: none; }
+.ft-s-top { top: 6rem; height: 20rem; }
+.ft-s-bottom { bottom: 6rem; height: 10rem; }
+.footer > :not(.ft-glows):not(.ft-sentinel) { position: relative; }
+
+.footer { display: grid; grid-template-columns: 530fr 730fr; column-gap: 1.25rem; grid-template-areas: "brand cta" "status status" "hb hb" "low low" "hf hf" "legal legal"; }
+.ft-brand { grid-area: brand; height: 20rem; overflow: clip; border-radius: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.12); background: linear-gradient(148.88deg, #202326, #111214 55%, #0a0b0c) border-box; }
+.ft-brand > * { position: absolute; }
+.ft-glyph { left: calc(299 * var(--u)); top: calc(-40 * var(--u)); width: calc(300 * var(--u)); height: calc(300 * var(--u)); overflow: visible; }
+.ft-glyph path { fill: none; stroke: #fff; stroke-width: 26; stroke-linecap: round; stroke-linejoin: round; }
+.ft-glyph .gb { opacity: 0.06; } .ft-glyph .gf { opacity: 0.12; }
+.ft-logo { left: calc(31 * var(--u)); top: calc(31 * var(--u)); }
+.ft-logo img { height: 1.75rem; width: auto; }
+.ft-tag { left: calc(31 * var(--u)); top: calc(150 * var(--u)); width: calc(400 * var(--u)); font-size: 1.125rem; line-height: 1.75rem; color: #fff; }
+.ft-phair { left: calc(31 * var(--u)); right: calc(31 * var(--u)); top: calc(238 * var(--u)); height: 1px; background: rgba(255, 255, 255, 0.14); transform-origin: left; }
+.ft-social { left: calc(31 * var(--u)); right: calc(31 * var(--u)); top: calc(255 * var(--u)); display: flex; align-items: center; justify-content: space-between; }
+.ft-social > p { letter-spacing: 1px; color: var(--foreground-muted); }
+.ft-social ul { display: flex; gap: 0.5rem; }
+.ft-social a { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.8); transition: color 150ms var(--ease-entrance); }
+.ft-social a:hover, .ft-social a:focus-visible { color: #fff; }
+
+.ft-cta { grid-area: cta; height: 19.25rem; overflow: clip; border-radius: 1.5rem; background: var(--plate); box-shadow: var(--elevation-float); color: #fff; padding: 2.5rem; display: flex; flex-direction: column; }
+.ft-eye { color: rgba(255, 255, 255, 0.72); }
+.ft-eye span { display: inline-block; white-space: nowrap; }
+.ft-title { margin-top: 0.75rem; overflow: clip; font-weight: 600; font-size: 2.25rem; line-height: 3.25rem; letter-spacing: -0.0625rem; }
+.ft-line { display: block; }
+.ft-title em { font-family: var(--font-serif), Georgia, serif; font-style: italic; font-weight: 400; font-size: 2.5rem; letter-spacing: 0; }
+.ft-copy { margin-top: 0.75rem; max-width: 40.625rem; font-size: 1rem; line-height: 1.5rem; color: rgba(255, 255, 255, 0.85); }
+.ft-form-wrap { margin-top: auto; }
+.ft-form { position: relative; display: flex; align-items: center; gap: 0.5rem; height: 3.25rem; max-width: 40.625rem; border-radius: 9999px; background: #fafbfc; padding: 6px 6px 6px 20px; overflow: clip; }
+.ft-ring { position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(10, 11, 9, 0.15); opacity: 0; pointer-events: none; }
+.ft-form input { flex: 1; min-width: 0; height: 1.5rem; border: 0; outline: 0; background: none; font: 400 1rem/1.5rem var(--font-inter); color: var(--ink); }
+.ft-form input::placeholder { color: rgba(10, 11, 9, 0.45); }
+.ft-form button { display: flex; align-items: center; height: 2.5rem; padding: 0 1.5rem; border: 0; border-radius: 9999px; background: var(--ink); color: #ff5a64; font: 500 0.875rem/1.25rem var(--font-inter); cursor: pointer; white-space: nowrap; }
+.ft-lab { position: relative; display: inline-block; overflow: clip; }
+.ft-a { display: inline-block; }
+.ft-b { position: absolute; top: 0; left: 0; display: flex; align-items: center; gap: 6px; opacity: 0; }
+.ft-b svg, .ft-arrow svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ft-arrow { display: flex; justify-content: flex-end; overflow: clip; width: 0; opacity: 0; }
+
+.ft-status { grid-area: status; margin-top: 3.75rem; display: grid; grid-template-columns: 508fr 452fr 320fr; }
+.ft-status li { display: flex; align-items: center; gap: 0.5rem; color: var(--foreground-muted); white-space: nowrap; }
+.ft-status i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: 0.2; transform: scale(0.6); flex: none; }
+.ft-status .short { display: none; }
+.ft-hair { display: block; height: 1px; background: rgba(255, 255, 255, 0.09); transform-origin: left; }
+.ft-hair-b { grid-area: hb; margin-top: 1.125rem; }
+.ft-hair-f { grid-area: hf; }
+.ft-company { grid-area: low; width: 25rem; padding: 1.9375rem 0 2rem; }
+.ft-mark { width: 1.625rem; height: 1.625rem; border-radius: 8px; }
+.ft-cname { margin-top: 0.625rem; font-weight: 500; font-size: 1rem; line-height: 1.5rem; }
+.ft-caddr { margin-top: 0.375rem; font-size: 1rem; line-height: 1.5rem; color: var(--foreground-muted); }
+.ft-ccomp { margin-top: 0.75rem; color: var(--foreground-dim); }
+.ft-ccomp a:hover { color: #fff; }
+.ft-cols { grid-area: low; justify-self: end; width: calc(730 * var(--u)); display: grid; grid-template-columns: 173fr 170fr 159fr 228fr; padding: 1.9375rem 0 2rem; }
+.ft-cols > div { display: flex; flex-direction: column; gap: 0.75rem; }
+.ft-cols p { color: var(--foreground-dim); }
+.ft-cols ul { display: flex; flex-direction: column; gap: 0.375rem; }
+.ft-cols a { font-size: 0.875rem; line-height: 1.25rem; color: var(--foreground-muted); transition: color 150ms var(--ease-entrance); }
+.ft-cols a:hover, .ft-cols a:focus-visible { color: var(--accent); }
+.ft-legal { grid-area: legal; margin-top: 1.5rem; display: flex; justify-content: space-between; color: var(--foreground-dim); }
+
+.motion .ft-brand, .motion .ft-cta, .motion .ft-form-wrap, .motion .ft-company, .motion .ft-cols > div { opacity: 0; transform: translateY(1.5rem); }
+.motion .ft-line { transform: translateY(108%); }
+.motion .ft-copy, .motion .ft-tag { opacity: 0; filter: blur(8px); }
+.motion .ft-eye span { clip-path: inset(0 100% 0 0); }
+.motion .ft-phair, .motion .ft-hair { transform: scaleX(0); }
+.motion .ft-social, .motion .ft-status > li > span, .motion .ft-legal { opacity: 0; }
+
+@media (width <= 1200px) {
+  .footer { padding: 0 3rem 2.5rem; column-gap: 0.75rem; grid-template-columns: 1fr 1fr; }
+  .ft-brand { height: 17.375rem; }
+  .ft-cta { height: 17.375rem; padding: 1.5rem; }
+  .ft-logo { left: calc(23 * var(--u)); top: calc(23 * var(--u)); }
+  .ft-tag { left: calc(23 * var(--u)); top: calc(118 * var(--u)); width: calc(300 * var(--u)); }
+  .ft-phair { left: calc(23 * var(--u)); right: calc(23 * var(--u)); top: calc(204 * var(--u)); }
+  .ft-social { left: calc(23 * var(--u)); right: calc(23 * var(--u)); top: calc(221 * var(--u)); }
+  .ft-glyph { left: calc(235 * var(--u)); top: calc(-48 * var(--u)); }
+  .ft-title { font-size: 2rem; line-height: 2.625rem; }
+  .ft-title em { font-size: 2rem; }
+  .ft-copy { margin-top: 0.5rem; }
+  .ft-form { height: 3.5rem; padding: 8px 8px 8px 20px; }
+  .ft-status { margin-top: 3rem; grid-template-columns: 258fr 353fr 317fr; }
+  .ft-company { width: 18.75rem; }
+  .ft-cols { width: calc(604 * var(--u)); grid-template-columns: repeat(4, 1fr); }
+  .ft-cols ul { gap: 0.5rem; }
+}
+@media (width <= 900px) {
+  .footer { padding: 2.5rem 2.5rem 2.5rem; grid-template-columns: 1fr; grid-template-areas: "brand" "cta" "status" "hb" "company" "cols" "hf" "legal"; }
+  .ft-cta { margin-top: 0.75rem; }
+  .ft-tag { width: calc(292 * var(--u)); }
+  .ft-glyph { left: auto; right: calc(-60 * var(--u)); top: calc(-44 * var(--u)); }
+  .ft-title { font-size: 1.625rem; line-height: 2.125rem; }
+  .ft-title em { font-size: 1.625rem; }
+  .ft-status { grid-template-columns: 224fr 259fr 205fr; }
+  .ft-status .long:not([data-open-count]) { display: none; }
+  .ft-status .short { display: inline; }
+  .ft-company { grid-area: company; width: 100%; padding-bottom: 0; }
+  .ft-cols { grid-area: cols; justify-self: stretch; width: 100%; }
+}
+@media (width <= 580px) {
+  .footer { padding: 0 1.25rem 2rem; }
+  .ft-brand { height: 19.3rem; }
+  .ft-cta { height: auto; min-height: 21.25rem; padding: 1.25rem; }
+  .ft-logo, .ft-tag, .ft-phair, .ft-social { left: calc(19 * var(--u)); }
+  .ft-phair, .ft-social { right: calc(19 * var(--u)); }
+  .ft-tag { top: calc(120 * var(--u)); width: calc(310 * var(--u)); }
+  .ft-phair { top: calc(235 * var(--u)); }
+  .ft-social { top: calc(252 * var(--u)); }
+  .ft-social a { border-radius: 4px; }
+  .ft-glyph { right: calc(-70 * var(--u)); top: calc(-35 * var(--u)); width: calc(228 * var(--u)); height: calc(228 * var(--u)); }
+  .ft-title { font-size: 2rem; line-height: 2.625rem; }
+  .ft-title em { font-size: 2rem; }
+  .ft-form-wrap { margin-top: 1.5rem; }
+  .ft-form { height: auto; flex-wrap: wrap; border-radius: 1.5rem; padding: 8px; }
+  .ft-form input { flex-basis: 100%; height: 2.75rem; padding: 0 12px; }
+  .ft-form button { width: 100%; justify-content: center; }
+  .ft-status { grid-template-columns: 1fr; row-gap: 0.25rem; }
+  .ft-status .long:not([data-open-count]) { display: inline; }
+  .ft-status .short { display: none; }
+  .ft-cols { grid-template-columns: 1fr 1fr; row-gap: 1.75rem; }
+  .ft-legal { flex-direction: column; gap: 0.5rem; }
+}

@@ -1,0 +1,99 @@
+/* ------------------------------------------------------------ display title */
+.display { font-family: var(--font-inter); font-weight: 600; letter-spacing: var(--letter-spacing-title); background: linear-gradient(180deg, #ffffff, #bababa); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.display em { font-family: var(--font-serif), Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: 0; line-height: 1; color: var(--title-accent); -webkit-text-fill-color: var(--title-accent); }
+.stitle { font-size: var(--type-section-title); line-height: var(--line-section-title); }
+.stitle em { font-size: var(--type-section-title-accent); }
+
+/* ------------------------------------------------------------ badge */
+.badge { display: inline-flex; align-items: center; gap: 0.5rem; width: max-content; border: 1px solid var(--border-subtle); background: var(--surface-badge); padding: 0.3125rem 0.8125rem 0.3125rem 0.6875rem; border-radius: 999px; box-shadow: var(--elevation-float); font: 500 0.875rem/1.25rem var(--font-inter); letter-spacing: 0.025rem; color: var(--foreground-muted); }
+@media (width <= 1200px) { .badge { padding: 0.4375rem 0.9375rem 0.4375rem 0.6875rem; } }
+.bdot { position: relative; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-marker); flex: none; }
+.bdot .halo { position: absolute; inset: 0; border-radius: 50%; border: 1px solid var(--accent-marker); opacity: 0; }
+
+/* ------------------------------------------------------------ section head */
+.shead { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; }
+.shead-main { display: flex; flex-direction: column; gap: 1rem; width: 47.5rem; }
+.shead-aside { width: 27.5rem; font-size: 1rem; line-height: 1.5rem; color: var(--foreground-muted); }
+@media (width <= 1200px) {
+  .shead { flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
+  .shead-main { align-items: center; width: 100%; gap: 1.5rem; }
+  .shead-aside { width: 35rem; max-width: 100%; }
+}
+@media (width <= 580px) { .shead-main { gap: 0.75rem; } .shead-aside { width: 100%; } .shead { gap: 0.75rem; } }
+
+/* ------------------------------------------------------------ primary CTA ("handoff" hover) */
+.cta { position: relative; display: inline-flex; align-items: center; justify-content: center; height: 2.5rem; padding: 0 1.5rem; border-radius: 999px; border: 0; background: none; cursor: pointer; font: 500 0.875rem/1.25rem var(--font-inter); color: var(--on-accent); white-space: nowrap; filter: drop-shadow(0 0.5rem 0.6875rem rgba(0, 0, 0, 0.5)); overflow: hidden; isolation: isolate; -webkit-tap-highlight-color: transparent; }
+.cta--lg { height: 3rem; font-size: 1rem; line-height: 1.5rem; }
+.cta-fill { position: absolute; inset: 0; border-radius: inherit; background: var(--accent-fill); z-index: -1; }
+.cta-label { position: relative; display: inline-block; }
+.cta-ink { position: absolute; inset: 0; border-radius: inherit; display: flex; align-items: center; justify-content: center; background: var(--ink); color: var(--accent); clip-path: inset(0 100% 0 0 round 999px); }
+.cta-chev { width: 0.8em; height: 0.8em; margin-left: 0.4em; opacity: 0; transform: translateX(-8px); flex: none; }
+.cta-ring, .glass-ring { position: absolute; border-radius: 999px; padding: 1px; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+.cta-ring { inset: 0; background: conic-gradient(from 0deg, var(--accent) var(--fill, 0%), transparent var(--fill, 0%)); }
+
+/* ------------------------------------------------------------ glass button */
+.glass-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; height: 2.5rem; padding: 0 1.5rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.22); background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); box-shadow: var(--elevation-float); color: #fff; cursor: pointer; font: 500 0.875rem/1.25rem var(--font-inter); white-space: nowrap; -webkit-tap-highlight-color: transparent; }
+.glass-btn--lg { height: 3rem; font-size: 1rem; line-height: 1.5rem; }
+.glass-ring { inset: -1px; background: conic-gradient(from 0deg, rgba(255, 255, 255, 0.7) var(--fill, 0%), transparent var(--fill, 0%)); }
+.gb-ico { width: 1rem; height: 1rem; flex: none; }
+
+/* ------------------------------------------------------------ cards, hairlines */
+.card { position: relative; border-radius: 1.625rem; border: 1px solid rgba(255, 255, 255, 0.07); background: var(--card-glass); overflow: clip; }
+.hair { display: block; height: 1px; background: rgba(255, 255, 255, 0.09); }
+
+/* ------------------------------------------------------------ the ITCAN tile ("i" mark) */
+.mark { position: relative; display: block; overflow: clip; border-radius: 31.58%; }
+.mark svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mark--lit { background: linear-gradient(135deg, #ff7a82, #e5222e 71.429%); border: 1px solid rgba(255, 255, 255, 0.25); --gi-dot: #ffffff; --gi-stem: #ffffff; }
+.mark--lit::after { content: ""; position: absolute; left: 12%; right: 12%; top: -30%; height: 55%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, 0.22), transparent); pointer-events: none; }
+.mark--dark { background: linear-gradient(135deg, #2a2526, #0a0b09 71.429%); border: 1px solid rgba(255, 255, 255, 0.12); --gi-dot: #ff3d48; --gi-stem: #f4f5f6; }
+
+/* ------------------------------------------------------------ cursor ring */
+.cursor-ring { position: fixed; left: 0; top: 0; z-index: 50; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--accent); pointer-events: none; transform: translate3d(-200px, -200px, 0); }
+.cursor-fill { position: absolute; inset: 0; border-radius: 50%; background: var(--accent); opacity: 0; }
+
+/* ------------------------------------------------------------ preloader */
+.preloader { display: none; position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+html[data-preload] .preloader, html[data-preload-closing] .preloader { display: block; }
+.pl-stage { position: absolute; inset: 0; background: #000; }
+.pl-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.pl-ring rect { stroke: var(--accent); }
+.pl-flood { position: absolute; inset: 0; opacity: 0; }
+.pl-plate { position: absolute; inset: 0; background: var(--plate); display: none; }
+.pl-tile { position: absolute; top: calc(50% - 2.375rem); left: calc(50% - 2.375rem); width: 4.75rem; height: 4.75rem; }
+.pl-tile .mark { position: absolute; inset: 0; }
+.pl-tile .mark--dark { opacity: 0; }
+
+/* ------------------------------------------------------------ nav */
+.nav { position: fixed; inset-inline: 0; top: 0; z-index: 40; }
+.nav-plate { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.7); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); opacity: 0; }
+.nav-row { position: relative; display: flex; align-items: center; justify-content: space-between; height: 5.5rem; width: var(--page-width); margin: 0 auto; padding: 0 5rem; }
+.motion .nav-row { opacity: 0; }
+.brand { display: flex; align-items: center; gap: 0.75rem; }
+.brand img { height: 1.75rem; width: auto; }
+.nav-links ul { display: flex; gap: 2.5rem; }
+.nav-links a { font-size: 0.875rem; line-height: 1.25rem; color: var(--foreground-muted); white-space: nowrap; transition: color 150ms var(--ease-entrance); }
+.nav-links a:hover { color: var(--accent); }
+.nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+.status-pill { display: flex; align-items: center; gap: 0.5rem; height: 2.75rem; padding: 0 1rem; border-radius: 9999px; border: 1px solid rgba(255, 255, 255, 0.22); background: rgba(7, 7, 7, 0.55); box-shadow: var(--elevation-float); overflow: clip; white-space: nowrap; }
+.breath { position: relative; width: 6px; height: 6px; flex: none; }
+.breath i { position: absolute; inset: 0; border-radius: 50%; background: var(--accent); }
+.menu-btn { display: none; position: relative; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.04); cursor: pointer; padding: 0; }
+.menu-btn i { position: absolute; height: 2px; border-radius: 2px; background: rgba(255, 255, 255, 0.9); transform-origin: center; }
+.menu-btn i:nth-child(1) { left: 11px; top: 12px; width: 16px; }
+.menu-btn i:nth-child(2) { left: 11px; top: 18px; width: 16px; }
+.menu-btn i:nth-child(3) { left: 14px; top: 23px; width: 10px; }
+.menu-card { position: absolute; left: 8px; right: 8px; top: 8px; z-index: -1; transform-origin: top right; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1); background: #131416; padding: 3.25rem 0.5rem 0.5rem; opacity: 0; visibility: hidden; transform: scale(0.94); }
+.menu-card ul { display: flex; flex-direction: column; gap: 2px; }
+.menu-card li { opacity: 0; }
+.menu-card a { display: flex; align-items: center; gap: 0.75rem; border-radius: 14px; padding: 10px; }
+.menu-card a:hover, .menu-card a:focus-visible { background: rgba(255, 255, 255, 0.04); }
+.menu-card .tile { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 11px; border: 1px solid rgba(255, 255, 255, 0.1); color: var(--foreground-muted); transition: all 150ms var(--ease-entrance); }
+.menu-card a:hover .tile { border-color: rgba(255, 61, 72, 0.5); background: rgba(255, 61, 72, 0.1); color: var(--accent); }
+.menu-card b { display: block; font-weight: 500; font-size: 1rem; line-height: 1.5rem; }
+.menu-card em { display: block; font-size: 0.875rem; line-height: 1.25rem; color: var(--foreground-muted); }
+@media (width <= 1200px) { .nav-row { padding: 0 3rem; } .nav-links ul { gap: 2rem; } }
+@media (width <= 900px) { .nav-row { height: 4rem; padding: 0 2rem; } .nav-links ul { gap: 1.5rem; } .status-pill { display: none; } .brand img { height: 1.5rem; } }
+@media (width <= 580px) { .nav-row { height: 3.5rem; padding: 0 1.25rem; } .nav-links { display: none; } .nav-actions { gap: 0.5rem; } .menu-btn { display: block; } .brand img { height: 1.375rem; } }
+@media (width > 580px) { .menu-card { display: none; } }

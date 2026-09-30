@@ -1,0 +1,125 @@
+/* ------------------------------------------------------------ 09 engage (pricing meter + plan cards) */
+.engage { padding: 0 5rem; }
+.meter { position: relative; margin-top: 4rem; height: calc(302 * var(--u)); border-radius: 30px; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); --len: 860; --tx: 39; --ty: 149; --tw: 860; }
+.meter > * { position: absolute; }
+.mt-eye { left: calc(39 * var(--u)); top: calc(39 * var(--u)); color: var(--foreground-dim); }
+.mt-q { left: calc(39 * var(--u)); top: calc(67 * var(--u)); font-weight: 500; font-size: 1.25rem; line-height: 1.75rem; letter-spacing: -0.0625rem; }
+.mt-slider { left: calc(var(--tx) * var(--u)); top: calc(124 * var(--u)); width: calc(var(--len) * var(--u)); height: calc(90 * var(--u)); }
+.mt-slider > * { position: absolute; }
+.mt-input { -webkit-appearance: none; appearance: none; left: 0; top: calc(18 * var(--u)); width: 100%; height: calc(26 * var(--u)); margin: 0; opacity: 0; cursor: pointer; z-index: 2; }
+.mt-input::-webkit-slider-thumb { -webkit-appearance: none; width: 1px; height: 1px; }
+.mt-input::-moz-range-thumb { width: 1px; height: 1px; border: 0; }
+.mt-track { left: 0; top: calc(25 * var(--u)); width: calc(var(--tw) * var(--u)); height: calc(12 * var(--u)); border-radius: 999px; overflow: clip; background: rgba(255, 255, 255, 0.08); }
+.mt-input:focus-visible ~ .mt-track { outline: 2px solid var(--accent); outline-offset: 4px; }
+.mt-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: linear-gradient(to right, rgba(255, 61, 72, 0.35), rgba(255, 61, 72, 0.95)); }
+.mt-knob-box { left: 0; top: 0; width: 100%; height: calc(76 * var(--u)); pointer-events: none; }
+.mt-knob { position: absolute; top: calc(19 * var(--u)); left: 0; width: calc(26 * var(--u)); height: calc(26 * var(--u)); margin-left: calc(-13 * var(--u)); border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff8a91, #e5222e 70%); box-shadow: 0 0 0 4px rgba(255, 61, 72, 0.18), 0 8px 18px -4px rgba(0, 0, 0, 0.7), 0 0 24px rgba(255, 61, 72, 0.45); }
+.mt-tick { top: calc(49 * var(--u)); width: 1px; height: calc(10 * var(--u)); background: rgba(255, 255, 255, 0.14); }
+.mt-tick.on { background: rgba(255, 255, 255, 0.3); }
+.mk0 { left: 0; } .mk1 { left: calc(373 * var(--u)); } .mk2 { left: calc(760 * var(--u)); }
+.mt-stop { top: calc(65 * var(--u)); color: var(--foreground-dim); transition: color 150ms var(--ease-entrance); }
+.mt-stop.on { color: #fff; }
+.ms0 { left: 0; } .ms1 { left: calc(373 * var(--u)); transform: translateX(-50%); } .ms2 { left: calc(760 * var(--u)); transform: translateX(-50%); }
+.mt-vrule { left: calc(967 * var(--u)); top: calc(40 * var(--u)); width: 1px; height: calc(222 * var(--u)); background: rgba(255, 255, 255, 0.09); }
+.mt-result { left: calc(1007 * var(--u)); top: calc(39 * var(--u)); width: calc(232 * var(--u)); display: flex; flex-direction: column; }
+.mt-eye2 { color: var(--foreground-dim); }
+.mt-plan { margin-top: 0.25rem; font-weight: 500; font-size: 1.25rem; line-height: 1.75rem; letter-spacing: -0.0625rem; }
+.swap { display: grid; }
+.swap > span { grid-area: 1 / 1; white-space: nowrap; }
+.mt-price { margin-top: 1rem; display: flex; align-items: flex-end; gap: 1rem; }
+.roll { display: inline-flex; font-weight: 600; font-size: 2.75rem; line-height: 3rem; letter-spacing: -0.125rem; height: 3rem; overflow: hidden; }
+.roll .col { display: flex; flex-direction: column; width: max-content; }
+.roll .col i { font-style: normal; height: 3rem; }
+.roll .wrap { position: relative; overflow: clip; display: block; }
+.mt-per { color: var(--foreground-muted); margin-bottom: 0.375rem; }
+.mt-rrule { position: static; margin-top: 0.75rem; height: 1px; background: rgba(255, 255, 255, 0.1); }
+.mt-inc { margin-top: 0.875rem; color: var(--foreground-muted); }
+.mt-inc .swap > span { white-space: normal; }
+.mt-cta { margin-top: 0.875rem; width: 100%; }
+
+.plans { margin-top: 1.25rem; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
+.plan { position: relative; }
+.plan-glow { position: absolute; inset: 0; border-radius: 30px; box-shadow: 0 0 24px rgba(255, 61, 72, 0.14), 0 18px 44px -10px rgba(0, 0, 0, 0.6); opacity: 0; }
+.plan-stroke { position: absolute; inset: 0; border-radius: 30px; padding: 1px; pointer-events: none; opacity: 0; background: linear-gradient(to bottom right, #9c2a31 0%, #7c2a30 10%, #5e2a2e 20%, #472a2c 30%, #362a2a 40%, #2d2c2c 50%, #1e1f1f 60%, #1d1e1f 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+.plan-card { position: relative; height: 100%; display: flex; flex-direction: column; padding: 1.9375rem; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.07); background: rgba(14, 15, 17, 0.42); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); overflow: clip; }
+.plan-card h3 { color: var(--foreground-muted); font-size: 0.875rem; }
+.plan-tag { position: absolute; right: 1.9375rem; top: 1.9375rem; border-radius: 8px; background: var(--accent-fill); color: #fff; padding: 0.1875rem 0.75rem; font-size: 0.875rem; }
+.plan-big { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.625rem; }
+.plan-big > span:first-child { font-weight: 600; font-size: 2.75rem; line-height: 3rem; letter-spacing: -0.125rem; }
+.plan-big .mono { color: var(--foreground-dim); }
+.plan-feats { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.625rem; }
+.plan-feats li { display: flex; gap: 0.75rem; min-height: 2rem; align-items: flex-start; font-size: 0.875rem; line-height: 1.25rem; color: #e8e9ec; }
+.featured .plan-feats li { font-size: 1rem; line-height: 1.5rem; }
+.plan-feats svg { width: 1rem; height: 1rem; margin-top: 2px; flex: none; color: #a7a7a7; }
+.featured .plan-feats svg { color: var(--accent); }
+.plan-btns { position: relative; margin-top: auto; padding-top: 1.5rem; height: calc(3rem + 1.5rem); }
+.plan-btns > * { position: absolute; left: 0; right: 0; bottom: 0; }
+.tier-btn { display: flex; align-items: center; justify-content: center; height: 3rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.07); font-weight: 500; font-size: 1rem; color: #f4f5f6; overflow: clip; }
+.tb-fill { position: absolute; inset: -1px; border-radius: inherit; background: var(--accent-fill); color: #fff; display: flex; align-items: center; justify-content: center; clip-path: inset(0 100% 0 0 round 999px); }
+.plan-cta { width: 100%; opacity: 0; pointer-events: none; }
+.plan-btns::before { content: ""; position: absolute; left: 4px; right: 4px; bottom: 4px; height: 2.5rem; border-radius: 999px; background: rgba(0, 0, 0, 0.55); filter: blur(13px); }
+.motion .plan-feats li span, .motion .plan-feats svg { opacity: 0; }
+
+@media (width <= 1200px) {
+  .engage { padding: 0 3rem; }
+  .meter { margin-top: 3rem; height: calc(308 * var(--u)); --len: 616; --tx: 23; --tw: 616; }
+  .mt-eye { left: calc(23 * var(--u)); top: calc(68 * var(--u)); }
+  .mt-q { left: calc(23 * var(--u)); top: calc(96 * var(--u)); }
+  .mt-slider { top: calc(153 * var(--u)); }
+  .mk1, .ms1 { left: calc(265 * var(--u)); } .mk2 { left: calc(616 * var(--u)); } .ms2 { left: calc(616 * var(--u)); transform: translateX(-100%); }
+  .mt-vrule { left: calc(671 * var(--u)); top: calc(23 * var(--u)); height: calc(260 * var(--u)); }
+  .mt-result { left: calc(703 * var(--u)); top: calc(23 * var(--u)); width: calc(200 * var(--u)); }
+  .mt-price { flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 0.75rem; }
+  .roll { font-size: 2.25rem; line-height: 3.125rem; height: 3.125rem; }
+  .roll .col i { height: 3.125rem; }
+  .plans { gap: 0.75rem; }
+  .plan-card { padding: 1.4375rem; }
+  .plan-tag { right: 1.4375rem; top: 1.4375rem; }
+  .plan-big > span:first-child { font-size: 2.25rem; line-height: 3.125rem; }
+  .plan-feats li { min-height: 2.25rem; }
+  .plan-feats svg { width: 10px; }
+  .plan-btns { height: calc(3.75rem + 1.5rem); border-top: 1px solid rgba(255, 255, 255, 0.07); margin-top: auto; padding-top: 1.5rem; }
+  .tier-btn { height: 3.75rem; }
+  .plan-cta { height: 3.75rem; }
+}
+@media (width <= 900px) {
+  .engage { padding: 0 2.5rem; }
+  .meter { height: calc(423 * var(--u)); border-radius: 24px; --len: 614; --tx: 36; --tw: 640; }
+  .mt-eye { left: calc(23 * var(--u)); top: calc(23 * var(--u)); }
+  .mt-q { left: calc(23 * var(--u)); top: calc(51 * var(--u)); }
+  .mt-slider { top: calc(80 * var(--u)); }
+  .mt-track { left: calc(-13 * var(--u)); }
+  .mk1, .ms1 { left: calc(262 * var(--u)); } .mk2, .ms2 { left: calc(614 * var(--u)); }
+  .ms0 { left: calc(-13 * var(--u)); }
+  .mt-vrule { display: none; }
+  .mt-result { left: calc(23 * var(--u)); right: calc(23 * var(--u)); top: calc(197 * var(--u)); width: auto; }
+  .mt-price { position: absolute; right: 0; top: 0; margin: 0; flex-direction: row; align-items: flex-end; gap: 4px; }
+  .mt-rrule { margin-top: 2.5rem; }
+  .plans { grid-template-columns: 1fr; }
+  .plan-card, .plan-glow, .plan-stroke { border-radius: 24px; }
+  .plan-feats { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.5rem; }
+  .plan-feats li { font-size: 1rem; line-height: 1.5rem; }
+  .plan-big { flex-direction: row; align-items: flex-end; gap: 0.75rem; }
+  .plan-big .mono { margin-bottom: 0.4375rem; }
+  .plan-btns { border-top: 1px solid rgba(255, 255, 255, 0.07); height: calc(3rem + 1.5rem); }
+  .tier-btn, .plan-cta { height: 3rem; }
+}
+@media (width <= 580px) {
+  .engage { padding: 0 1.25rem; }
+  .meter { margin-top: 2.5rem; height: calc(542 * var(--u)); --len: 284; --tx: 32; --tw: 310; }
+  .mt-eye { left: calc(19 * var(--u)); }
+  .mt-q { left: calc(19 * var(--u)); width: calc(264 * var(--u)); }
+  .mt-slider { top: calc(114 * var(--u)); }
+  .mk1, .ms1 { left: calc(120 * var(--u)); } .mk2, .ms2 { left: calc(284 * var(--u)); }
+  .mt-vrule { display: block; left: calc(19 * var(--u)); top: calc(223 * var(--u)); width: calc(310 * var(--u)); height: 1px; }
+  .mt-result { left: calc(19 * var(--u)); right: calc(19 * var(--u)); top: calc(248 * var(--u)); }
+  .mt-price { position: static; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 0.75rem; }
+  .mt-rrule { margin-top: 0.75rem; }
+  .plan-card { padding: 1.1875rem; }
+  .plan-feats { display: flex; }
+  .plan-feats li { min-height: 2.25rem; }
+  .plan-big { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+  .plan-btns { height: calc(3.75rem + 1.5rem); }
+  .tier-btn, .plan-cta { height: 3.75rem; }
+}

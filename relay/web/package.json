@@ -1,0 +1,18 @@
+{
+  "name": "itcan-web",
+  "private": true,
+  "description": "Front-end source for the ITCAN site. Builds into ../public. Not used by the Railway build.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch"
+  },
+  "dependencies": {
+    "@fontsource/fragment-mono": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "esbuild": "^0.28.2",
+    "lenis": "^1.3.26",
+    "three": "^0.186.1"
+  }
+}

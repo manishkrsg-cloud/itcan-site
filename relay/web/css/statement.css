@@ -1,0 +1,105 @@
+/* ------------------------------------------------------------ 05 statement (red plate) + LogoOpen */
+.logo-open-wrap { position: relative; height: calc(34.5rem + 15rem); }
+.logo-open { position: sticky; top: calc(50lvh - 17.25rem); clip-path: inset(50%); --pop: 0; --grow: 0; --flying: 0; --shift: 0px; --mx: 50%; --my: 50%; --msize: 4.75rem; }
+.logo-open-wrap[data-reduced="true"] { height: auto; }
+.logo-open-wrap[data-reduced="true"] .logo-open { clip-path: none; position: relative; top: 0; }
+.logo-open-mark { position: absolute; left: calc(var(--mx) - var(--msize) / 2); top: calc(var(--my) - var(--msize) / 2); width: var(--msize); height: var(--msize); pointer-events: none;
+  opacity: calc(min(var(--pop), clamp(0, calc(1 - (var(--grow) - 0.06) / 0.12), 1)) * (1 - var(--flying)));
+  transform: translateY(var(--shift)) scale(calc(0.6 + var(--pop) * 0.4)); border-radius: 24px; }
+.logo-open-wrap[data-reduced="true"] .logo-open-mark { display: none; }
+.logo-open-flight { position: fixed; top: 0; left: 0; z-index: 30; pointer-events: none; width: 4.75rem; height: 4.75rem; }
+.logo-open-flight .mark { position: absolute; inset: 0; border-radius: 31.58%; }
+.flight-cover { opacity: 0; }
+
+.statement { position: relative; height: 34.5rem; overflow: clip; border-radius: 2rem; background: var(--plate); color: #fff; }
+.statement > * { position: absolute; }
+.st-dots { left: 0; top: 0; width: 90rem; height: 34.25rem; color: rgba(0, 0, 0, 0.2); max-width: none; }
+.st-canvas { inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.st-kicker { top: calc(64 * var(--u)); left: calc(80 * var(--u)); right: calc(80 * var(--u)); text-align: center; color: rgba(255, 255, 255, 0.72); }
+.st-kicker span, .st-cap span { display: inline-block; white-space: nowrap; }
+.st-title { top: calc(108 * var(--u)); left: calc(80 * var(--u)); right: calc(80 * var(--u)); text-align: center; font-weight: 600; font-size: var(--type-section-title); line-height: var(--line-section-title); letter-spacing: var(--letter-spacing-title); color: #fff; }
+.st-line { display: block; }
+.st-title .w { display: inline-block; }
+.st-title em { font-family: var(--font-serif), Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: 0; line-height: 1; font-size: var(--type-section-title-accent); transform-origin: bottom left; color: #fff; }
+.st-mark { top: calc(292 * var(--u)); left: calc(682 * var(--u)); width: calc(76 * var(--u)); height: calc(76 * var(--u)); border-radius: 24px; box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.45); }
+.st-glyph { position: absolute; inset: 0; }
+.st-stem { top: calc(368 * var(--u)); left: calc(720 * var(--u)); width: 1px; height: calc(102 * var(--u)); transform-origin: top; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2)); }
+.st-cap { top: calc(448 * var(--u)); left: calc(80 * var(--u)); color: rgba(255, 255, 255, 0.62); }
+.st-ticks { top: calc(484 * var(--u)); left: calc(79 * var(--u)); width: calc(1282 * var(--u)); height: calc(18 * var(--u)); color: #fff; overflow: visible; }
+.st-ticks path { transform-box: fill-box; transform-origin: bottom; stroke: currentColor; }
+.st-now { top: calc(470 * var(--u)); left: calc(690 * var(--u)); width: calc(60 * var(--u)); text-align: center; color: #fff; }
+.st-dot { top: calc(493 * var(--u)); left: calc(715 * var(--u)); width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3); }
+.st-flash { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.7); opacity: 0; }
+.st-hours { top: calc(508 * var(--u)); left: 0; right: 0; height: 1.25rem; color: rgba(255, 255, 255, 0.72); }
+.st-hours li { position: absolute; top: 0; width: calc(80 * var(--u)); text-align: center; }
+.st-hours li:nth-child(1) { left: calc(80 * var(--u)); text-align: left; }
+.st-hours li:nth-child(2) { left: calc(296 * var(--u)); }
+.st-hours li:nth-child(3) { left: calc(552 * var(--u)); }
+.st-hours li:nth-child(4) { left: calc(808 * var(--u)); }
+.st-hours li:nth-child(5) { left: calc(1064 * var(--u)); }
+.st-hours li:nth-child(6) { left: calc(1280 * var(--u)); text-align: right; }
+
+/* hidden until the plate has opened */
+.motion .st-mark, .motion .st-title .w, .motion .st-now, .motion .st-dot { opacity: 0; }
+.motion .st-stem { transform: scaleY(0); }
+.motion .st-kicker span, .motion .st-cap span { clip-path: inset(0 100% 0 0); }
+.motion .st-hours li { opacity: 0; }
+
+@media (width <= 1200px) {
+  .logo-open-wrap { height: calc(33rem + 15rem); }
+  .logo-open { top: calc(50lvh - 16.5rem); }
+  .statement { height: 33rem; }
+  .st-kicker { top: calc(48 * var(--u)); left: calc(48 * var(--u)); right: calc(48 * var(--u)); }
+  .st-title { top: calc(84 * var(--u)); left: calc(48 * var(--u)); right: calc(48 * var(--u)); }
+  .st-mark { top: calc(232 * var(--u)); left: calc(474 * var(--u)); }
+  .st-stem { top: calc(308 * var(--u)); left: calc(512 * var(--u)); height: calc(138 * var(--u)); }
+  .st-cap { top: calc(406 * var(--u)); left: calc(48 * var(--u)); }
+  .st-ticks { top: calc(448 * var(--u)); left: calc(47 * var(--u)); width: calc(930 * var(--u)); }
+  .st-now { top: calc(476 * var(--u)); left: calc(482 * var(--u)); }
+  .st-dot { top: calc(441 * var(--u)); left: calc(507 * var(--u)); }
+  .st-hours { top: calc(476 * var(--u)); }
+  .st-hours li:nth-child(1) { left: calc(48 * var(--u)); }
+  .st-hours li:nth-child(2) { left: calc(189 * var(--u)); }
+  .st-hours li:nth-child(3) { left: calc(331 * var(--u)); }
+  .st-hours li:nth-child(4) { left: calc(613 * var(--u)); }
+  .st-hours li:nth-child(5) { left: calc(755 * var(--u)); }
+  .st-hours li:nth-child(6) { left: calc(896 * var(--u)); }
+}
+@media (width <= 900px) {
+  .st-kicker { top: calc(40 * var(--u)); left: calc(40 * var(--u)); right: calc(40 * var(--u)); }
+  .st-title { top: calc(76 * var(--u)); left: calc(40 * var(--u)); right: calc(40 * var(--u)); }
+  .st-mark { top: calc(204 * var(--u)); left: calc(346 * var(--u)); }
+  .st-stem { top: calc(288 * var(--u)); left: calc(384 * var(--u)); height: calc(156 * var(--u)); }
+  .st-cap { top: calc(398 * var(--u)); left: calc(40 * var(--u)); }
+  .st-ticks { top: calc(442 * var(--u)); left: calc(39 * var(--u)); width: calc(690 * var(--u)); }
+  .st-now { top: calc(468 * var(--u)); left: calc(371 * var(--u)); width: calc(26 * var(--u)); }
+  .st-dot { top: calc(439 * var(--u)); left: calc(380 * var(--u)); }
+  .st-hours { top: calc(468 * var(--u)); }
+  .st-hours li { width: calc(44 * var(--u)); }
+  .st-hours li:nth-child(1) { left: calc(40 * var(--u)); }
+  .st-hours li:nth-child(2) { left: calc(147 * var(--u)); }
+  .st-hours li:nth-child(3) { left: calc(255 * var(--u)); }
+  .st-hours li:nth-child(4) { left: calc(469 * var(--u)); }
+  .st-hours li:nth-child(5) { left: calc(577 * var(--u)); }
+  .st-hours li:nth-child(6) { left: calc(684 * var(--u)); }
+}
+@media (width <= 580px) {
+  .logo-open-wrap { height: calc(23.1875rem + 15rem); }
+  .logo-open { top: calc(50lvh - 11.6rem); }
+  .statement { height: 23.1875rem; border-radius: 1.5rem; }
+  .st-kicker { top: calc(20 * var(--u)); left: calc(20 * var(--u)); right: calc(20 * var(--u)); font-size: 0.75rem; line-height: 1rem; }
+  .st-title { top: calc(48 * var(--u)); left: calc(20 * var(--u)); right: calc(20 * var(--u)); }
+  .st-mark { top: calc(176 * var(--u)); left: calc(157 * var(--u)); border-radius: 24px; }
+  .st-stem { top: calc(252 * var(--u)); left: calc(195 * var(--u)); height: calc(48 * var(--u)); }
+  .st-cap { top: calc(245 * var(--u)); left: calc(20 * var(--u)); width: calc(92 * var(--u)); font-size: 0.75rem; line-height: 1rem; }
+  .st-cap span { white-space: normal; }
+  .st-ticks { top: calc(301 * var(--u)); left: calc(19 * var(--u)); width: calc(352 * var(--u)); }
+  .st-now { top: calc(331 * var(--u)); left: calc(182 * var(--u)); font-size: 0.75rem; }
+  .st-dot { top: calc(298 * var(--u)); left: calc(190 * var(--u)); width: 11px; height: 11px; }
+  .st-hours { top: calc(331 * var(--u)); font-size: 0.75rem; }
+  .st-hours li:nth-child(1) { left: calc(20 * var(--u)); }
+  .st-hours li:nth-child(2) { left: calc(84 * var(--u)); }
+  .st-hours li:nth-child(3), .st-hours li:nth-child(6) { display: none; }
+  .st-hours li:nth-child(4) { left: calc(262 * var(--u)); }
+  .st-hours li:nth-child(5) { left: calc(326 * var(--u)); text-align: right; }
+}

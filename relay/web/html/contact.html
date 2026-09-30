@@ -1,0 +1,56 @@
+<section id="contact" class="contact" aria-labelledby="contact-title">
+<header class="shead">
+<div class="shead-main" data-a="rise">
+<p class="badge"><span class="bdot" data-a="pulse" data-of="parent"><i class="halo"></i></span>contact</p>
+<h2 id="contact-title" class="display stitle" data-a="focus" data-d="70">Tell us the problem. <em>We'll build the team.</em></h2>
+</div>
+<p class="shead-aside" data-a="focus" data-blur="8" data-d="140">Send a short brief. It goes straight to the right inbox.</p>
+</header>
+<div class="ct-grid">
+<form class="card ct-form" id="briefForm" novalidate data-a="rise" data-d="140">
+<div class="ct-row two">
+<label>Name<input name="name" autocomplete="name" required maxlength="80"></label>
+<label>Work email<input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+</div>
+<div class="ct-row two">
+<label>Company<input name="company" autocomplete="organization" maxlength="120"></label>
+<label>I need
+<select name="need" required>
+<option value="">Choose one</option>
+<option value="consulting">Business consulting</option>
+<option value="custom">A customized solution</option>
+<option value="outsourcing">An outsourced team</option>
+<option value="managed">Application support</option>
+<option value="job">A job at ITCAN</option>
+<option value="other">Something else</option>
+</select>
+</label>
+</div>
+<label>Brief<textarea name="message" rows="5" required maxlength="3000" placeholder="What are you trying to solve? Roles, timeline, location."></textarea></label>
+<p class="ct-error mono" id="formError" role="alert" hidden></p>
+<div class="ct-foot">
+<button class="cta cta--lg" type="submit" data-cursor="none"><span class="cta-fill"></span><span class="cta-label">Send brief</span><span class="cta-ink" aria-hidden="true"><span class="cta-label">Send brief</span><svg class="cta-chev"><use href="#g-chev"/></svg></span><span class="cta-ring" aria-hidden="true"></span></button>
+<p class="mono ct-hint">Opens your email app with the brief ready to send.</p>
+</div>
+<div class="ct-done" id="formDone" hidden>
+<p><b>Your email app should now be open.</b> If it did not open, copy the brief and send it to <a id="doneTo" href="mailto:sales@itcan.biz">sales@itcan.biz</a>.</p>
+<pre class="mono" id="donePreview"></pre>
+<div class="ct-done-actions">
+<button class="glass-btn" type="button" id="copyBrief"><span>Copy brief</span><span class="glass-ring" aria-hidden="true"></span></button>
+<button class="glass-btn" type="button" id="newBrief"><span>Write another</span><span class="glass-ring" aria-hidden="true"></span></button>
+</div>
+</div>
+</form>
+<div class="card ct-inbox" data-a="rise" data-d="210">
+<p class="ct-eye mono"><span data-a="type" data-d="280">inboxes</span></p>
+<ul class="inboxes mono">
+<li><span>general</span><a href="mailto:info@itcan.biz">info@itcan.biz</a></li>
+<li><span>sales</span><a href="mailto:sales@itcan.biz">sales@itcan.biz</a></li>
+<li><span>hr</span><a href="mailto:hr@itcan.biz">hr@itcan.biz</a></li>
+<li><span>jobs</span><a href="mailto:jobs@itcan.biz">jobs@itcan.biz</a></li>
+<li><span>media</span><a href="mailto:media@itcan.biz">media@itcan.biz</a></li>
+<li><span>phone</span><a href="tel:+6566046805">+65 6604 6805</a></li>
+</ul>
+</div>
+</div>
+</section>

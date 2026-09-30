@@ -67,7 +67,9 @@ try {
 const gzCache = new Map(); // abs path -> { mtimeMs, buf }
 
 function cacheControl(ext, urlPath) {
-  // HTML, CSS, JS and data always revalidate (cheap 304 via ETag), so a deploy shows up at once
+  // hashed lazy chunks never change; everything else revalidates (cheap 304 via ETag)
+  if (urlPath.startsWith('/js/chunks/')) return 'public, max-age=31536000, immutable';
+  // HTML, CSS, JS and data always revalidate, so a deploy shows up at once
   if (['.html', '.css', '.js', '.mjs', '.json', '.webmanifest'].includes(ext)) return 'no-cache';
   if (urlPath.startsWith('/awards/')) return 'public, max-age=2592000, immutable';
   if (urlPath.startsWith('/assets/')) return 'public, max-age=604800';

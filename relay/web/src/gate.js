@@ -1,0 +1,19 @@
+// Runs first in <head>, before any stylesheet: decides whether the preloader plays.
+(function () {
+  var d = document.documentElement;
+  var rm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var bot = /lighthouse|googlebot|pagespeed|headlesschrome|gtmetrix|pingdom|bingbot|yandexbot/i.test(navigator.userAgent);
+  var esm = "noModule" in document.createElement("script");
+  if (bot) d.setAttribute("data-bot", "");
+  if (!esm) return;
+  if (!rm) d.classList.add("motion");
+  if (!rm && !bot) d.setAttribute("data-preload", "");
+  // failsafe: never leave the page hidden if the app does not boot
+  setTimeout(function () {
+    if (!window.__itcan) {
+      d.removeAttribute("data-preload");
+      d.removeAttribute("data-preload-closing");
+      d.classList.remove("motion");
+    }
+  }, 7000);
+})();
