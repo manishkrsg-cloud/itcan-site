@@ -12,7 +12,7 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 const CONFIG = {
-  particles: 36000, lowShare: 0.45, strands: 44, flowPx: 90, scrollFlow: 1.25,
+  particles: 28000, lowShare: 0.5, strands: 44, flowPx: 90, scrollFlow: 1.25,
   spread: 8, spreadEnds: 190, turnHold: 0.5, pinchReach: 300,
   breath: 0.35, breathWavelength: 900, breathSpeed: 0.6,
   spraySpread: 2.4, bokehSpread: 3.2, dustSpread: 5.5, wobble: 4,
@@ -28,7 +28,7 @@ const SEGMENTS = 1400;
 const CAM_Z = 6, FOV = 35, DAMP = 3.2;
 const TURN_BASE = 12, TURN_HOLD = 28, TURN_SMOOTH = 48, TURN_OPEN = 1e4;
 const REVEALED = 1e7;
-const DPR = { full: 1.35, low: 1.2 };
+const DPR = { full: 1, low: 0.85 };
 const HALF_H = CAM_Z * Math.tan(((FOV / 2) * Math.PI) / 180);
 
 // Waypoints: x share of the page column, y share of the anchored block, z toward camera.
@@ -188,6 +188,7 @@ function slideMean(a, r) {
 }
 
 export async function createStream(canvas, { reduced = false, coarse = false, onFrameGap } = {}) {
+  let forceLow = false;
   let tier = coarse || innerWidth <= 900 ? "low" : "full";
   let unit = 1, w = 0, h = 0, frame = frameOf(innerWidth);
   let scrollPx = 0, lastScroll = 0, scrollY = 0;
@@ -357,7 +358,7 @@ export async function createStream(canvas, { reduced = false, coarse = false, on
   }
   function resize(force) {
     const nw = canvas.clientWidth || innerWidth, nh = canvas.clientHeight || innerHeight;
-    const nt = coarse || innerWidth <= 900 ? "low" : "full";
+    const nt = forceLow || coarse || innerWidth <= 900 ? "low" : "full";
     const nf = frameOf(innerWidth);
     const sizeChanged = force || nw !== w || nh !== h || nt !== tier || nf !== frame;
     if (!sizeChanged) { bake(); return; }
@@ -367,7 +368,8 @@ export async function createStream(canvas, { reduced = false, coarse = false, on
     renderer.setSize(w, h, false);
     composer.setPixelRatio(dpr);
     composer.setSize(w, h);
-    if (tier === "low") bloom.setSize(Math.ceil(w * dpr * 0.5), Math.ceil(h * dpr * 0.5));
+    // bloom is a soft glow: half resolution looks the same and costs a quarter
+    bloom.setSize(Math.ceil(w * dpr * 0.5), Math.ceil(h * dpr * 0.5));
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     unit = (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
@@ -419,6 +421,8 @@ export async function createStream(canvas, { reduced = false, coarse = false, on
     resize,
     bake,
     tier: () => tier,
+    // drop to the light tier when the device cannot keep up
+    degrade() { if (tier === "low") return false; forceLow = true; resize(true); return true; },
     setScroll(y) { scrollPx += Math.abs(y - lastScroll) * CONFIG.scrollFlow; lastScroll = y; scrollY = y; },
     setPointer(x, y) { pointer.set(x, y); },
     reveal(now, instant) { revealStart = instant ? now - CONFIG.revealMs : now; },

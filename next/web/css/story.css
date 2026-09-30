@@ -1,10 +1,10 @@
 /* ------------------------------------------------------------ nav */
 .nav { position: fixed; inset-inline: 0; top: 0; z-index: 40; height: var(--nav-h); transition: background-color 0.35s, border-color 0.35s, backdrop-filter 0.35s, transform 0.45s var(--ease); border-bottom: 1px solid transparent; }
-.nav.is-scrolled { background: rgba(6, 7, 11, 0.72); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); border-bottom-color: var(--line); }
+.nav.is-scrolled { background: rgba(6, 7, 11, 0.86); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom-color: var(--line); }
 .nav.is-hidden { transform: translateY(-100%); }
 .nav-in { height: 100%; max-width: calc(var(--max) + var(--gutter) * 2); margin-inline: auto; padding-inline: var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .nav-logo img { width: auto; height: 28px; }
-.nav-links { display: flex; gap: 4px; padding: 4px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.03); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.nav-links { display: flex; gap: 4px; padding: 4px; border-radius: 999px; border: 1px solid var(--line); background: rgba(14, 15, 20, 0.7); }
 .nav-links a { padding: 8px 14px; border-radius: 999px; font-size: 0.9375rem; font-weight: 500; color: var(--muted); transition: color 0.2s, background-color 0.2s; }
 .nav-links a:hover, .nav-links a.is-on { color: #fff; background: rgba(255, 255, 255, 0.07); }
 .nav-end { display: flex; align-items: center; gap: 18px; }
@@ -27,7 +27,7 @@
 .story-canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; }
 .story-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(5, 6, 10, 0.75) 0%, rgba(5, 6, 10, 0.35) 34%, transparent 52%), linear-gradient(0deg, rgba(5, 6, 10, 0.85) 0%, transparent 34%); opacity: var(--shade, 0.4); }
 
-.cap { --o: 1; --y: 0px; --b: 0px; position: absolute; left: var(--gutter); z-index: 2; opacity: var(--o); filter: blur(var(--b)); display: flex; flex-direction: column; gap: 18px; }
+.cap { --o: 1; --y: 0px; --f: none; position: absolute; left: var(--gutter); z-index: 2; opacity: var(--o); filter: var(--f); display: flex; flex-direction: column; gap: 18px; }
 .cap.is-off { pointer-events: none; }
 .cap-0.is-off { visibility: hidden; }
 .story:not(.is-live) .cap:not(.cap-0), .story:not(.is-live) .cluster-labels, .story:not(.is-live) .rail { display: none; }

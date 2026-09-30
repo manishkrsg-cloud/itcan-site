@@ -87,10 +87,11 @@ export function initProcess() {
     });
   };
   const light = (n) => steps.forEach((s, i) => s.classList.toggle("is-lit", i < n));
-  let lastP = -1;
+  let lastP = -1, docTop = 0, wrapH = 1;
+  const cacheTop = () => { docTop = wrap.getBoundingClientRect().top + getScroll(); wrapH = wrap.offsetHeight; };
   const update = () => {
     if (!visible) return;
-    const r = wrap.getBoundingClientRect(), vh = innerHeight;
+    const vh = innerHeight, r = { top: docTop - getScroll(), height: wrapH };
     const p = vertical ? clamp((vh * 0.62 - r.top) / r.height) : clamp((vh * 0.82 - r.top) / (vh * 0.42));
     if (Math.abs(p - lastP) < 0.0005) return;
     lastP = p;
@@ -98,9 +99,10 @@ export function initProcess() {
     track.style.setProperty("--tok", p > 0.002 ? "1" : "0");
     light(marks.filter((m) => p >= m - 0.01).length);
   };
-  measure();
-  addEventListener("resize", () => { measure(); lastP = -1; update(); });
-  if (document.fonts) document.fonts.ready.then(() => { measure(); update(); });
+  measure(); cacheTop();
+  addEventListener("resize", () => { measure(); cacheTop(); lastP = -1; update(); });
+  new ResizeObserver(() => { cacheTop(); }).observe(document.body);
+  if (document.fonts) document.fonts.ready.then(() => { measure(); cacheTop(); update(); });
   if (reduced) { light(steps.length); track.style.setProperty("--p", "1"); return; }
   onScroll(update);
   update();
@@ -145,26 +147,35 @@ export function initFooter() {
     c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
     draw(performance.now());
   };
+  // dots are bucketed by colour and brightness so each frame is a handful of fills, not thousands
+  const BUCKETS = 8;
   function draw(t) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     const gap = w < 700 ? 18 : 24;
     const cols = Math.ceil(w / gap) + 1, rows = Math.ceil(h / gap) + 1;
+    const paths = [[], []].map(() => Array.from({ length: BUCKETS }, () => new Path2D()));
     for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
       const x = i * gap, y0 = j * gap;
+      const cx = (x - w / 2) / (w / 2), cy = (y0 - h * 0.45) / (h / 2);
+      const fall = 1 - Math.sqrt(cx * cx * 0.9 + cy * cy * 1.6);
+      if (fall <= 0.02) continue;
       const wave = reduced ? 0 : Math.sin(i * 0.22 + t / 1400) * Math.cos(j * 0.3 + t / 1900);
       const y = y0 + wave * 4;
-      const cx = (x - w / 2) / (w / 2), cy = (y0 - h * 0.45) / (h / 2);
-      const fall = Math.max(0, 1 - Math.sqrt(cx * cx * 0.9 + cy * cy * 1.6));
-      if (fall <= 0.02) continue;
       const dx = x - mx, dy = y - my, near = Math.max(0, 1 - Math.sqrt(dx * dx + dy * dy) / 140);
-      const a = fall * (0.18 + 0.28 * (wave * 0.5 + 0.5)) + near * 0.6;
-      const red = near > 0.05 || fall > 0.8;
-      ctx.fillStyle = red ? `rgba(255,${Math.round(90 - 40 * near)},${Math.round(100 - 40 * near)},${a.toFixed(3)})` : `rgba(210,216,235,${a.toFixed(3)})`;
-      ctx.beginPath(); ctx.arc(x, y, 1.1 + near * 1.4, 0, Math.PI * 2); ctx.fill();
+      const a = Math.min(1, fall * (0.18 + 0.28 * (wave * 0.5 + 0.5)) + near * 0.6);
+      const red = near > 0.05 || fall > 0.8 ? 1 : 0;
+      const b = Math.min(BUCKETS - 1, Math.floor(a * BUCKETS));
+      const r = 1.1 + near * 1.4;
+      paths[red][b].rect(x - r, y - r, r * 2, r * 2);
+    }
+    for (let c = 0; c < 2; c++) for (let b = 0; b < BUCKETS; b++) {
+      ctx.fillStyle = c ? `rgba(255,70,80,${((b + 0.5) / BUCKETS).toFixed(2)})` : `rgba(210,216,235,${((b + 0.5) / BUCKETS).toFixed(2)})`;
+      ctx.fill(paths[c][b]);
     }
   }
-  const loop = (t) => { draw(t); if (on) raf = requestAnimationFrame(loop); };
+  let lastDraw = 0;
+  const loop = (t) => { if (t - lastDraw > 32) { lastDraw = t; draw(t); } if (on) raf = requestAnimationFrame(loop); };
   new ResizeObserver(resize).observe(c);
   const host = c.parentElement;
   if (fine) {

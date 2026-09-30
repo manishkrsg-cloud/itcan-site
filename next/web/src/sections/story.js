@@ -20,13 +20,20 @@ export function initStory() {
     onChapter: (ch) => rail.forEach((a, i) => (i === ch ? a.setAttribute("aria-current", "step") : a.removeAttribute("aria-current"))),
   });
 
-  const span = () => Math.max(1, sec.offsetHeight - innerHeight);
-  const update = () => { const r = sec.getBoundingClientRect(); pts.setProgress(clamp(-r.top / span())); };
+  // geometry is cached so the scroll handler never reads layout
+  let top = 0, spanPx = 1;
+  const measure = () => { top = sec.getBoundingClientRect().top + getScroll(); spanPx = Math.max(1, sec.offsetHeight - innerHeight); };
+  const span = () => spanPx;
+  const update = (y = getScroll()) => pts.setProgress(clamp((y - top) / spanPx));
+  measure();
   onScroll(update);
-  addEventListener("resize", update);
+  addEventListener("resize", () => { measure(); update(); });
+  new ResizeObserver(() => { measure(); update(); }).observe(document.body);
   update();
 
   let raf = 0, live = false;
+  const memo = new Map();
+  const put = (el, k, v) => { const key = el.dataset.ch + k; if (memo.get(key) !== v) { memo.set(key, v); el.style.setProperty(k, v); } };
   const tick = () => {
     raf = 0;
     const c = pts.chapter, intro = pts.intro;
@@ -35,13 +42,18 @@ export function initStory() {
       let o = clamp(1 - Math.abs(d) * 2.4);
       if (k === 0) o *= clamp((intro - 0.3) / 0.45);
       if (k === last && d > 0) o = 1;
-      el.style.setProperty("--o", o >= 0.999 ? "1" : o.toFixed(3));
-      el.style.setProperty("--y", `${(-d * 40).toFixed(1)}px`);
-      el.style.setProperty("--b", `${((1 - o) * 10).toFixed(1)}px`);
-      el.classList.toggle("is-off", o < 0.04);
+      if (o > 0.97) o = 1; // settle crisp: no lingering blur while the chapter eases in the last pixels
+      put(el, "--o", o >= 0.999 ? "1" : o.toFixed(2));
+      put(el, "--y", `${(-d * 40).toFixed(0)}px`);
+      const b = (1 - o) * 10;
+      put(el, "--f", o >= 0.999 || o < 0.04 ? "none" : `blur(${b.toFixed(1)}px)`);
+      const off = o < 0.04;
+      if (el.classList.contains("is-off") !== off) el.classList.toggle("is-off", off);
     });
-    stage.style.setProperty("--shade", (0.4 + 0.6 * clamp(c * 1.2) * clamp((4.6 - c) / 1.2)).toFixed(3));
-    if (cue) cue.style.setProperty("--cue", (clamp(1 - c * 5) * clamp((intro - 0.7) / 0.3)).toFixed(3));
+    const shade = (0.4 + 0.6 * clamp(c * 1.2) * clamp((4.6 - c) / 1.2)).toFixed(2);
+    if (memo.get("shade") !== shade) { memo.set("shade", shade); stage.style.setProperty("--shade", shade); }
+    const cv = (clamp(1 - c * 5) * clamp((intro - 0.7) / 0.3)).toFixed(2);
+    if (cue && memo.get("cue") !== cv) { memo.set("cue", cv); cue.style.setProperty("--cue", cv); }
     if (live) raf = requestAnimationFrame(tick);
   };
 
@@ -53,7 +65,6 @@ export function initStory() {
   rail.forEach((a) => a.addEventListener("click", (e) => {
     e.preventDefault();
     const k = +a.dataset.go;
-    const top = sec.getBoundingClientRect().top + getScroll() + (span() * k) / last;
-    scrollToY(top + 2);
+    scrollToY(top + (span() * k) / last + 2);
   }));
 }

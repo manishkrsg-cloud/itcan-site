@@ -3,7 +3,7 @@
 import { Spring, tween, ease } from "./core/engine.js";
 import { release } from "./core/seen.js";
 
-const MAX_WAIT = 6000;
+const MAX_WAIT = 2400;
 const CLOSED = 0.96;
 const FULL = 0.97;
 const TILE_ROUND = 24 / 76;
@@ -38,7 +38,8 @@ export function runPreloader(onDone) {
   let progress = 0.04;
   const imgs = Array.from(document.images).filter((i) => i.loading !== "lazy");
   let loaded = 0, fonts = 0;
-  const raise = (p) => { if (p > progress) { progress = p; d.start(progress, { config: { tension: 60, friction: 22 } }); } };
+  const DRAW = { tension: 150, friction: 26 };
+  const raise = (p) => { if (p > progress) { progress = p; d.start(progress, { config: DRAW }); } };
   const update = () => raise(0.04 + (0.76 * (loaded + fonts)) / (imgs.length + 1));
   imgs.forEach((im) => {
     if (im.complete) loaded++;
@@ -51,11 +52,14 @@ export function runPreloader(onDone) {
     rect.style.strokeDashoffset = 100 * (1 - v);
     if (phase === "draw" && v >= CLOSED) startFlood();
   });
-  d.start(progress, { config: { tension: 60, friction: 22 } });
+  d.start(progress, { config: DRAW });
   update();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fonts = 1; update(); });
   const done = () => raise(1);
-  if (document.readyState === "complete") setTimeout(done, 120); else addEventListener("load", done, { once: true });
+  // do not hold the page for every image: fonts and the first paint are enough
+  const ready = () => setTimeout(done, 80);
+  if (document.fonts && document.fonts.ready) Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1200))]).then(ready);
+  else if (document.readyState === "complete") ready(); else addEventListener("load", ready, { once: true });
   setTimeout(done, MAX_WAIT);
 
   // ---- phase 2: flood
@@ -69,7 +73,7 @@ export function runPreloader(onDone) {
       dark.style.opacity = Math.min(1, v);
       if (phase === "flood" && v >= FULL) startFold();
     });
-    kk.start(1, { config: { tension: 140, friction: 26 } });
+    kk.start(1, { config: { tension: 200, friction: 28 } });
   }
 
   // ---- phase 3: fold
@@ -96,7 +100,7 @@ export function runPreloader(onDone) {
     plate.style.display = "block";
     plate.style.clipPath = mask(0);
     release();
-    tween(1000, ease.inOutQuad, (c) => {
+    tween(760, ease.inOutQuad, (c) => {
       plate.style.clipPath = c >= 1 ? "inset(50%)" : mask(c);
       tile.style.clipPath = c >= 1 ? "inset(50%)" : cut(c);
     }, finish);
@@ -106,6 +110,7 @@ export function runPreloader(onDone) {
     html.removeAttribute("data-preload-closing");
     removeEventListener("resize", measure);
     root.remove();
+    try { sessionStorage.setItem("itcan-intro", "1"); } catch (e) { /* private mode */ }
     window.dispatchEvent(new Event("itcan:ready"));
     onDone && onDone();
   }

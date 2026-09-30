@@ -64,7 +64,15 @@ function initStream() {
     }
     if (revealAsked) s.reveal(performance.now());
     let visible = true, off = null;
-    const run = () => { if (!off && visible && !document.hidden) off = ticker.add((now) => s.render(now), coarse ? 20 : 0); };
+    // watch the real frame rate for a few seconds; if the device struggles, lighten the stream
+    let prev = 0, slow = 0, seen = 0, judged = false;
+    const watch = (now) => {
+      if (judged) return;
+      if (prev) { const gap = now - prev; if (gap < 250) { seen++; if (gap > 24) slow++; } }
+      prev = now;
+      if (seen >= 120) { judged = true; if (slow / seen > 0.35) s.degrade(); }
+    };
+    const run = () => { if (!off && visible && !document.hidden) { prev = 0; off = ticker.add((now) => { watch(now); s.render(now); }, coarse ? 20 : 0); } };
     const stop = () => { if (off) { off(); off = null; } };
     document.addEventListener("visibilitychange", () => (document.hidden ? stop() : run()));
     run();

@@ -28,7 +28,7 @@ export async function initHall() {
   const markYear = (yr) => { if (yr === onYear) return; onYear = yr; ticks.forEach((t) => t.classList.toggle("is-on", +t.dataset.y === yr)); };
 
   // ---- pinned sideways scroll on wide screens with a mouse or trackpad
-  let pinned = false, overflow = 0, base = 0;
+  let pinned = false, overflow = 0, base = 0, secTop = 0;
   const cardStep = () => (cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : 300);
   function measure() {
     const want = !coarse && innerWidth > 900 && !reduced;
@@ -36,30 +36,39 @@ export async function initHall() {
     sec.classList.toggle("is-pinned", pinned);
     track.style.transform = "";
     sec.style.height = "";
+    cacheGeo();
+    secTop = sec.getBoundingClientRect().top + getScroll();
     if (!pinned) return;
     overflow = Math.max(0, track.scrollWidth - view.clientWidth);
     base = sec.querySelector(".hall-pin").offsetHeight;
     sec.style.height = `${base + overflow}px`;
     update();
   }
+  // card centres and the view width are cached, so scrolling never forces a layout
+  let centres = [], viewW = 0;
+  const cacheGeo = () => { centres = cards.map((c) => c.offsetLeft + c.offsetWidth / 2); viewW = view.clientWidth; };
   function centreYear(x) {
     // the card nearest the middle of the view sets the year
-    const mid = x + view.clientWidth / 2;
+    if (!centres.length) cacheGeo();
+    const mid = x + viewW / 2;
     let best = 0, bd = 1e9;
-    cards.forEach((c, i) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = i; } });
+    for (let i = 0; i < centres.length; i++) { const d = Math.abs(centres[i] - mid); if (d < bd) { bd = d; best = i; } }
     markYear(list[best].year);
   }
+  let lastX = -1;
   function update() {
     if (!pinned) return;
-    const r = sec.getBoundingClientRect();
-    const p = overflow ? clamp(-r.top / overflow) : 0;
-    const x = p * overflow;
-    track.style.transform = `translate3d(${-x.toFixed(1)}px,0,0)`;
+    const p = overflow ? clamp((getScroll() - secTop) / overflow) : 0;
+    const x = Math.round(p * overflow * 2) / 2;
+    if (x === lastX) return;
+    lastX = x;
+    track.style.transform = `translate3d(${-x}px,0,0)`;
     centreYear(x);
   }
   onScroll(update);
   view.addEventListener("scroll", () => { if (!pinned) centreYear(view.scrollLeft); }, { passive: true });
   addEventListener("resize", measure);
+  new ResizeObserver(() => { secTop = sec.getBoundingClientRect().top + getScroll(); }).observe(document.body);
   track.querySelectorAll("img").forEach((img) => img.addEventListener("load", () => { if (pinned) { const o = overflow; overflow = Math.max(0, track.scrollWidth - view.clientWidth); if (o !== overflow) measure(); } }, { once: true }));
   measure();
   centreYear(0);

@@ -228,7 +228,8 @@ export function createPoints(stage, opts = {}) {
 
   function resize() {
     const r = canvas.getBoundingClientRect();
-    dpr = Math.min(2, window.devicePixelRatio || 1);
+    // soft glowing dots gain nothing from a full retina buffer; 1.5x keeps them crisp for less work
+    dpr = Math.min(1.5, window.devicePixelRatio || 1);
     w = Math.max(1, r.width); h = Math.max(1, r.height);
     canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
     if (ready) { layout(); draw(performance.now()); }

@@ -7,7 +7,9 @@
   if (bot) d.setAttribute("data-bot", "");
   if (!esm) return;
   if (!rm) d.classList.add("motion");
-  if (!rm && !bot) d.setAttribute("data-preload", "");
+  var seen = false;
+  try { seen = sessionStorage.getItem("itcan-intro") === "1"; } catch (e) {}
+  if (!rm && !bot && !seen) d.setAttribute("data-preload", "");
   // failsafe: never leave the page hidden if the app does not boot
   setTimeout(function () {
     if (!window.__itcan) {
