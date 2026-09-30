@@ -115,7 +115,7 @@ export function initLogoOpen() {
     const flying = t > 0 && t < 1;
     if (s > closeEnd) wrap.dataset.open = "false";
     plate.style.setProperty("--flying", t > 0 ? 1 : 0);
-    if (target) target.style.opacity = flying ? 0 : "";
+    if (target) { target.style.opacity = flying ? 0 : ""; if (flying) target.dataset.flying = "1"; else delete target.dataset.flying; }
     if (flight) {
       flight.hidden = !flying;
       if (flying && to) {

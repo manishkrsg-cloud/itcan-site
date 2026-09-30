@@ -37,20 +37,17 @@ export function focus(el, blur = 10, cfg = SPRING_SOFT) {
   return { play(delay = 0) { sp.start(1, { config: cfg, delay }); }, reset() { sp.set(0); }, sp };
 }
 
-// Mono labels type themselves in, whole characters at a time.
+// Labels reveal left to right with a soft wipe (works for any typeface).
 export function type(el, ms = 30) {
   const text = el.textContent;
   const len = text.length;
   let tw = null;
-  const draw = (typed) => {
-    const n = Math.floor(typed);
-    el.style.clipPath = n >= len ? "none" : `inset(0 calc(100% - ${n}ch - 0.1ch) 0 0)`;
-  };
+  const draw = (p) => { el.style.clipPath = p >= 1 ? "none" : `inset(-0.2em ${((1 - p) * 100).toFixed(2)}% -0.2em 0)`; };
   return {
     play(delay = 0, onDone) {
       tw && tw.stop();
-      if (reduced) { draw(len); onDone && onDone(); return; }
-      tw = tween(len * ms, ease.linear, (t) => draw(t * (len + 0.5)), onDone, delay);
+      if (reduced) { draw(1); onDone && onDone(); return; }
+      tw = tween(Math.min(900, Math.max(320, len * 24)), ease.outQuad, (t) => draw(t), onDone, delay);
     },
     reset() { tw && tw.stop(); draw(0); },
     get length() { return len; },

@@ -6,9 +6,9 @@ import { onSeen } from "../core/seen.js";
 const FRAMES = { 1440: { len: 860, stops: [0, 373, 760], fx: 0 }, 1024: { len: 616, stops: [0, 265, 616], fx: 0 }, 768: { len: 614, stops: [0, 262, 614], fx: 13 }, 390: { len: 284, stops: [0, 120, 284], fx: 13 } };
 const frameOf = (w) => (w <= 580 ? 390 : w <= 900 ? 768 : w <= 1200 ? 1024 : 1440);
 const PLANS = [
-  { name: "Business consulting", inc: "certified consultants on your site" },
-  { name: "Dedicated team", inc: "three layers, one owner each" },
-  { name: "Managed service", inc: "support, upgrades and roll-outs" },
+  { name: "Business consulting", inc: "Certified consultants on your site" },
+  { name: "Dedicated team", inc: "Three layers, one owner each" },
+  { name: "Managed service", inc: "Support, upgrades and roll-outs" },
 ];
 const planOf = (n) => (n <= 3 ? 0 : n <= 30 ? 1 : 2);
 

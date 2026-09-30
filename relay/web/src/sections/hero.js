@@ -84,8 +84,8 @@ function at(r, d) {
 
 // offices for the feed: name, code, zone
 const OFFICES = [
-  ["singapore", "hq", "Asia/Singapore"], ["kuala lumpur", "my", "Asia/Kuala_Lumpur"], ["sydney", "au", "Australia/Sydney"],
-  ["hong kong", "hk", "Asia/Hong_Kong"], ["new delhi", "in", "Asia/Kolkata"], ["jakarta", "id", "Asia/Jakarta"],
+  ["Singapore", "HQ", "Asia/Singapore"], ["Kuala Lumpur", "MY", "Asia/Kuala_Lumpur"], ["Sydney", "AU", "Australia/Sydney"],
+  ["Hong Kong", "HK", "Asia/Hong_Kong"], ["New Delhi", "IN", "Asia/Kolkata"], ["Jakarta", "ID", "Asia/Jakarta"],
 ];
 const fmtCache = {};
 function localTime(tz, withSec = true) {

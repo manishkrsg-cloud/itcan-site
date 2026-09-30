@@ -34,7 +34,7 @@
 .tr-val { color: var(--foreground-dim); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .tr-axis { position: absolute; left: calc(31 * var(--u) + 1rem + 11.25rem + 1.5rem); right: calc(33 * var(--u) + 7.5rem + 0.75rem); top: calc(263 * var(--u)); height: 2rem; }
 .tr-axis i { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: rgba(255, 255, 255, 0.09); }
-.tr-axis span { position: absolute; top: 0.625rem; left: calc(var(--x) * 1%); transform: translateX(-50%); font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.25rem; color: var(--foreground-dim); white-space: nowrap; }
+.tr-axis span { position: absolute; top: 0.625rem; left: calc(var(--x) * 1%); transform: translateX(-50%); font-family: var(--font-inter); font-size: 0.875rem; line-height: 1.25rem; color: var(--foreground-dim); white-space: nowrap; }
 .tr-axis span::before { content: ""; position: absolute; left: 50%; top: -0.625rem; width: 1px; height: 5px; background: rgba(255, 255, 255, 0.16); }
 .tr-axis span:first-child { transform: none; }
 .tr-axis span:first-child::before { left: 0; }

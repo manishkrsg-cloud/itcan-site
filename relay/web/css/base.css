@@ -1,5 +1,4 @@
 @font-face { font-family: "Geist"; font-weight: 100 900; font-style: normal; font-display: swap; src: url("/assets/fonts/geist-latin-wght-normal.woff2") format("woff2-variations"), url("/assets/fonts/geist-latin-wght-normal.woff2") format("woff2"); }
-@font-face { font-family: "Geist Mono"; font-weight: 100 900; font-style: normal; font-display: swap; src: url("/assets/fonts/geist-mono-latin-wght-normal.woff2") format("woff2-variations"), url("/assets/fonts/geist-mono-latin-wght-normal.woff2") format("woff2"); }
 
 /* ------------------------------------------------------------ tokens
    Relay's palette with its lime accent replaced by ITCAN red and its sky hue by ITCAN blue. */
@@ -8,8 +7,8 @@
   --raw-color-black: #000000;
   --raw-color-neutral-300: #bababa;
   --raw-color-neutral-200: #d6dadd;
-  --raw-color-neutral-400: #9ba0a6;
-  --raw-color-neutral-500: #747980;
+  --raw-color-neutral-400: #b1b6c0;
+  --raw-color-neutral-500: #8f95a1;
   --raw-color-neutral-850: #131416;
   --raw-color-neutral-875: #121315;
   --raw-color-ink-950: #0a0b09;
@@ -65,7 +64,7 @@
   --nav-h: 5.5rem;
   --elevation-float: 0 0.5rem 1.375rem -0.25rem rgba(0, 0, 0, 0.5);
   --elevation-cta: 0 0.5rem 0.6875rem rgba(0, 0, 0, 0.5);
-  --font-inter: "Geist"; --font-serif: "Geist"; --font-mono: "Geist Mono";
+  --font-inter: "Geist"; --font-serif: "Geist"; --font-mono: "Geist";
   --accent-text: linear-gradient(92deg, #ff4d57 0%, #ff7a5c 55%, #ffb199 100%);
   --ease-entrance: cubic-bezier(0.2, 0, 0, 1);
 }
@@ -99,7 +98,7 @@ address { font-style: normal; }
 .skip { position: fixed; left: 1rem; top: -4rem; z-index: 100; background: #fff; color: #000; padding: 0.5rem 1rem; border-radius: 999px; font-weight: 500; }
 .skip:focus { top: 1rem; }
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
-.mono { font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--type-label); line-height: var(--line-label); font-weight: 400; letter-spacing: 0; }
+.mono { font-family: var(--font-inter), system-ui, sans-serif; font-size: 0.9375rem; line-height: var(--line-label); font-weight: 450; letter-spacing: 0.005em; font-variant-numeric: tabular-nums; }
 .gap { height: var(--section-gap); }
 .stream { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100lvh; pointer-events: none; mix-blend-mode: screen; display: block; }
 html[data-bot] .stream { display: none; }

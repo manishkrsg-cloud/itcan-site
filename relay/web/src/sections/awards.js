@@ -176,7 +176,7 @@ function dotmap(card) {
   const lbl = svgEl("g", { transform: `translate(${hx + 14} ${hy - 30})` }, svg);
   svgEl("rect", { class: "plate", width: 108, height: 24, rx: 6 }, lbl);
   const txt = svgEl("text", { class: "lbl", x: 8, y: 16.5 }, lbl);
-  txt.textContent = "itcan hq";
+  txt.textContent = "ITCAN HQ";
   const pin = svgEl("g", { transform: `translate(${hx} ${hy})` }, svg);
   const ping = svgEl("circle", { class: "ping", r: 16 }, pin);
   svgEl("circle", { class: "halo", r: 10 }, pin);
