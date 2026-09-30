@@ -31,7 +31,7 @@
 .ft-eye span { display: inline-block; white-space: nowrap; }
 .ft-title { margin-top: 0.75rem; overflow: clip; font-weight: 600; font-size: 2.25rem; line-height: 3.25rem; letter-spacing: -0.0625rem; }
 .ft-line { display: block; }
-.ft-title em { font-family: var(--font-serif), Georgia, serif; font-style: italic; font-weight: 400; font-size: 2.5rem; letter-spacing: 0; }
+.ft-title em { font-style: normal; color: #16040a; }
 .ft-copy { margin-top: 0.75rem; max-width: 40.625rem; font-size: 1rem; line-height: 1.5rem; color: rgba(255, 255, 255, 0.85); }
 .ft-form-wrap { margin-top: auto; }
 .ft-form { position: relative; display: flex; align-items: center; gap: 0.5rem; height: 3.25rem; max-width: 40.625rem; border-radius: 9999px; background: #fafbfc; padding: 6px 6px 6px 20px; overflow: clip; }
@@ -83,7 +83,6 @@
   .ft-social { left: calc(23 * var(--u)); right: calc(23 * var(--u)); top: calc(221 * var(--u)); }
   .ft-glyph { left: calc(235 * var(--u)); top: calc(-48 * var(--u)); }
   .ft-title { font-size: 2rem; line-height: 2.625rem; }
-  .ft-title em { font-size: 2rem; }
   .ft-copy { margin-top: 0.5rem; }
   .ft-form { height: 3.5rem; padding: 8px 8px 8px 20px; }
   .ft-status { margin-top: 3rem; grid-template-columns: 258fr 353fr 317fr; }
@@ -97,7 +96,6 @@
   .ft-tag { width: calc(292 * var(--u)); }
   .ft-glyph { left: auto; right: calc(-60 * var(--u)); top: calc(-44 * var(--u)); }
   .ft-title { font-size: 1.625rem; line-height: 2.125rem; }
-  .ft-title em { font-size: 1.625rem; }
   .ft-status { grid-template-columns: 224fr 259fr 205fr; }
   .ft-status .long:not([data-open-count]) { display: none; }
   .ft-status .short { display: inline; }
@@ -116,7 +114,6 @@
   .ft-social a { border-radius: 4px; }
   .ft-glyph { right: calc(-70 * var(--u)); top: calc(-35 * var(--u)); width: calc(228 * var(--u)); height: calc(228 * var(--u)); }
   .ft-title { font-size: 2rem; line-height: 2.625rem; }
-  .ft-title em { font-size: 2rem; }
   .ft-form-wrap { margin-top: 1.5rem; }
   .ft-form { height: auto; flex-wrap: wrap; border-radius: 1.5rem; padding: 8px; }
   .ft-form input { flex-basis: 100%; height: 2.75rem; padding: 0 12px; }

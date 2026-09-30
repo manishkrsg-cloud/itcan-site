@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------ display title */
 .display { font-family: var(--font-inter); font-weight: 600; letter-spacing: var(--letter-spacing-title); background: linear-gradient(180deg, #ffffff, #bababa); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
-.display em { font-family: var(--font-serif), Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: 0; line-height: 1; color: var(--title-accent); -webkit-text-fill-color: var(--title-accent); }
+.display em { font-family: var(--font-inter), system-ui, sans-serif; font-style: normal; font-weight: inherit; letter-spacing: inherit; background: var(--accent-text); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
 .stitle { font-size: var(--type-section-title); line-height: var(--line-section-title); }
-.stitle em { font-size: var(--type-section-title-accent); }
+.stitle em { font-size: inherit; }
 
 /* ------------------------------------------------------------ badge */
 .badge { display: inline-flex; align-items: center; gap: 0.5rem; width: max-content; border: 1px solid var(--border-subtle); background: var(--surface-badge); padding: 0.3125rem 0.8125rem 0.3125rem 0.6875rem; border-radius: 999px; box-shadow: var(--elevation-float); font: 500 0.875rem/1.25rem var(--font-inter); letter-spacing: 0.025rem; color: var(--foreground-muted); }

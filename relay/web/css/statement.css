@@ -20,7 +20,7 @@
 .st-title { top: calc(108 * var(--u)); left: calc(80 * var(--u)); right: calc(80 * var(--u)); text-align: center; font-weight: 600; font-size: var(--type-section-title); line-height: var(--line-section-title); letter-spacing: var(--letter-spacing-title); color: #fff; }
 .st-line { display: block; }
 .st-title .w { display: inline-block; }
-.st-title em { font-family: var(--font-serif), Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: 0; line-height: 1; font-size: var(--type-section-title-accent); transform-origin: bottom left; color: #fff; }
+.st-title em { font-family: var(--font-inter), system-ui, sans-serif; font-style: normal; font-weight: 600; letter-spacing: inherit; font-size: inherit; transform-origin: bottom left; color: #16040a; }
 .st-mark { top: calc(292 * var(--u)); left: calc(682 * var(--u)); width: calc(76 * var(--u)); height: calc(76 * var(--u)); border-radius: 24px; box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.45); }
 .st-glyph { position: absolute; inset: 0; }
 .st-stem { top: calc(368 * var(--u)); left: calc(720 * var(--u)); width: 1px; height: calc(102 * var(--u)); transform-origin: top; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2)); }

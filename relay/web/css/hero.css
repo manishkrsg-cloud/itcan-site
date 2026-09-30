@@ -13,8 +13,8 @@
 .chip .sq { width: 6px; height: 6px; background: var(--accent); flex: none; }
 .chip .mono { white-space: nowrap; }
 .hc-title { margin-top: 2.25rem; width: calc(690 * var(--u)); }
-.hero-h1 { font-size: 4rem; line-height: 4.625rem; }
-.hero-h1 em { font-size: 4.375rem; }
+.hero-h1 { font-size: 3.625rem; line-height: 4.125rem; letter-spacing: -0.045em; }
+.hero-h1 em { font-size: inherit; }
 .hc-sub { margin-top: 2.5rem; width: calc(500 * var(--u)); font-size: 1.125rem; line-height: 1.75rem; color: var(--foreground-muted); }
 .hc-actions { margin-top: 2.5rem; display: flex; gap: 0.75rem; }
 .hc-note { margin-top: 1.5rem; }
@@ -112,7 +112,7 @@
   .hero-copy { left: calc(48 * var(--u)); top: calc(162 * var(--u)); width: calc(420 * var(--u)); }
   .hc-title { margin-top: 1.75rem; width: calc(455 * var(--u)); }
   .hero-h1 { font-size: 2.625rem; line-height: 3.25rem; }
-  .hero-h1 em { font-size: 2.875rem; }
+  .hero-h1 em { font-size: inherit; }
   .hc-sub { margin-top: 1.5rem; width: calc(390 * var(--u)); font-size: 1rem; line-height: 1.5rem; }
   .hc-actions { margin-top: 1.5rem; }
   .hc-note { margin-top: 1.25rem; }
@@ -157,7 +157,7 @@
   .hero-copy { left: 0; right: 0; width: auto; top: calc(40 * var(--u)); align-items: center; text-align: center; }
   .hc-title { margin-top: 1.5rem; width: auto; }
   .hero-h1 { font-size: 2.25rem; line-height: 2.875rem; }
-  .hero-h1 em { font-size: 2.5rem; }
+  .hero-h1 em { font-size: inherit; }
   .hc-sub { margin-top: 0.75rem; width: calc(481 * var(--u)); font-size: 1.125rem; line-height: 1.75rem; }
   .hc-actions { margin-top: 1.5rem; }
   .hc-note { margin-top: 1rem; }
@@ -190,7 +190,7 @@
 @media (width <= 580px) {
   .hero-copy { top: calc(32 * var(--u)); padding: 0 1.25rem; }
   .hero-h1 { font-size: 1.75rem; line-height: 2.375rem; }
-  .hero-h1 em { font-size: 2rem; }
+  .hero-h1 em { font-size: inherit; }
   .hc-sub { width: calc(328 * var(--u)); font-size: 1rem; line-height: 1.5rem; }
   .hc-actions { margin-top: 1rem; flex-direction: column; width: calc(350 * var(--u)); }
   .hc-actions > * { width: 100%; }
