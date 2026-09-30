@@ -57,24 +57,12 @@
 .map-cap { left: calc(23 * var(--u)); right: calc(23 * var(--u)); top: calc(192 * var(--u)); font-size: 1rem; line-height: 1.5rem; color: var(--foreground-muted); }
 
 /* gallery */
-.gal-head { margin-top: 3rem; display: flex; justify-content: center; }
 .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
 .filters button { display: inline-flex; align-items: center; gap: 0.5rem; height: 2.5rem; padding: 0 1rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04); color: var(--foreground-muted); cursor: pointer; font-size: 0.875rem; transition: color 150ms var(--ease-entrance), border-color 150ms var(--ease-entrance), background 150ms var(--ease-entrance); }
 .filters button .mono { color: var(--foreground-dim); font-size: 0.75rem; }
 .filters button:hover { color: #fff; }
 .filters button[aria-selected="true"] { color: #fff; border-color: rgba(255, 61, 72, 0.55); background: rgba(255, 61, 72, 0.12); }
 .filters button[aria-selected="true"] .mono { color: var(--accent); }
-.gal { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
-.gal-item { all: unset; position: relative; display: flex; flex-direction: column; cursor: pointer; border-radius: 1.25rem; overflow: clip; border: 1px solid rgba(255, 255, 255, 0.07); background: var(--card-glass); }
-.gal-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.gal-img { position: relative; display: block; aspect-ratio: 4 / 3; min-height: 0; overflow: clip; background: #111214; }
-.gal-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 600ms var(--ease-entrance), filter 600ms var(--ease-entrance); filter: saturate(0.92); }
-.gal-item:hover .gal-img img { transform: scale(1.04); filter: saturate(1.05); }
-.gal-meta { display: flex; flex-direction: column; gap: 0.125rem; padding: 0.875rem 1rem 1rem; }
-.gal-meta .mono { color: var(--accent); }
-.gal-meta b { font-weight: 500; font-size: 0.9375rem; line-height: 1.375rem; }
-.gal-item.e50 .gal-meta .tag { color: var(--foreground-dim); }
-.gal-meta .tag { font-family: var(--font-inter); font-size: 0.75rem; line-height: 1.125rem; color: var(--foreground-dim); }
 
 @media (width <= 1200px) {
   .awards { padding: 5rem 3rem 0; }
@@ -92,7 +80,6 @@
   .dotmap { top: calc(71 * var(--u)); width: calc(253 * var(--u)); height: auto; }
   .faces-note { top: calc(195 * var(--u)); font-size: 0.875rem; line-height: 1.25rem; }
   .map-cap { top: calc(195 * var(--u)); font-size: 0.875rem; line-height: 1.25rem; }
-  .gal { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
 }
 @media (width <= 900px) {
   .awards { padding: 2.5rem 2.5rem 0; }
@@ -138,11 +125,6 @@
   .faces-note { left: calc(19 * var(--u)); top: calc(222 * var(--u)); }
   .dotmap { left: calc(19 * var(--u)); top: calc(74 * var(--u)); width: calc(310 * var(--u)); }
   .map-cap { left: calc(19 * var(--u)); top: calc(215 * var(--u)); }
-  .gal { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 72%; gap: 0.625rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 1.25rem; margin-inline: -1.25rem; padding: 0 1.25rem 0.5rem; scrollbar-width: none; }
-  .gal::-webkit-scrollbar { display: none; }
-  .gal-item { scroll-snap-align: start; }
-  .gal-meta { padding: 0.625rem 0.75rem 0.75rem; }
-  .gal-meta b { font-size: 0.8125rem; line-height: 1.125rem; }
   .filters button { height: 2.25rem; padding: 0 0.75rem; font-size: 0.8125rem; }
 }
 
@@ -170,3 +152,43 @@
   .lb-img img { max-width: 92vw; }
   .lb-close { top: -3.25rem; }
 }
+
+.gal-head { margin-top: 3rem; display: flex; justify-content: center; }
+
+/* ---------------- award photos in a 3D coverflow */
+.aw-flow { --halo: #ff3d48; --card-w: 400px; --card-h: 280px; --aw-ease: cubic-bezier(0.22, 0.61, 0.36, 1); position: relative; margin-top: 2rem; }
+.aw-halo { position: absolute; top: 38%; left: 50%; width: min(80vw, 56rem); height: 28rem; transform: translate(-50%, -50%); background: radial-gradient(closest-side, var(--halo), transparent 72%); opacity: 0.22; pointer-events: none; transition: background 0.6s var(--aw-ease); }
+.aw-stage { position: relative; z-index: 1; width: 100vw; margin-left: calc(50% - 50vw); height: calc(var(--card-h) + 5rem); display: grid; place-items: center; overflow: hidden; perspective: var(--persp, 1600px); perspective-origin: 50% 44%; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.aw-stage.-drag { cursor: grabbing; }
+.aw-deck { position: relative; width: 0; height: 0; transform-style: preserve-3d; }
+.aw-card { position: absolute; width: var(--card-w); height: var(--card-h); left: calc(var(--card-w) / -2); top: calc(var(--card-h) / -2); margin: 0; padding: 0; border: 0; background: none; color: #fff; font: inherit; cursor: pointer; transform-style: preserve-3d; will-change: transform, opacity; -webkit-tap-highlight-color: transparent; }
+.aw-inner { position: absolute; inset: 0; border-radius: 1.25rem; overflow: hidden; background: linear-gradient(158deg, #2a1216, #0c0d12); box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.9), 0 6px 20px -10px rgba(0, 0, 0, 0.7); }
+.aw-inner::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(180deg, transparent 55%, rgba(5, 6, 10, 0.55)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.07); }
+.aw-inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.02); transition: transform 1.2s var(--aw-ease); }
+/* the centre photo drifts slowly while it holds the stage */
+.aw-card.is-active .aw-inner img { transform: scale(1.1) translate3d(-1.5%, -1%, 0); transition: transform 7s cubic-bezier(0.25, 0.1, 0.25, 1); }
+.aw-chip { position: absolute; left: 0.875rem; bottom: 0.75rem; z-index: 1; padding: 0.25rem 0.625rem; border-radius: 999px; background: rgba(5, 6, 10, 0.55); border: 1px solid rgba(255, 255, 255, 0.16); font-size: 0.8125rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.aw-card:focus-visible { outline: none; }
+.aw-card:focus-visible .aw-inner { box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.9), 0 0 0 3px var(--halo); }
+
+.aw-foot { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 0.25rem; }
+.aw-cap { display: flex; flex-direction: column; align-items: center; gap: 0.375rem; min-width: 0; width: min(34rem, 100%); text-align: center; }
+.aw-year { font-size: 0.9375rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+.aw-title { font-size: 1.5rem; font-weight: 500; letter-spacing: -0.025em; line-height: 1.2; color: #fff; min-height: 1.2em; text-wrap: balance; }
+.aw-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem 0.875rem; font-size: 0.875rem; color: var(--foreground-muted); }
+.aw-tag { padding: 0.1875rem 0.625rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.16); font-size: 0.8125rem; }
+.aw-count { font-variant-numeric: tabular-nums; }
+.aw-full { padding: 0; border: 0; background: none; color: #fff; font: inherit; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255, 255, 255, 0.35); cursor: pointer; }
+.aw-full:hover { text-decoration-color: var(--accent); }
+.aw-arrow { flex: none; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.04); color: #fff; cursor: pointer; transition: background-color 0.2s, border-color 0.2s, transform 0.2s var(--aw-ease); }
+.aw-arrow:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
+.aw-arrow:active { transform: scale(0.94); }
+.aw-arrow svg { width: 1.125rem; height: 1.125rem; }
+.aw-swap { animation: aw-in 0.45s var(--aw-ease); }
+@keyframes aw-in { from { opacity: 0; transform: translateY(6px); filter: blur(4px); } }
+@media (width <= 580px) {
+  .aw-foot { gap: 0.75rem; }
+  .aw-title { font-size: 1.125rem; }
+  .aw-arrow { width: 2.5rem; height: 2.5rem; }
+}
+@media (prefers-reduced-motion: reduce) { .aw-inner img, .aw-card.is-active .aw-inner img { transform: none; transition: none; } .aw-swap { animation: none; } }

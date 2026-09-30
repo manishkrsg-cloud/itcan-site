@@ -2,6 +2,7 @@
 import { Spring, springs, SPRING, SPRING_SOFT, GROW, SNAP, reduced, ticker, ease, tween } from "../core/engine.js";
 import { watchLoop, onView } from "../core/seen.js";
 import { scrollTo, lock } from "../core/scroll.js";
+import { createCoverflow } from "../coverflow.js";
 
 const YEARS = Array.from({ length: 17 }, (_, i) => 2007 + i);
 const CATS = ["e50", "brand", "ent", "exc"];
@@ -226,34 +227,59 @@ function drive(card, w) {
 }
 
 // ------------------------------------------------------------ gallery + lightbox
+const CAT_GLOW = { e50: "#ff3d48", brand: "#6d88ff", ent: "#e6ad66", exc: "#35d0b2" };
 function gallery(sec) {
-  const grid = sec.querySelector("#awardGrid");
+  const flowRoot = sec.querySelector("[data-awflow]");
   const tabs = Array.from(sec.querySelectorAll("#awardFilters button"));
   const lb = document.getElementById("lightbox");
   const lbImg = document.getElementById("lbImg"), lbYear = document.getElementById("lbYear"), lbTitle = document.getElementById("lbTitle"), lbMeta = document.getElementById("lbMeta");
+  const cap = flowRoot.querySelector(".aw-cap");
+  const tYear = flowRoot.querySelector("[data-aw-year]"), tTitle = flowRoot.querySelector("[data-aw-title]"), tCat = flowRoot.querySelector("[data-aw-cat]"), tCount = flowRoot.querySelector("[data-aw-count]"), live = flowRoot.querySelector("[data-aw-live]");
   let shown = AWARDS.slice(), idx = 0;
-  const render = () => {
-    grid.innerHTML = "";
-    shown.forEach((a, i) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = `gal-item ${a.cat}`;
-      b.setAttribute("aria-label", `${a.year} ${a.title}, open photo`);
-      b.innerHTML = `<span class="gal-img"><img src="/awards/${a.slug}-sm.jpg" alt="${a.title}, ${a.year}" loading="lazy" width="720" height="${Math.round((720 * a.h) / a.w)}"></span><span class="gal-meta"><span class="mono">${a.year}</span><b>${a.title}</b><span class="tag">${CAT_NAME[a.cat]}</span></span>`;
-      b.addEventListener("click", () => open(i));
-      grid.appendChild(b);
-      if (!reduced) {
-        const s = springs({ o: 0, y: 16 }, (v) => { setO(b, v.o); b.style.transform = v.y ? `translateY(${v.y}px)` : "none"; });
-        s.set({ o: 0, y: 16 });
-        const off = onView(b, (hit) => { if (hit) { off(); s.start({ o: 1, y: 0 }, { config: SPRING, delay: (i % 4) * 70 }); } });
-      }
-    });
+
+  // one card per award; photos load only as they come near the front of the fan
+  const build = (i) => {
+    const a = shown[i];
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label", `${a.year} ${a.title}, ${i + 1} of ${shown.length}. Open photo`);
+    b.innerHTML = `<span class="aw-inner"><img alt="" draggable="false" decoding="async" data-src="/awards/${a.slug}-sm.jpg"><span class="aw-chip">${a.year}</span></span>`;
+    return b;
   };
+  const near = (i, ao) => {
+    if (ao > 4.5) return;
+    const img = deck.children[i] && deck.children[i].querySelector("img[data-src]");
+    if (img) { img.src = img.dataset.src; img.removeAttribute("data-src"); }
+  };
+  const onActive = (i) => {
+    const a = shown[i];
+    if (!a) return;
+    flowRoot.style.setProperty("--halo", CAT_GLOW[a.cat] || "#ff3d48");
+    tYear.textContent = a.year; tTitle.textContent = a.title; tCat.textContent = CAT_NAME[a.cat];
+    tCount.textContent = `${i + 1} of ${shown.length}`;
+    live.textContent = `${a.year}, ${a.title}, ${i + 1} of ${shown.length}`;
+    if (!reduced) { cap.classList.remove("aw-swap"); void cap.offsetWidth; cap.classList.add("aw-swap"); }
+  };
+  const deck = flowRoot.querySelector(".aw-deck");
+  const flow = createCoverflow({
+    root: flowRoot, stage: flowRoot.querySelector(".aw-stage"), deck,
+    count: shown.length, build, cardClass: "aw-card", cardW: 400, cardH: 280, persp: 1800,
+    geo: { gap: 250, rotate: 34, depth: 170, drop: 16, shrink: 0.12, fade: 0.26, dim: 0.22, visible: 3 },
+    autoplayMs: 4200,
+    fit: (w) => (w < 700 ? w / 520 : Math.min(1, w / 1300)),
+    onActive, near,
+    onOpen: (i) => open(i),
+  });
+  flow.start();
+  flowRoot.querySelector("[data-aw-prev]").addEventListener("click", () => flow.prev());
+  flowRoot.querySelector("[data-aw-next]").addEventListener("click", () => flow.next());
+  flowRoot.querySelector("[data-aw-full]").addEventListener("click", () => open(flow.index));
+
   setFilter = (f) => {
     const cat = f.cat || null, year = f.year || null;
     tabs.forEach((t) => t.setAttribute("aria-selected", String(!year && (t.dataset.filter === (cat || "all")))));
     shown = AWARDS.filter((a) => (year ? a.year === year : !cat || cat === "all" || a.cat === cat));
-    render();
+    flow.rebuild(shown.length, build, 0);
     if (year) scrollTo(sec.querySelector(".gal-head"));
   };
   tabs.forEach((t) => t.addEventListener("click", () => setFilter({ cat: t.dataset.filter })));
@@ -271,8 +297,8 @@ function gallery(sec) {
     lbYear.textContent = a.year; lbTitle.textContent = a.title;
     lbMeta.textContent = `${CAT_NAME[a.cat]} / ${idx + 1} of ${shown.length}`;
   };
-  const open = (i) => { idx = i; lastFocus = document.activeElement; show(); lb.hidden = false; lock(true); lb.querySelector(".lb-close").focus(); };
-  const close = () => { lb.hidden = true; lock(false); lbImg.removeAttribute("src"); lastFocus && lastFocus.focus(); };
+  const open = (i) => { idx = i; lastFocus = document.activeElement; show(); lb.hidden = false; lock(true); flow.pause(true); lb.querySelector(".lb-close").focus(); };
+  const close = () => { lb.hidden = true; lock(false); lbImg.removeAttribute("src"); flow.pause(false); flow.go(idx); lastFocus && lastFocus.focus(); };
   const step = (d) => { idx = (idx + d + shown.length) % shown.length; show(); };
   lb.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", close));
   document.getElementById("lbPrev").addEventListener("click", () => step(-1));
@@ -284,7 +310,6 @@ function gallery(sec) {
   let sx = 0;
   lb.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; }, { passive: true });
   lb.addEventListener("touchend", (e) => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1); });
-  render();
 }
 
 export async function initAwards() {
