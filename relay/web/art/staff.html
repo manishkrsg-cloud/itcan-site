@@ -1,0 +1,123 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#05060a}svg{display:block}</style></head><body>
+<svg id="art" width="880" height="1168" viewBox="0 0 880 1168" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <radialGradient id="bgTop" cx="50%" cy="22%" r="60%"><stop offset="0" stop-color="#1a2552" stop-opacity=".75"/><stop offset=".55" stop-color="#0b1026" stop-opacity=".35"/><stop offset="1" stop-color="#05060a" stop-opacity="0"/></radialGradient>
+  <radialGradient id="bgRed" cx="50%" cy="58%" r="42%"><stop offset="0" stop-color="#ff2a3a" stop-opacity=".32"/><stop offset=".5" stop-color="#7a0e1a" stop-opacity=".14"/><stop offset="1" stop-color="#05060a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05060a" stop-opacity="0"/><stop offset=".62" stop-color="#05060a" stop-opacity="0"/><stop offset=".8" stop-color="#05060a" stop-opacity=".92"/><stop offset="1" stop-color="#05060a"/></linearGradient>
+  <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe6ff" stop-opacity=".30"/><stop offset=".45" stop-color="#8fa4ff" stop-opacity=".12"/><stop offset="1" stop-color="#3a4a9a" stop-opacity=".02"/></linearGradient>
+  <linearGradient id="glassEdge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#cfd9ff" stop-opacity=".95"/><stop offset=".5" stop-color="#6d88ff" stop-opacity=".55"/><stop offset="1" stop-color="#ff3d48" stop-opacity=".55"/></linearGradient>
+  <linearGradient id="redFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8088"/><stop offset=".35" stop-color="#ff3d48"/><stop offset="1" stop-color="#8e0f19"/></linearGradient>
+  <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6a73"/><stop offset=".55" stop-color="#e5222e"/><stop offset="1" stop-color="#a3121c"/></linearGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5a64" stop-opacity=".9"/><stop offset="1" stop-color="#6d88ff" stop-opacity=".25"/></linearGradient>
+  <linearGradient id="bodyFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".72" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <mask id="bodyMask" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#bodyFade)"/></mask>
+  <radialGradient id="plat" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#2a0a12" stop-opacity=".95"/><stop offset=".7" stop-color="#0d1330" stop-opacity=".85"/><stop offset="1" stop-color="#0a0e22" stop-opacity=".2"/></radialGradient>
+  <linearGradient id="rim" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6d88ff" stop-opacity=".2"/><stop offset=".3" stop-color="#ff3d48"/><stop offset=".7" stop-color="#ff3d48"/><stop offset="1" stop-color="#6d88ff" stop-opacity=".2"/></linearGradient>
+  <filter id="blur6" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="blur18" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="blur40" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="40"/></filter>
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2"/></filter>
+  <symbol id="person" viewBox="-80 -300 160 300" overflow="visible">
+    <circle cx="0" cy="-236" r="38"/>
+    <path d="M-70,0 L-70,-110 C-70,-162 -40,-184 0,-184 C40,-184 70,-162 70,-110 L70,0 Z"/>
+  </symbol>
+</defs>
+
+<rect width="880" height="1168" fill="#05060a"/>
+<rect width="880" height="1168" fill="url(#bgTop)"/>
+<rect width="880" height="1168" fill="url(#bgRed)"/>
+
+<!-- light streaks, like the site's particle stream -->
+<g fill="none" stroke-linecap="round">
+  <path d="M-40 980 C200 820 260 520 520 360 S820 160 960 60" stroke="#ff3d48" stroke-opacity=".22" stroke-width="1.2"/>
+  <path d="M-40 1010 C220 840 300 560 560 390 S840 190 980 90" stroke="#ff5a64" stroke-opacity=".14" stroke-width="1"/>
+  <path d="M-60 940 C160 800 240 500 480 330 S780 130 940 30" stroke="#6d88ff" stroke-opacity=".2" stroke-width="1"/>
+  <path d="M-20 1060 C260 880 340 600 600 420 S860 220 1000 120" stroke="#6d88ff" stroke-opacity=".12" stroke-width="1"/>
+  <path d="M-40 980 C200 820 260 520 520 360 S820 160 960 60" stroke="#ff3d48" stroke-opacity=".18" stroke-width="6" filter="url(#blur6)"/>
+</g>
+<!-- perspective floor -->
+<g stroke="#6d88ff" stroke-opacity=".16" stroke-width="1" fill="none">
+  <path d="M60 760 L820 760 M20 800 L860 800 M-20 850 L900 850 M-60 915 L940 915"/>
+  <path d="M440 720 L440 1000 M360 720 L250 1000 M520 720 L630 1000 M280 720 L60 1000 M600 720 L820 1000 M200 720 L-130 1000 M680 720 L1010 1000"/>
+</g>
+
+<!-- platform -->
+<ellipse cx="440" cy="742" rx="360" ry="78" fill="#ff3d48" opacity=".25" filter="url(#blur40)"/>
+<ellipse cx="440" cy="736" rx="330" ry="64" fill="url(#plat)"/>
+<ellipse cx="440" cy="736" rx="330" ry="64" fill="none" stroke="url(#rim)" stroke-width="3" filter="url(#soft)"/>
+<ellipse cx="440" cy="736" rx="330" ry="64" fill="none" stroke="url(#rim)" stroke-width="1.2"/>
+<ellipse cx="440" cy="736" rx="250" ry="46" fill="none" stroke="#6d88ff" stroke-opacity=".28" stroke-width="1" stroke-dasharray="3 9"/>
+
+<!-- links from the brand tile to every head -->
+<g stroke="url(#beam)" stroke-width="1.4" fill="none" opacity=".75">
+  <path d="M440 300 C400 380 240 420 214 500"/>
+  <path d="M440 300 C420 380 330 410 318 478"/>
+  <path d="M440 300 C460 380 550 410 562 478"/>
+  <path d="M440 300 C480 380 640 420 666 500"/>
+</g>
+<path d="M440 300 L440 466" stroke="#ff5a64" stroke-width="3" filter="url(#blur6)" opacity=".9"/>
+<path d="M440 300 L440 466" stroke="#ffd0d3" stroke-width="1.4"/>
+<g stroke="#9fb0ff" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 6" fill="none">
+  <path d="M214 500 L318 478 L440 466 L562 478 L666 500"/>
+</g>
+
+<!-- back row: glass -->
+<g opacity=".62">
+  <use href="#person" x="134" y="438" width="160" height="300" transform="translate(214 700) scale(.78) translate(-214 -700)" fill="url(#glass)" stroke="url(#glassEdge)" stroke-width="1.6" mask="url(#bodyMask)"/>
+  <use href="#person" x="586" y="438" width="160" height="300" transform="translate(666 700) scale(.78) translate(-666 -700)" fill="url(#glass)" stroke="url(#glassEdge)" stroke-width="1.6" mask="url(#bodyMask)"/>
+</g>
+<!-- middle row: glass -->
+<g opacity=".9">
+  <use href="#person" x="238" y="440" width="160" height="300" transform="translate(318 740) scale(.9) translate(-318 -740)" fill="url(#glass)" stroke="url(#glassEdge)" stroke-width="1.6" mask="url(#bodyMask)"/>
+  <use href="#person" x="482" y="440" width="160" height="300" transform="translate(562 740) scale(.9) translate(-562 -740)" fill="url(#glass)" stroke="url(#glassEdge)" stroke-width="1.6" mask="url(#bodyMask)"/>
+</g>
+<!-- glass highlights on the heads and a rim light down each body -->
+<g fill="#fff" opacity=".45">
+  <ellipse cx="204" cy="535" rx="8" ry="4.5" transform="rotate(-30 204 535)"/>
+  <ellipse cx="656" cy="535" rx="8" ry="4.5" transform="rotate(-30 656 535)"/>
+  <ellipse cx="307" cy="515" rx="9" ry="5" transform="rotate(-30 307 515)"/>
+  <ellipse cx="551" cy="515" rx="9" ry="5" transform="rotate(-30 551 515)"/>
+</g>
+<g stroke="#dfe6ff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round">
+  <path d="M170 700 L170 640 C170 612 182 596 200 590"/><path d="M622 700 L622 640 C622 612 634 596 652 590"/>
+  <path d="M268 700 L268 628 C268 596 282 578 302 572"/><path d="M512 700 L512 628 C512 596 526 578 546 572"/>
+</g>
+<!-- the new team member, stepping in: glowing red -->
+<use href="#person" x="360" y="470" width="160" height="300" transform="translate(440 770) scale(1.06) translate(-440 -770)" fill="#ff3d48" opacity=".75" filter="url(#blur18)"/>
+<use href="#person" x="360" y="470" width="160" height="300" transform="translate(440 770) scale(1.06) translate(-440 -770)" fill="url(#redFill)" stroke="#ffb3b8" stroke-width="1.6" mask="url(#bodyMask)"/>
+<ellipse cx="427" cy="506" rx="12" ry="7" fill="#fff" opacity=".55" transform="rotate(-30 427 506)"/>
+<path d="M378 740 L378 646 C378 606 396 586 420 578" stroke="#fff" stroke-opacity=".45" stroke-width="3" fill="none" stroke-linecap="round"/>
+<rect x="470" y="600" width="26" height="150" rx="13" fill="#5a0810" opacity=".35" filter="url(#blur6)"/>
+<!-- the lit slot on the floor under the new member -->
+<ellipse cx="440" cy="762" rx="92" ry="17" fill="#ff3d48" opacity=".55" filter="url(#blur6)"/>
+<ellipse cx="440" cy="762" rx="92" ry="17" fill="none" stroke="#ffc2c6" stroke-width="1.4" opacity=".9"/>
+
+<!-- nodes on each head -->
+<g>
+  <circle cx="214" cy="500" r="4.5" fill="#9fb0ff"/><circle cx="214" cy="500" r="12" fill="#6d88ff" opacity=".35" filter="url(#blur6)"/>
+  <circle cx="666" cy="500" r="4.5" fill="#9fb0ff"/><circle cx="666" cy="500" r="12" fill="#6d88ff" opacity=".35" filter="url(#blur6)"/>
+  <circle cx="318" cy="478" r="5" fill="#c8d2ff"/><circle cx="562" cy="478" r="5" fill="#c8d2ff"/>
+  <circle cx="440" cy="466" r="6" fill="#fff"/><circle cx="440" cy="466" r="16" fill="#ff3d48" opacity=".6" filter="url(#blur6)"/>
+</g>
+<!-- the ITCAN brand tile -->
+<rect x="376" y="178" width="128" height="128" rx="30" fill="#ff3d48" opacity=".7" filter="url(#blur40)"/>
+<rect x="382" y="184" width="116" height="116" rx="28" fill="url(#tile)"/>
+<rect x="382.5" y="184.5" width="115" height="115" rx="27.5" fill="none" stroke="#ffc9cd" stroke-opacity=".7"/>
+<path d="M392 200 C420 188 460 188 488 200" stroke="#fff" stroke-opacity=".35" stroke-width="3" fill="none" stroke-linecap="round"/>
+<circle cx="440" cy="219" r="11" fill="#fff"/>
+<rect x="430" y="238" width="20" height="46" rx="6" fill="#fff"/>
+
+<!-- bokeh -->
+<g filter="url(#blur6)">
+  <circle cx="120" cy="260" r="9" fill="#6d88ff" opacity=".45"/><circle cx="760" cy="220" r="12" fill="#6d88ff" opacity=".35"/>
+  <circle cx="700" cy="360" r="6" fill="#ff3d48" opacity=".6"/><circle cx="170" cy="380" r="7" fill="#ff3d48" opacity=".5"/>
+  <circle cx="820" cy="560" r="10" fill="#6d88ff" opacity=".3"/><circle cx="60" cy="600" r="8" fill="#6d88ff" opacity=".3"/>
+  <circle cx="610" cy="150" r="5" fill="#ff8088" opacity=".6"/><circle cx="290" cy="140" r="6" fill="#9fb0ff" opacity=".5"/>
+</g>
+<g fill="#fff">
+  <circle cx="250" cy="300" r="1.6" opacity=".7"/><circle cx="640" cy="290" r="1.4" opacity=".6"/><circle cx="540" cy="400" r="1.2" opacity=".6"/>
+  <circle cx="345" cy="360" r="1.3" opacity=".5"/><circle cx="720" cy="470" r="1.5" opacity=".5"/><circle cx="150" cy="500" r="1.2" opacity=".5"/>
+</g>
+
+<rect width="880" height="1168" fill="url(#fade)"/>
+</svg></body></html>

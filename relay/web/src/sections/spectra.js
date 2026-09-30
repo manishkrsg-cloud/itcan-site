@@ -11,6 +11,9 @@ const SLIDES = [
   { name: "Business consulting", kind: "Service", img: "consult", href: "#product", glow: "#ff3d48",
     desc: "Certified consultants help you pick the right platform, roll it out and get a fast return on what you spend.",
     tags: ["Requirements", "Platform choice", "Roll-out"] },
+  { name: "Staffing solutions", kind: "Service", img: "staff", href: "#pricing", glow: "#ff8a4c", cta: "Build your team",
+    desc: "Skilled IT people who join your team when you need them. Start with one specialist or a full team, and scale as the work changes.",
+    tags: ["IT specialists", "Dedicated teams", "Scale up or down"] },
   { name: "Customized solutions", kind: "Service", img: "build", href: "#product", glow: "#6d88ff",
     desc: "Software built around how your business works. We learn the problem first, then design and deliver the fix.",
     tags: ["On-site consulting", "Turnkey projects"] },
@@ -31,7 +34,7 @@ const SLIDES = [
     tags: ["Web", "Portals", "Front-end"] },
 ];
 const N = SLIDES.length;
-const CARD_W = 392, CARD_H = 520;
+const CARD_W = 440, CARD_H = 584;
 const pad = (n) => String(n).padStart(2, "0");
 const src = (slug, w) => `/assets/services/${slug}-${w}.webp`;
 
@@ -47,7 +50,7 @@ export function initSpectra(root) {
     el.setAttribute("aria-label", `${s.name}. ${s.desc} ${s.kind} ${i + 1} of ${N}`);
     el.style.setProperty("--glow", s.glow);
     el.innerHTML = `<span class="sp-inner">`
-      + `<span class="sp-media"><img class="sp-img" src="${src(s.img, 480)}" srcset="${src(s.img, 480)} 480w, ${src(s.img, 880)} 880w" sizes="(max-width: 600px) 86vw, 400px" width="880" height="1168" alt="" decoding="async" draggable="false" fetchpriority="${i === 0 ? "high" : "low"}"></span>`
+      + `<span class="sp-media"><img class="sp-img" src="${src(s.img, 480)}" srcset="${src(s.img, 480)} 480w, ${src(s.img, 880)} 880w" sizes="(max-width: 600px) 86vw, 440px" width="880" height="1168" alt="" decoding="async" draggable="false" fetchpriority="${i === 0 ? "high" : "low"}"></span>`
       + `<span class="sp-shade" aria-hidden="true"></span><span class="sp-sheen" aria-hidden="true"></span>`
       + `<span class="sp-top"><span class="sp-num">${pad(i + 1)}</span><span class="sp-kind">${s.kind}</span></span>`
       + `<span class="sp-body"><span class="sp-name">${s.name}</span><span class="sp-desc">${s.desc}</span>`
@@ -64,7 +67,7 @@ export function initSpectra(root) {
     tN.textContent = `${pad(i + 1)} / ${pad(N)}`;
     tKind.textContent = `${s.kind}: ${s.name}`;
     cta.setAttribute("href", s.href);
-    cta.firstElementChild.textContent = s.kind === "Service" ? "Explore services" : "See our practices";
+    cta.firstElementChild.textContent = s.cta || (s.kind === "Service" ? "Explore services" : "See our practices");
     live.textContent = `${s.name}, ${i + 1} of ${N}`;
     if (!reduced && foot) { const k = foot.querySelector(".sp-kicker"); k.classList.remove("sp-swap"); void k.offsetWidth; k.classList.add("sp-swap"); }
   };
@@ -72,17 +75,17 @@ export function initSpectra(root) {
   // wide screens: the fan fills the right column inside the first screen.
   // stacked (tablet, phone): the fan sits under the headline and may run past the fold.
   const fit = (w) => {
-    if (w < 600) return Math.max(0.62, Math.min(0.86, w / 440));
-    if (innerWidth <= 900) return Math.max(0.64, Math.min(0.92, w / 640));
+    if (w < 600) return Math.max(0.56, Math.min(0.77, w / 500));
+    if (innerWidth <= 900) return Math.max(0.58, Math.min(0.82, w / 720));
     const footH = foot ? foot.offsetHeight : 64;
-    const room = innerHeight - 88 - footH - 120;
-    return Math.max(0.62, Math.min(1, w / 790, room / CARD_H));
+    const room = innerHeight - 88 - footH - 100;
+    return Math.max(0.56, Math.min(1, w / 760, room / CARD_H));
   };
 
   const cf = createCoverflow({
     root, stage: root.querySelector(".sp-stage"), deck: root.querySelector(".sp-deck"),
     count: N, build, cardClass: "sp-card", cardW: CARD_W, cardH: CARD_H, persp: 1900,
-    geo: { gap: 200, rotate: 40, depth: 200, drop: 14, shrink: 0.12, fade: 0.34, dim: 0.3, visible: 2 },
+    geo: { gap: 215, rotate: 40, depth: 200, drop: 14, shrink: 0.12, fade: 0.34, dim: 0.3, visible: 2 },
     autoplayMs: 4600,
     fit, onActive,
     onOpen: (i) => { const t = document.querySelector(SLIDES[i].href); if (t) scrollTo(t); },

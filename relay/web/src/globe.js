@@ -1,4 +1,4 @@
-// Dotted 3D globe on a 2D canvas: land dots, ITCAN offices as glowing pins,
+// A blue 3D globe on a 2D canvas: lit ocean, shaded land, a blue atmosphere, ITCAN offices as glowing pins,
 // arcs from Singapore HQ with travelling packets. Drag to spin, eases back to Asia.
 import WORLD from "./world.json";
 
@@ -11,6 +11,9 @@ export const OFFICES = [
   { id: "dl", name: "New Delhi", lat: 28.61, lon: 77.21, tz: "Asia/Kolkata", lx: -18, ly: -16 },
   { id: "sy", name: "Sydney", lat: -33.87, lon: 151.21, tz: "Australia/Sydney", lx: 16, ly: 16 },
 ];
+
+// light from the upper left, toward the viewer (view space: x right, y up, z out)
+const LIGHT = (() => { const v = [-0.45, 0.5, 0.74], n = Math.hypot(...v); return v.map((c) => c / n); })();
 
 const unit = (lat, lon) => [Math.cos(lat * D2R) * Math.cos(lon * D2R), Math.sin(lat * D2R), Math.cos(lat * D2R) * Math.sin(lon * D2R)];
 
@@ -81,23 +84,32 @@ export function createGlobe(canvas, opts = {}) {
     const t = now - t0;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    // atmosphere + sphere body
-    const glow = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, glowR);
-    glow.addColorStop(0, "rgba(255,61,72,0.18)");
-    glow.addColorStop(0.35, "rgba(140,110,255,0.07)");
-    glow.addColorStop(1, "rgba(109,136,255,0)");
+    // blue atmosphere around the planet
+    const glow = ctx.createRadialGradient(cx, cy, R * 0.94, cx, cy, glowR);
+    glow.addColorStop(0, "rgba(90,165,255,0.42)");
+    glow.addColorStop(0.18, "rgba(70,140,255,0.2)");
+    glow.addColorStop(0.55, "rgba(60,110,255,0.06)");
+    glow.addColorStop(1, "rgba(60,110,255,0)");
     ctx.fillStyle = glow;
     ctx.beginPath(); ctx.arc(cx, cy, glowR, 0, Math.PI * 2); ctx.fill();
-    const body = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R);
-    body.addColorStop(0, "rgba(40,46,78,0.92)");
-    body.addColorStop(0.7, "rgba(16,19,36,0.95)");
-    body.addColorStop(1, "rgba(8,10,20,0.97)");
-    ctx.fillStyle = body;
+
+    // ocean, lit from the upper left
+    const lx = cx - R * 0.38, ly = cy - R * 0.42;
+    const ocean = ctx.createRadialGradient(lx, ly, R * 0.05, cx, cy, R);
+    ocean.addColorStop(0, "#3f86e0");
+    ocean.addColorStop(0.3, "#1f5bb4");
+    ocean.addColorStop(0.62, "#10357a");
+    ocean.addColorStop(0.88, "#0a2253");
+    ocean.addColorStop(1, "#071a42");
+    ctx.fillStyle = ocean;
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
 
     // faint graticule on the near side, for a sense of a turning sphere
     ctx.lineWidth = 0.75;
-    ctx.strokeStyle = "rgba(150,165,255,0.09)";
+    ctx.strokeStyle = "rgba(170,210,255,0.08)";
     ctx.beginPath();
     for (const line of GRID) {
       let on = false;
@@ -109,33 +121,58 @@ export function createGlobe(canvas, opts = {}) {
     }
     ctx.stroke();
 
-    // rim light
-    const rim = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
-    rim.addColorStop(0, "rgba(190,200,255,0.38)");
-    rim.addColorStop(0.5, "rgba(160,176,255,0.12)");
-    rim.addColorStop(1, "rgba(255,61,72,0.3)");
-    ctx.strokeStyle = rim;
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
-
-    // land dots in depth buckets (one path per bucket)
-    const buckets = [[], [], [], [], []];
+    // land: soft overlapping discs shaded by the light, then a fine dot texture on top
+    const buckets = [[], [], [], [], [], []];
     for (const v of land) {
       const p = view(v);
-      if (p[2] <= 0.02) continue;
-      const b = Math.min(4, Math.floor(p[2] * 5));
-      buckets[b].push(cx + p[0] * R, cy - p[1] * R, p[2]);
+      if (p[2] <= 0.01) continue;
+      const lit = Math.max(0, p[0] * LIGHT[0] + p[1] * LIGHT[1] + p[2] * LIGHT[2]);
+      const b = Math.min(5, Math.floor(lit * 6));
+      buckets[b].push(cx + p[0] * R, cy - p[1] * R);
     }
-    const dotR = Math.max(0.9, R / 150);
+    const landR = Math.max(2.2, R * 0.0165), dotR = Math.max(0.7, R / 210);
     buckets.forEach((pts, b) => {
       if (!pts.length) return;
-      const z = (b + 0.5) / 5;
-      ctx.fillStyle = `rgba(${Math.round(150 + 80 * z)},${Math.round(165 + 70 * z)},255,${(0.22 + 0.62 * z).toFixed(3)})`;
+      const k = (b + 0.5) / 6;
+      ctx.fillStyle = `rgb(${Math.round(38 + 118 * k)},${Math.round(84 + 124 * k)},${Math.round(140 + 105 * k)})`;
       ctx.beginPath();
-      const r = dotR * (0.75 + 0.35 * z);
-      for (let i = 0; i < pts.length; i += 3) { ctx.moveTo(pts[i] + r, pts[i + 1]); ctx.arc(pts[i], pts[i + 1], r, 0, Math.PI * 2); }
+      for (let i = 0; i < pts.length; i += 2) { ctx.moveTo(pts[i] + landR, pts[i + 1]); ctx.arc(pts[i], pts[i + 1], landR, 0, Math.PI * 2); }
+      ctx.fill();
+      ctx.fillStyle = `rgba(225,240,255,${(0.12 + 0.4 * k).toFixed(3)})`;
+      ctx.beginPath();
+      for (let i = 0; i < pts.length; i += 2) { ctx.moveTo(pts[i] + dotR, pts[i + 1]); ctx.arc(pts[i], pts[i + 1], dotR, 0, Math.PI * 2); }
       ctx.fill();
     });
+
+    // night side: the lower right falls into shadow
+    const night = ctx.createRadialGradient(cx + R * 0.7, cy + R * 0.75, R * 0.1, cx + R * 0.35, cy + R * 0.4, R * 1.35);
+    night.addColorStop(0, "rgba(2,6,20,0.7)");
+    night.addColorStop(0.55, "rgba(2,6,20,0.35)");
+    night.addColorStop(1, "rgba(2,6,20,0)");
+    ctx.fillStyle = night;
+    ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+
+    // sun glint on the ocean and a soft limb darkening
+    const glint = ctx.createRadialGradient(lx, ly, 0, lx, ly, R * 0.55);
+    glint.addColorStop(0, "rgba(200,230,255,0.22)");
+    glint.addColorStop(1, "rgba(200,230,255,0)");
+    ctx.fillStyle = glint;
+    ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+    const limb = ctx.createRadialGradient(cx, cy, R * 0.72, cx, cy, R);
+    limb.addColorStop(0, "rgba(4,10,30,0)");
+    limb.addColorStop(1, "rgba(4,10,30,0.45)");
+    ctx.fillStyle = limb;
+    ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+    ctx.restore();
+
+    // thin bright atmosphere edge on the lit side
+    const rim = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+    rim.addColorStop(0, "rgba(170,215,255,0.85)");
+    rim.addColorStop(0.45, "rgba(110,170,255,0.35)");
+    rim.addColorStop(1, "rgba(80,120,255,0.08)");
+    ctx.strokeStyle = rim;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(cx, cy, R - 0.5, 0, Math.PI * 2); ctx.stroke();
 
     // arcs from HQ with a travelling packet each
     ctx.lineCap = "round";

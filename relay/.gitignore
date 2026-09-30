@@ -1,4 +1,5 @@
 node_modules/
 public/awards/
 .DS_Store
-public/assets/services/
+public/assets/services/*
+!public/assets/services/staff-*.webp

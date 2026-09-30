@@ -9,6 +9,7 @@ relay/
   server.js          zero-dependency Node server (gzip, ETag, CSP, /healthz)
   fetch-awards.mjs   Railway build step: downloads the 28 award photos
   fetch-services.mjs Railway build step: downloads the 7 hero card images (AI art made with Higgsfield)
+  web/art/           editable SVG source for the branded Staffing card art (rendered to public/assets/services/staff-*.webp)
   public/            what is served (built output is committed)
   web/               front-end source, built into public/ (not used by Railway)
     html/            page partials (one per section)
