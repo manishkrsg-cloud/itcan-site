@@ -146,7 +146,7 @@ address { font-style: normal; }
 .chip #typed { white-space: nowrap; overflow: hidden; text-overflow: clip; }
 .caret { width: 7px; height: 14px; background: rgba(255, 255, 255, .7); animation: blink 1s steps(1) infinite; flex: none; }
 @keyframes blink { 50% { opacity: 0; } }
-.hero h1 { font-size: clamp(2.5rem, 4.4vw, 4.1rem); line-height: 1.04; letter-spacing: -0.03em; margin-bottom: 26px; }
+.hero h1 { font-size: clamp(2.4rem, 4.2vw, 3.8rem); line-height: 1.04; letter-spacing: -0.03em; margin-bottom: 26px; }
 .hero h1 .serif { font-size: 1.08em; letter-spacing: -0.02em; background: linear-gradient(90deg, #fff 0%, #ffd9dc 60%, #ff9aa1 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .06em; }
 .lede { font-size: clamp(1.02rem, 1.4vw, 1.14rem); color: var(--muted); max-width: 30rem; margin-bottom: 32px; line-height: 1.6; }
 .hero .cta-row { margin-bottom: 26px; }
