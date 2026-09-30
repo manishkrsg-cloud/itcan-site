@@ -39,6 +39,7 @@ export function createCoverflow({
     root.style.setProperty("--card-w", `${Math.round(cardW * f)}px`);
     root.style.setProperty("--card-h", `${Math.round(cardH * f)}px`);
     root.style.setProperty("--persp", `${Math.max(1050, persp * f)}px`);
+    root.style.setProperty("--card-f", f.toFixed(4));
     scale = f;
   }
 

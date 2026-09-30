@@ -158,10 +158,11 @@
 /* ---------------- award photos in a 3D coverflow */
 .aw-flow { --halo: #ff3d48; --card-w: 400px; --card-h: 280px; --aw-ease: cubic-bezier(0.22, 0.61, 0.36, 1); position: relative; margin-top: 2rem; }
 .aw-halo { position: absolute; top: 38%; left: 50%; width: min(80vw, 56rem); height: 28rem; transform: translate(-50%, -50%); background: radial-gradient(closest-side, var(--halo), transparent 72%); opacity: 0.22; pointer-events: none; transition: background 0.6s var(--aw-ease); }
-.aw-stage { position: relative; z-index: 1; width: 100vw; margin-left: calc(50% - 50vw); height: calc(var(--card-h) + 5rem); display: grid; place-items: center; overflow: hidden; perspective: var(--persp, 1600px); perspective-origin: 50% 44%; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.aw-stage { position: relative; z-index: 1; width: 100vw; margin-left: calc(50% - 50vw); height: calc(var(--card-h) + 5rem); display: grid; place-items: center; overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .aw-stage.-drag { cursor: grabbing; }
-.aw-deck { position: relative; width: 0; height: 0; transform-style: preserve-3d; }
-.aw-card { position: absolute; width: var(--card-w); height: var(--card-h); left: calc(var(--card-w) / -2); top: calc(var(--card-h) / -2); margin: 0; padding: 0; border: 0; background: none; color: #fff; font: inherit; cursor: pointer; transform-style: preserve-3d; will-change: transform, opacity; -webkit-tap-highlight-color: transparent; }
+/* cards are projected one by one and stacked by z-index, so every browser draws the centre card on top */
+.aw-deck { position: relative; width: 0; height: 0; perspective: var(--persp, 1800px); }
+.aw-card { position: absolute; width: var(--card-w); height: var(--card-h); left: calc(var(--card-w) / -2); top: calc(var(--card-h) / -2); margin: 0; padding: 0; border: 0; background: none; color: #fff; font: inherit; cursor: pointer; will-change: transform, opacity; -webkit-tap-highlight-color: transparent; }
 .aw-inner { position: absolute; inset: 0; border-radius: 1.25rem; overflow: hidden; background: linear-gradient(158deg, #2a1216, #0c0d12); box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.9), 0 6px 20px -10px rgba(0, 0, 0, 0.7); }
 .aw-inner::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(180deg, transparent 55%, rgba(5, 6, 10, 0.55)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.07); }
 .aw-inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.02); transition: transform 1.2s var(--aw-ease); }

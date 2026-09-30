@@ -14,7 +14,7 @@ export function initPractices() {
   if (!sec) return;
   const rail = sec.querySelector(".pr-rail"), svg = rail.querySelector("svg"), path = svg.querySelector(".pr-path");
   const grad = svg.querySelector("#prGrad"), peakStop = grad.querySelector(".pr-peak");
-  const packet = rail.querySelector(".pr-packet");
+  const packet = rail.querySelector(".pr-packet"), trail = rail.querySelector(".pr-trail");
   const ul = sec.querySelector(".pr-tiles");
   const all = Array.from(ul.children);
 
@@ -61,12 +61,17 @@ export function initPractices() {
     setPacket(curX, curO);
   };
   const centre = (i) => tileX + i * pitch + size / 2;
-  let curX = 0, curO = 0, litIdx = -1;
+  let curX = 0, curO = 0, litIdx = -1, trailK = 0;
   function setPacket(x, o) {
     curX = x; curO = o;
     packet.style.left = "0px";
     packet.style.transform = `translateX(${x - railX - 3}px)`;
     packet.style.opacity = o;
+    if (trail) {
+      const tw = trail.offsetWidth || 160;
+      trail.style.transform = `translateX(${x - railX - tw}px)`;
+      trail.style.opacity = o * trailK;
+    }
     const peak = (x - railX) / railW;
     grad.setAttribute("x1", (peak - 0.1001) * railW);
     grad.setAttribute("x2", (peak + 0.8999) * railW);
@@ -75,7 +80,11 @@ export function initPractices() {
   function light(i) {
     if (i === litIdx) return;
     litIdx = i;
-    tiles.forEach((t, k) => t.aS.start(k === i ? 1 : 0, { config: SPRING_SOFT }));
+    tiles.forEach((t, k) => {
+      t.aS.start(k === i ? 1 : 0, { config: SPRING_SOFT });
+      if (k === i) { t.li.classList.remove("on"); void t.li.offsetWidth; t.li.classList.add("on"); }
+      else t.li.classList.remove("on");
+    });
   }
   measure();
   new ResizeObserver(measure).observe(sec);
@@ -117,6 +126,7 @@ export function initPractices() {
         const last = tiles.length - 1;
         const t = Math.min(1, e / 5600);
         const x = centre(0) + (centre(last) - centre(0)) * Math.min(1, glide(t));
+        trailK = Math.min(1, t / 0.18);
         setPacket(x, Math.min(1, e / 360));
         const i = Math.max(0, Math.min(last, Math.floor((x - tileX + 0.4 * size) / pitch)));
         light(i);
@@ -125,10 +135,10 @@ export function initPractices() {
       }
       if (step === 2) {
         setPacket(curX, Math.max(0, 1 - e / 360));
-        if (e >= 360 + 380) { step = 0; t0 = now; setPacket(centre(0), 0); light(0); }
+        if (e >= 360 + 380) { step = 0; t0 = now; trailK = 0; setPacket(centre(0), 0); light(0); }
       }
     });
   }
   reset();
-  watchLoop(sec, { arm: start, disarm: reset });
+  watchLoop(sec, { arm: () => { sec.classList.add("is-live"); start(); }, disarm: () => { sec.classList.remove("is-live"); reset(); } });
 }

@@ -48,3 +48,23 @@
   .t-ms { display: block; }
   .pr-rail { left: calc(28 * var(--u)); top: calc(123 * var(--u)); width: calc(334 * var(--u)); }
 }
+
+/* icons, a comet on the rail, a pulse ring on each tile it reaches, and a slow idle float */
+.pr-ico { width: 1.625rem; height: 1.625rem; }
+.pr-look.idle { color: rgba(236, 238, 243, 0.74); }
+.pr-look.lit { color: #ff6b73; }
+.pr-look.lit .pr-ico { filter: drop-shadow(0 0 6px rgba(255, 61, 72, 0.85)); }
+.pr-ring { position: absolute; left: -0.375rem; top: -0.375rem; width: calc(var(--tile) * var(--u) + 0.75rem); height: calc(var(--tile) * var(--u) + 0.75rem); border-radius: 1.35rem; border: 1px solid rgba(255, 61, 72, 0.75); box-shadow: 0 0 18px rgba(255, 61, 72, 0.35); opacity: 0; pointer-events: none; }
+.pr-tiles li.on .pr-ring { animation: pr-ring 1.15s cubic-bezier(0.22, 0.61, 0.36, 1); }
+@keyframes pr-ring { from { opacity: 0.95; transform: scale(0.92); } to { opacity: 0; transform: scale(1.32); } }
+.pr-label { transition: color 0.4s; }
+.pr-tiles li.on .pr-label { color: #fff; }
+.pr-tiles li { animation: pr-bob 5.2s ease-in-out infinite paused; }
+.pr-tiles li:nth-child(2n) { animation-delay: -1.3s; }
+.pr-tiles li:nth-child(3n) { animation-delay: -2.6s; }
+.pr-tiles li:nth-child(4n) { animation-delay: -3.9s; }
+.practices.is-live .pr-tiles li { animation-play-state: running; }
+@keyframes pr-bob { 50% { transform: translateY(-3px); } }
+.pr-trail { position: absolute; left: 0; top: -1px; width: calc(160 * var(--u)); height: 4px; border-radius: 4px; box-shadow: 0 0 12px rgba(255, 61, 72, 0.45); background: linear-gradient(90deg, transparent, rgba(255, 61, 72, 0.18) 45%, rgba(255, 90, 100, 0.95)); opacity: 0; pointer-events: none; }
+.motion .pr-trail { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .pr-tiles li, .pr-tiles li.on .pr-ring { animation: none; } }

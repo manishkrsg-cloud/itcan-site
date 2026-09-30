@@ -13,7 +13,7 @@ export const getLenis = () => lenis;
 
 export function initScroll() {
   if (!reduced && !coarse) {
-    lenis = new Lenis({ smoothWheel: true, autoRaf: false });
+    lenis = new Lenis({ smoothWheel: true, autoRaf: false, lerp: 0.16 }); // quicker catch-up: smooth, but no felt lag behind the wheel
     lenis.on("scroll", (l) => { y = l.scroll; emit(); });
     ticker.add((now) => lenis.raf(now));
   }
