@@ -1,0 +1,90 @@
+<section class="sec builder" id="build" aria-labelledby="build-h">
+  <div class="wrap">
+    <div class="sec-head sec-head-split">
+      <div>
+        <p class="eyebrow" data-a="rise"><span class="dot" aria-hidden="true"></span>Team Builder</p>
+        <h2 class="h2" id="build-h" data-a="focus">Put your team together. <span class="grad">We'll find the people.</span></h2>
+      </div>
+      <p class="lede" data-a="rise" data-d="120">Pick the roles and how you want to work. We turn it into a brief for our sales team, ready to send from your own email.</p>
+    </div>
+
+    <form class="tb" data-builder novalidate>
+      <div class="tb-form">
+        <fieldset class="tb-block">
+          <legend>Who do you need?</legend>
+          <ul class="roles" data-roles>
+            <li data-role="java" data-fam="2"><span class="role-name"><i></i>Java developer</span><span class="step-ctl"><button type="button" data-dec aria-label="One fewer Java developer"><svg><use href="#i-minus"/></svg></button><output aria-live="polite">0</output><button type="button" data-inc aria-label="One more Java developer"><svg><use href="#i-plus"/></svg></button></span></li>
+            <li data-role="dotnet" data-fam="2"><span class="role-name"><i></i>.NET developer</span><span class="step-ctl"><button type="button" data-dec aria-label="One fewer .NET developer"><svg><use href="#i-minus"/></svg></button><output aria-live="polite">0</output><button type="button" data-inc aria-label="One more .NET developer"><svg><use href="#i-plus"/></svg></button></span></li>
+            <li data-role="web" data-fam="2"><span class="role-name"><i></i>Web front-end developer</span><span class="step-ctl"><button type="button" data-dec aria-label="One fewer web front-end developer"><svg><use href="#i-minus"/></svg></button><output aria-live="polite">0</output><button type="button" data-inc aria-label="One more web front-end developer"><svg><use href="#i-plus"/></svg></button></span></li>
+            <li data-role="erp" data-fam="0"><span class="role-name"><i></i>ERP or CRM consultant</span><span class="step-ctl"><button type="button" data-dec aria-label="One fewer ERP or CRM consultant"><svg><use href="#i-minus"/></svg></button><output aria-live="polite">0</output><button type="button" data-inc aria-label="One more ERP or CRM consultant"><svg><use href="#i-plus"/></svg></button></span></li>
+            <li data-role="ba" data-fam="0"><span class="role-name"><i></i>Business analyst</span><span class="step-ctl"><button type="button" data-dec aria-label="One fewer business analyst"><svg><use href="#i-minus"/></svg></button><output aria-live="polite">0</output><button type="button" data-inc aria-label="One more business analyst"><svg><use href="#i-plus"/></svg></button></span></li>
+            <li data-role="dba" data-fam="3"><span class="role-name"><i></i>Database administrator</span><span class="step-ctl"><button type="button" data-dec aria-label="One fewer database administrator"><svg><use href="#i-minus"/></svg></button><output aria-live="polite">0</output><button type="button" data-inc aria-label="One more database administrator"><svg><use href="#i-plus"/></svg></button></span></li>
+            <li data-role="qa" data-fam="3"><span class="role-name"><i></i>QA and test engineer</span><span class="step-ctl"><button type="button" data-dec aria-label="One fewer QA and test engineer"><svg><use href="#i-minus"/></svg></button><output aria-live="polite">0</output><button type="button" data-inc aria-label="One more QA and test engineer"><svg><use href="#i-plus"/></svg></button></span></li>
+            <li data-role="support" data-fam="3"><span class="role-name"><i></i>Support engineer</span><span class="step-ctl"><button type="button" data-dec aria-label="One fewer support engineer"><svg><use href="#i-minus"/></svg></button><output aria-live="polite">0</output><button type="button" data-inc aria-label="One more support engineer"><svg><use href="#i-plus"/></svg></button></span></li>
+            <li data-role="pm" data-fam="1"><span class="role-name"><i></i>Project manager</span><span class="step-ctl"><button type="button" data-dec aria-label="One fewer project manager"><svg><use href="#i-minus"/></svg></button><output aria-live="polite">0</output><button type="button" data-inc aria-label="One more project manager"><svg><use href="#i-plus"/></svg></button></span></li>
+          </ul>
+        </fieldset>
+
+        <fieldset class="tb-block">
+          <legend>How should we work?</legend>
+          <div class="seg seg-2">
+            <label><input type="radio" name="model" value="Business consulting"><span>Business consulting</span></label>
+            <label><input type="radio" name="model" value="A customized solution"><span>A customized solution</span></label>
+            <label><input type="radio" name="model" value="An outsourced team" checked><span>An outsourced team</span></label>
+            <label><input type="radio" name="model" value="Application support"><span>Application support</span></label>
+          </div>
+        </fieldset>
+
+        <div class="tb-row">
+          <fieldset class="tb-block">
+            <legend>Where?</legend>
+            <div class="seg">
+              <label><input type="radio" name="where" value="On our site" checked><span>On our site</span></label>
+              <label><input type="radio" name="where" value="Offshore"><span>Offshore</span></label>
+              <label><input type="radio" name="where" value="A mix of both"><span>A mix</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="tb-block">
+            <legend>When?</legend>
+            <div class="seg">
+              <label><input type="radio" name="when" value="As soon as possible"><span>As soon as possible</span></label>
+              <label><input type="radio" name="when" value="Within a month" checked><span>Within a month</span></label>
+              <label><input type="radio" name="when" value="Just exploring"><span>Just exploring</span></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <fieldset class="tb-block">
+          <legend>About you</legend>
+          <div class="fields">
+            <label class="field"><span>Name</span><input name="name" autocomplete="name" required></label>
+            <label class="field"><span>Work email</span><input name="email" type="email" autocomplete="email" required></label>
+            <label class="field"><span>Company</span><input name="company" autocomplete="organization"></label>
+            <label class="field"><span>Country</span><input name="country" autocomplete="country-name" placeholder="Singapore"></label>
+            <label class="field field-wide"><span>Anything else we should know?</span><textarea name="note" rows="3" placeholder="The project, the stack, the length of the engagement"></textarea></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <aside class="tb-panel" aria-label="Your team">
+        <div class="tb-card">
+          <div class="tb-top">
+            <p class="tb-eye">Your team</p>
+            <p class="tb-count"><span data-total>0</span> <span data-total-word>people</span></p>
+          </div>
+          <div class="tb-stage"><canvas data-team aria-hidden="true"></canvas><p class="tb-empty" data-empty>Add a role to start your team</p></div>
+          <ul class="tb-sum" data-sum aria-live="polite"></ul>
+          <dl class="tb-meta">
+            <div><dt>Model</dt><dd data-show="model">An outsourced team</dd></div>
+            <div><dt>Where</dt><dd data-show="where">On our site</dd></div>
+            <div><dt>When</dt><dd data-show="when">Within a month</dd></div>
+          </dl>
+          <p class="tb-error" data-error role="alert" hidden></p>
+          <button class="btn btn-red btn-block" type="submit"><span>Send the brief</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <button class="btn btn-ghost btn-block" type="button" data-copy><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy the brief</span></button>
+          <p class="tb-note" data-note>Opens your email app with the brief addressed to sales@itcan.biz.</p>
+        </div>
+      </aside>
+    </form>
+  </div>
+</section>
