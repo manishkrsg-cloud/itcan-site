@@ -3,7 +3,7 @@
 import { Spring, tween, ease } from "./core/engine.js";
 import { release } from "./core/seen.js";
 
-const MAX_WAIT = 2400;
+const MAX_WAIT = 1600;
 const CLOSED = 0.96;
 const FULL = 0.97;
 const TILE_ROUND = 24 / 76;

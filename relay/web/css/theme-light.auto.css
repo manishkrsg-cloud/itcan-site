@@ -79,17 +79,17 @@
 /* statement */
 :root[data-theme="light"] .statement { color: #0c101c; }
 :root[data-theme="light"] .st-dots { color: rgba(252, 253, 255, 0.2); }
-:root[data-theme="light"] .st-kicker { color: rgba(12, 16, 28, 0.72); }
+:root[data-theme="light"] .st-kicker { color: rgba(12, 16, 28, 0.9); }
 :root[data-theme="light"] .st-title { color: #0c101c; }
 :root[data-theme="light"] .st-title em { color: #f5f6f8; }
 :root[data-theme="light"] .st-mark { box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.158); }
 :root[data-theme="light"] .st-stem { background: linear-gradient(to bottom, rgba(12, 16, 28, 0.9), rgba(12, 16, 28, 0.2)); }
-:root[data-theme="light"] .st-cap { color: rgba(12, 16, 28, 0.62); }
+:root[data-theme="light"] .st-cap { color: rgba(12, 16, 28, 0.86); }
 :root[data-theme="light"] .st-ticks { color: #0c101c; }
 :root[data-theme="light"] .st-now { color: #0c101c; }
 :root[data-theme="light"] .st-dot { background-color: #0c101c; box-shadow: 0 0 0 2px rgba(12, 16, 28, 0.3); }
 :root[data-theme="light"] .st-flash { border: 1px solid rgba(12, 16, 28, 0.7); }
-:root[data-theme="light"] .st-hours { color: rgba(12, 16, 28, 0.72); }
+:root[data-theme="light"] .st-hours { color: rgba(12, 16, 28, 0.9); }
 /* offices */
 :root[data-theme="light"] .of-card { background: linear-gradient(to bottom, rgba(239, 240, 242, 0.55), rgba(244, 245, 247, 0.4)); }
 :root[data-theme="light"] .tz-rows li::after { background-color: rgba(12, 16, 28, 0.06); }
@@ -193,7 +193,7 @@
 :root[data-theme="light"] .ft-social a { border: 1px solid rgba(12, 16, 28, 0.14); background-color: rgba(12, 16, 28, 0.1); color: rgba(12, 16, 28, 0.8); }
 :root[data-theme="light"] .ft-social a:hover, :root[data-theme="light"] .ft-social a:focus-visible { color: #0c101c; }
 :root[data-theme="light"] .ft-cta { color: #0c101c; }
-:root[data-theme="light"] .ft-eye { color: rgba(12, 16, 28, 0.72); }
+:root[data-theme="light"] .ft-eye { color: rgba(12, 16, 28, 0.9); }
 :root[data-theme="light"] .ft-title em { color: #f5f6f8; }
 :root[data-theme="light"] .ft-copy { color: rgba(12, 16, 28, 0.85); }
 :root[data-theme="light"] .ft-form { background-color: #0c101c; }

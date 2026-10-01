@@ -31,10 +31,31 @@ function placeField() {
   if (f && s && m) f.style.top = `${docTop(s) - docTop(m)}px`;
 }
 
+// Phones, tablets and low-power machines get a still frame of the stream instead of WebGL:
+// the page is ready sooner and the battery is spared.
+function liteDevice() {
+  const n = navigator, c = n.connection || {};
+  return coarse || c.saveData || /2g/.test(c.effectiveType || "") || (n.deviceMemory && n.deviceMemory <= 4)
+    || (n.hardwareConcurrency && n.hardwareConcurrency <= 4) || /[?&]lite\b/.test(location.search);
+}
+function stillStream(canvas) {
+  const img = new Image();
+  img.className = "stream stream-still";
+  img.alt = ""; img.setAttribute("aria-hidden", "true"); img.decoding = "async";
+  img.src = innerHeight > innerWidth ? "/assets/stream-portrait.webp" : "/assets/stream-landscape.webp";
+  canvas.replaceWith(img);
+}
+
 function initStream() {
   const canvas = document.getElementById("stream");
   if (!canvas || html.hasAttribute("data-bot") || /[?&]nogl\b/.test(location.search)) return;
-  const mod = import("./stream.js");
+  if (liteDevice()) { stillStream(canvas); return; }
+  // desktop: fetch and start WebGL once the page has loaded and the main thread is idle
+  const idle = (fn) => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 300));
+  const mod = new Promise((res, rej) => {
+    const go = () => idle(() => import("./stream.js").then(res, rej));
+    if (document.readyState === "complete") go(); else addEventListener("load", go, { once: true });
+  });
   let revealAsked = false, stream = null;
   window.addEventListener("itcan:stream", () => { revealAsked = true; if (stream && !reduced) stream.reveal(performance.now()); }, { once: true });
   const boot = async () => {

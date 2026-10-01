@@ -95,9 +95,10 @@
   .pr-ping { width: 3.75rem; height: 3.75rem; margin: -1.875rem 0 0 -1.875rem; }
   .pr-ping.-b { width: 4.5rem; height: 4.5rem; margin: -2.25rem 0 0 -2.25rem; }
   .pr-node { width: 2.25rem; height: 2.25rem; left: -1.125rem; top: -1.125rem; }
-  .pr-name { top: 1.5rem; font-size: 0.625rem; letter-spacing: 0.03em; white-space: normal; width: 5.5rem; text-align: center; }
+  .pr-name { top: 1.5rem; font-size: 0.6875rem; letter-spacing: 0.02em; white-space: normal; width: 5.5rem; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) {
   .practices.is-live .pr-mark, .practices.is-live .pr-ping, .practices.is-live .pr-nodes li.is-rel .pr-node, .practices.is-live .pr-nodes li.is-rel .pr-glow { animation: none; }
   .pr-card, .pr-node, .pr-name { transition: none; }
 }
+@media (pointer: coarse) { .pr-chip { height: 2.5rem; } .pr-rel button { height: 2rem; } }

@@ -94,5 +94,16 @@ export function initSpectra(root) {
   const prev = root.querySelector("[data-sp-prev]"), next = root.querySelector("[data-sp-next]");
   if (prev) prev.addEventListener("click", () => cf.prev());
   if (next) next.addEventListener("click", () => cf.next());
+  // a visible pause for the autoplay (WCAG 2.2.2)
+  const pauseBtn = root.querySelector("[data-sp-pause]");
+  if (pauseBtn) {
+    if (reduced) pauseBtn.hidden = true;
+    pauseBtn.addEventListener("click", () => {
+      const on = pauseBtn.getAttribute("aria-pressed") !== "true";
+      pauseBtn.setAttribute("aria-pressed", String(on));
+      pauseBtn.setAttribute("aria-label", on ? "Play the slideshow" : "Pause the slideshow");
+      cf.pause(on);
+    });
+  }
   return cf;
 }

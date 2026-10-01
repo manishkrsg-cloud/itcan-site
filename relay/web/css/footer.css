@@ -27,7 +27,7 @@
 .ft-social a:hover, .ft-social a:focus-visible { color: #fff; }
 
 .ft-cta { grid-area: cta; height: 19.25rem; overflow: clip; border-radius: 1.5rem; background: var(--plate); box-shadow: var(--elevation-float); color: #fff; padding: 2.5rem; display: flex; flex-direction: column; }
-.ft-eye { color: rgba(255, 255, 255, 0.72); }
+.ft-eye { color: rgba(255, 255, 255, 0.9); }
 .ft-eye span { display: inline-block; white-space: nowrap; }
 .ft-title { margin-top: 0.75rem; overflow: clip; font-weight: 600; font-size: 2.25rem; line-height: 3.25rem; letter-spacing: -0.0625rem; }
 .ft-line { display: block; }

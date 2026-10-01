@@ -76,6 +76,15 @@
 .sp-arrow:hover { background: rgba(255, 255, 255, 0.1); border-color: color-mix(in srgb, var(--halo) 60%, transparent); }
 .sp-arrow:active { transform: scale(0.94); }
 .sp-arrow:focus-visible { outline: 2px solid var(--halo); outline-offset: 2px; }
+.sp-pause svg { width: 0.875rem; height: 0.875rem; }
+.sp-pause .i-play, .sp-pause[aria-pressed="true"] .i-pause { display: none; }
+.sp-pause[aria-pressed="true"] .i-play { display: block; }
+/* touch: bigger targets, never text under 11px */
+@media (pointer: coarse) {
+  .sp-arrow { width: 2.75rem; height: 2.75rem; }
+  .sp-tags i { font-size: max(0.6875rem, calc(11.5px * var(--card-f, 1))); }
+  .sp-top { font-size: max(0.6875rem, calc(12.5px * var(--card-f, 1))); }
+}
 .sp-kicker { display: flex; align-items: center; justify-content: center; gap: 0.625rem; min-width: 16.5rem; padding: 0 0.5rem; font-size: 0.875rem; font-weight: 500; color: rgba(236, 238, 243, 0.62); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .sp-kicker i { width: 5px; height: 5px; border-radius: 50%; background: var(--halo); box-shadow: 0 0 10px var(--halo); flex: none; }
 .sp-kicker [data-sp-kind] { color: #fff; }

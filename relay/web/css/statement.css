@@ -15,7 +15,7 @@
 .statement > * { position: absolute; }
 .st-dots { left: 0; top: 0; width: 90rem; height: 34.25rem; color: rgba(0, 0, 0, 0.2); max-width: none; }
 .st-canvas { inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.st-kicker { top: calc(64 * var(--u)); left: calc(80 * var(--u)); right: calc(80 * var(--u)); text-align: center; color: rgba(255, 255, 255, 0.72); }
+.st-kicker { top: calc(64 * var(--u)); left: calc(80 * var(--u)); right: calc(80 * var(--u)); text-align: center; color: rgba(255, 255, 255, 0.9); }
 .st-kicker span, .st-cap span { display: inline-block; white-space: nowrap; }
 .st-title { top: calc(108 * var(--u)); left: calc(80 * var(--u)); right: calc(80 * var(--u)); text-align: center; font-weight: 600; font-size: var(--type-section-title); line-height: var(--line-section-title); letter-spacing: var(--letter-spacing-title); color: #fff; }
 .st-line { display: block; }
@@ -24,13 +24,13 @@
 .st-mark { top: calc(292 * var(--u)); left: calc(682 * var(--u)); width: calc(76 * var(--u)); height: calc(76 * var(--u)); border-radius: 24px; box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.45); }
 .st-glyph { position: absolute; inset: 0; }
 .st-stem { top: calc(368 * var(--u)); left: calc(720 * var(--u)); width: 1px; height: calc(102 * var(--u)); transform-origin: top; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2)); }
-.st-cap { top: calc(448 * var(--u)); left: calc(80 * var(--u)); color: rgba(255, 255, 255, 0.62); }
+.st-cap { top: calc(448 * var(--u)); left: calc(80 * var(--u)); color: rgba(255, 255, 255, 0.86); }
 .st-ticks { top: calc(484 * var(--u)); left: calc(79 * var(--u)); width: calc(1282 * var(--u)); height: calc(18 * var(--u)); color: #fff; overflow: visible; }
 .st-ticks path { transform-box: fill-box; transform-origin: bottom; stroke: currentColor; }
 .st-now { top: calc(470 * var(--u)); left: calc(690 * var(--u)); width: calc(60 * var(--u)); text-align: center; color: #fff; }
 .st-dot { top: calc(493 * var(--u)); left: calc(715 * var(--u)); width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3); }
 .st-flash { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.7); opacity: 0; }
-.st-hours { top: calc(508 * var(--u)); left: 0; right: 0; height: 1.25rem; color: rgba(255, 255, 255, 0.72); }
+.st-hours { top: calc(508 * var(--u)); left: 0; right: 0; height: 1.25rem; color: rgba(255, 255, 255, 0.9); }
 .st-hours li { position: absolute; top: 0; width: calc(80 * var(--u)); text-align: center; }
 .st-hours li:nth-child(1) { left: calc(80 * var(--u)); text-align: left; }
 .st-hours li:nth-child(2) { left: calc(296 * var(--u)); }

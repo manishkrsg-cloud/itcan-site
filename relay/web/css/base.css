@@ -102,6 +102,8 @@ address { font-style: normal; }
 .gap { height: var(--section-gap); }
 .stream { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100lvh; pointer-events: none; mix-blend-mode: screen; display: block; }
 html[data-bot] .stream { display: none; }
+.stream-still { object-fit: cover; object-position: 50% 30%; animation: still-in 0.9s ease-out both; }
+@keyframes still-in { from { opacity: 0; } }
 .nav-slot { height: var(--nav-h); }
 
 /* ------------------------------------------------------------ backdrop */

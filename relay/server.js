@@ -55,6 +55,8 @@ const SECURITY_HEADERS = {
   'X-Frame-Options': 'SAMEORIGIN',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'Content-Security-Policy': CSP,
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Cross-Origin-Opener-Policy': 'same-origin',
 };
 
 // slug -> original upload path, for the award image fallback
@@ -68,9 +70,9 @@ try {
 
 const gzCache = new Map(); // abs path -> { mtimeMs, buf }
 
-function cacheControl(ext, urlPath) {
-  // hashed lazy chunks never change; everything else revalidates (cheap 304 via ETag)
-  if (urlPath.startsWith('/js/chunks/')) return 'public, max-age=31536000, immutable';
+function cacheControl(ext, urlPath, versioned) {
+  // hashed lazy chunks and ?v= stamped files never change; everything else revalidates (cheap 304 via ETag)
+  if (urlPath.startsWith('/js/chunks/') || (versioned && ['.css', '.js'].includes(ext))) return 'public, max-age=31536000, immutable';
   // HTML, CSS, JS and data always revalidate, so a deploy shows up at once
   if (['.html', '.css', '.js', '.mjs', '.json', '.webmanifest'].includes(ext)) return 'no-cache';
   if (urlPath.startsWith('/awards/')) return 'public, max-age=2592000, immutable';
@@ -78,14 +80,14 @@ function cacheControl(ext, urlPath) {
   return 'public, max-age=3600';
 }
 
-async function sendFile(req, res, absPath, urlPath, status = 200) {
+async function sendFile(req, res, absPath, urlPath, status = 200, versioned = false) {
   const ext = path.extname(absPath).toLowerCase();
   const stat = await fsp.stat(absPath);
   const etag = `W/"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}"`;
   const headers = {
     ...SECURITY_HEADERS,
     'Content-Type': TYPES[ext] || 'application/octet-stream',
-    'Cache-Control': cacheControl(ext, urlPath),
+    'Cache-Control': cacheControl(ext, urlPath, versioned),
     'ETag': etag,
     'Last-Modified': stat.mtime.toUTCString(),
     'Vary': 'Accept-Encoding',
@@ -94,14 +96,20 @@ async function sendFile(req, res, absPath, urlPath, status = 200) {
     res.writeHead(304, headers);
     return res.end();
   }
-  const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
-  if (COMPRESSIBLE.has(ext) && acceptsGzip && stat.size > 1024) {
-    let entry = gzCache.get(absPath);
+  const ae = req.headers['accept-encoding'] || '';
+  const enc = /\bbr\b/.test(ae) ? 'br' : /\bgzip\b/.test(ae) ? 'gzip' : '';
+  if (COMPRESSIBLE.has(ext) && enc && stat.size > 1024) {
+    const key = enc + ':' + absPath;
+    let entry = gzCache.get(key);
     if (!entry || entry.mtimeMs !== stat.mtimeMs) {
-      entry = { mtimeMs: stat.mtimeMs, buf: zlib.gzipSync(await fsp.readFile(absPath), { level: 9 }) };
-      gzCache.set(absPath, entry);
+      const raw = await fsp.readFile(absPath);
+      const buf = enc === 'br'
+        ? zlib.brotliCompressSync(raw, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 11, [zlib.constants.BROTLI_PARAM_SIZE_HINT]: raw.length } })
+        : zlib.gzipSync(raw, { level: 9 });
+      entry = { mtimeMs: stat.mtimeMs, buf };
+      gzCache.set(key, entry);
     }
-    headers['Content-Encoding'] = 'gzip';
+    headers['Content-Encoding'] = enc;
     headers['Content-Length'] = entry.buf.length;
     res.writeHead(status, headers);
     return res.end(req.method === 'HEAD' ? undefined : entry.buf);
@@ -139,7 +147,13 @@ const server = http.createServer(async (req, res) => {
       return res.end('Method not allowed');
     }
     const url = new URL(req.url, 'http://local');
-    let urlPath = decodeURIComponent(url.pathname);
+    let urlPath;
+    try { urlPath = decodeURIComponent(url.pathname); } catch {
+      res.writeHead(400, { 'Content-Type': 'text/plain', ...SECURITY_HEADERS });
+      return res.end('Bad request');
+    }
+    if (urlPath === '/favicon.ico') urlPath = '/assets/brand/favicon.ico';
+    const versioned = url.searchParams.has('v');
 
     if (urlPath === '/healthz') {
       res.writeHead(200, { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' });
@@ -153,7 +167,7 @@ const server = http.createServer(async (req, res) => {
       return res.end('Bad request');
     }
 
-    if (await exists(absPath)) return await sendFile(req, res, absPath, urlPath);
+    if (await exists(absPath)) return await sendFile(req, res, absPath, urlPath, 200, versioned);
 
     // Award photo not cached locally: send the browser to the original.
     const m = urlPath.match(/^\/awards\/([a-z0-9-]+?)(-sm)?\.jpg$/);

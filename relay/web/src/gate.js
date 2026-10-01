@@ -11,7 +11,9 @@
   if (!rm) d.classList.add("motion");
   var seen = false;
   try { seen = sessionStorage.getItem("itcan-intro") === "1"; } catch (e) {}
-  if (!rm && !bot && !seen) d.setAttribute("data-preload", "");
+  // the intro plays once per session on desktop; phones and tablets go straight to the page
+  var touch = window.matchMedia && matchMedia("(hover: none) and (pointer: coarse)").matches;
+  if (!rm && !bot && !seen && !touch) d.setAttribute("data-preload", "");
   // failsafe: never leave the page hidden if the app does not boot
   setTimeout(function () {
     if (!window.__itcan) {

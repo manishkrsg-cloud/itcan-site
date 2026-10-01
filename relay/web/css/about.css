@@ -48,7 +48,7 @@
 .press a, .press li > span { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.75rem 0; font-size: 0.9375rem; line-height: 1.375rem; }
 .press a .mono, .press li > span .mono { color: var(--foreground-dim); white-space: nowrap; font-size: 0.75rem; }
 .press a:hover > span:first-child { color: var(--accent); }
-.press .archived { opacity: 0.55; }
+.press .archived { opacity: 0.78; }
 
 @media (width <= 1200px) {
   .about, .careers, .media { padding: 3rem 3rem 0; }
