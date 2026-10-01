@@ -68,6 +68,13 @@ try {
   console.error('[server] could not read awards.json:', err.message);
 }
 
+// old WordPress addresses on itcan.biz, sent to the matching section (301 keeps their ranking)
+const LEGACY = {
+  '/services': '/#product', '/about-us': '/#about', '/about': '/#about', '/contact-us': '/#contact', '/contact': '/#contact',
+  '/career': '/#careers', '/careers': '/#careers', '/industrial-solutions': '/#integrations', '/press': '/#media',
+  '/media': '/#media', '/our-offices': '/#scale', '/offices': '/#scale',
+};
+
 const gzCache = new Map(); // abs path -> { mtimeMs, buf }
 
 function cacheControl(ext, urlPath, versioned) {
@@ -159,6 +166,9 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' });
       return res.end('ok');
     }
+
+    const legacy = LEGACY[urlPath.replace(/\/+$/, '').toLowerCase()];
+    if (legacy) { res.writeHead(301, { Location: legacy, 'Cache-Control': 'public, max-age=86400', ...SECURITY_HEADERS }); return res.end(); }
 
     if (urlPath.endsWith('/')) urlPath += 'index.html';
     const absPath = path.normalize(path.join(ROOT, urlPath));
