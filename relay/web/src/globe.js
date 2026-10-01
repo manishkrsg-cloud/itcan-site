@@ -30,6 +30,9 @@ const GRID = [];
 for (let lon = -180; lon < 180; lon += 30) { const l = []; for (let lat = -84; lat <= 84; lat += 4) l.push(unit(lat, lon)); GRID.push(l); }
 for (let lat = -60; lat <= 60; lat += 30) { const l = []; for (let lon = -180; lon <= 180; lon += 4) l.push(unit(lat, lon)); GRID.push(l); }
 
+const COARSE = typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
+const IDLE_MS = COARSE ? 45 : 31; // idle drift at ~22fps on touch devices, ~30fps on desktop
+
 export function createGlobe(canvas, opts = {}) {
   const ctx = canvas.getContext("2d");
   const reduced = !!opts.reduced;
@@ -57,13 +60,14 @@ export function createGlobe(canvas, opts = {}) {
 
   function resize() {
     const r = canvas.getBoundingClientRect();
-    dpr = Math.min(2, window.devicePixelRatio || 1);
+    dpr = Math.min(COARSE ? 1.5 : 2, window.devicePixelRatio || 1);
     w = Math.max(1, r.width); h = Math.max(1, r.height);
     canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
     R = Math.min(w * 0.44, h * 0.43);
     cx = w / 2; cy = h / 2 + (opts.offsetY || 0) * h;
     // the halo must fit inside the canvas, or its edge shows as a box
     glowR = Math.min(R * 1.32, cy, h - cy, cx, w - cx);
+    under = over = null;
     draw(performance.now());
   }
 
@@ -80,29 +84,62 @@ export function createGlobe(canvas, opts = {}) {
     return [-x1, y2, z2];
   }
 
-  function draw(now) {
-    const t = now - t0;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, w, h);
-    // blue atmosphere around the planet
-    const glow = ctx.createRadialGradient(cx, cy, R * 0.94, cx, cy, glowR);
+  // the lighting never changes with rotation, so it is painted once per size into two layers:
+  // "under" (atmosphere + ocean) and "over" (night side, glint, limb, rim)
+  let under = null, over = null;
+  function layer() { const c = document.createElement("canvas"); c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); const g = c.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0); return [c, g]; }
+  function bake() {
+    const lx = cx - R * 0.38, ly = cy - R * 0.42;
+    let g;
+    [under, g] = layer();
+    const glow = g.createRadialGradient(cx, cy, R * 0.94, cx, cy, glowR);
     glow.addColorStop(0, "rgba(90,165,255,0.42)");
     glow.addColorStop(0.18, "rgba(70,140,255,0.2)");
     glow.addColorStop(0.55, "rgba(60,110,255,0.06)");
     glow.addColorStop(1, "rgba(60,110,255,0)");
-    ctx.fillStyle = glow;
-    ctx.beginPath(); ctx.arc(cx, cy, glowR, 0, Math.PI * 2); ctx.fill();
-
-    // ocean, lit from the upper left
-    const lx = cx - R * 0.38, ly = cy - R * 0.42;
-    const ocean = ctx.createRadialGradient(lx, ly, R * 0.05, cx, cy, R);
+    g.fillStyle = glow;
+    g.beginPath(); g.arc(cx, cy, glowR, 0, Math.PI * 2); g.fill();
+    const ocean = g.createRadialGradient(lx, ly, R * 0.05, cx, cy, R);
     ocean.addColorStop(0, "#3f86e0");
     ocean.addColorStop(0.3, "#1f5bb4");
     ocean.addColorStop(0.62, "#10357a");
     ocean.addColorStop(0.88, "#0a2253");
     ocean.addColorStop(1, "#071a42");
-    ctx.fillStyle = ocean;
-    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+    g.fillStyle = ocean;
+    g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.fill();
+
+    [over, g] = layer();
+    g.save();
+    g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.clip();
+    const night = g.createRadialGradient(cx + R * 0.7, cy + R * 0.75, R * 0.1, cx + R * 0.35, cy + R * 0.4, R * 1.35);
+    night.addColorStop(0, "rgba(2,6,20,0.7)");
+    night.addColorStop(0.55, "rgba(2,6,20,0.35)");
+    night.addColorStop(1, "rgba(2,6,20,0)");
+    g.fillStyle = night; g.fillRect(cx - R, cy - R, R * 2, R * 2);
+    const glint = g.createRadialGradient(lx, ly, 0, lx, ly, R * 0.55);
+    glint.addColorStop(0, "rgba(200,230,255,0.22)");
+    glint.addColorStop(1, "rgba(200,230,255,0)");
+    g.fillStyle = glint; g.fillRect(cx - R, cy - R, R * 2, R * 2);
+    const limb = g.createRadialGradient(cx, cy, R * 0.72, cx, cy, R);
+    limb.addColorStop(0, "rgba(4,10,30,0)");
+    limb.addColorStop(1, "rgba(4,10,30,0.45)");
+    g.fillStyle = limb; g.fillRect(cx - R, cy - R, R * 2, R * 2);
+    g.restore();
+    const rim = g.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+    rim.addColorStop(0, "rgba(170,215,255,0.85)");
+    rim.addColorStop(0.45, "rgba(110,170,255,0.35)");
+    rim.addColorStop(1, "rgba(80,120,255,0.08)");
+    g.strokeStyle = rim; g.lineWidth = 1.5;
+    g.beginPath(); g.arc(cx, cy, R - 0.5, 0, Math.PI * 2); g.stroke();
+  }
+
+  function draw(now) {
+    const t = now - t0;
+    if (!under) bake();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(under, 0, 0);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     ctx.save();
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
@@ -138,41 +175,17 @@ export function createGlobe(canvas, opts = {}) {
       ctx.beginPath();
       for (let i = 0; i < pts.length; i += 2) { ctx.moveTo(pts[i] + landR, pts[i + 1]); ctx.arc(pts[i], pts[i + 1], landR, 0, Math.PI * 2); }
       ctx.fill();
+      if (COARSE) return; // the fine dot texture is invisible at phone size
       ctx.fillStyle = `rgba(225,240,255,${(0.12 + 0.4 * k).toFixed(3)})`;
       ctx.beginPath();
       for (let i = 0; i < pts.length; i += 2) { ctx.moveTo(pts[i] + dotR, pts[i + 1]); ctx.arc(pts[i], pts[i + 1], dotR, 0, Math.PI * 2); }
       ctx.fill();
     });
-
-    // night side: the lower right falls into shadow
-    const night = ctx.createRadialGradient(cx + R * 0.7, cy + R * 0.75, R * 0.1, cx + R * 0.35, cy + R * 0.4, R * 1.35);
-    night.addColorStop(0, "rgba(2,6,20,0.7)");
-    night.addColorStop(0.55, "rgba(2,6,20,0.35)");
-    night.addColorStop(1, "rgba(2,6,20,0)");
-    ctx.fillStyle = night;
-    ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-
-    // sun glint on the ocean and a soft limb darkening
-    const glint = ctx.createRadialGradient(lx, ly, 0, lx, ly, R * 0.55);
-    glint.addColorStop(0, "rgba(200,230,255,0.22)");
-    glint.addColorStop(1, "rgba(200,230,255,0)");
-    ctx.fillStyle = glint;
-    ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-    const limb = ctx.createRadialGradient(cx, cy, R * 0.72, cx, cy, R);
-    limb.addColorStop(0, "rgba(4,10,30,0)");
-    limb.addColorStop(1, "rgba(4,10,30,0.45)");
-    ctx.fillStyle = limb;
-    ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
     ctx.restore();
 
-    // thin bright atmosphere edge on the lit side
-    const rim = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
-    rim.addColorStop(0, "rgba(170,215,255,0.85)");
-    rim.addColorStop(0.45, "rgba(110,170,255,0.35)");
-    rim.addColorStop(1, "rgba(80,120,255,0.08)");
-    ctx.strokeStyle = rim;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.arc(cx, cy, R - 0.5, 0, Math.PI * 2); ctx.stroke();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(over, 0, 0);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     // arcs from HQ with a travelling packet each
     ctx.lineCap = "round";
@@ -256,9 +269,12 @@ export function createGlobe(canvas, opts = {}) {
     c.arcTo(x, y + hh, x, y, r); c.arcTo(x, y, x + ww, y, r); c.closePath();
   }
 
-  let lastT = 0;
+  let lastT = 0, lastDraw = 0;
   function frame(now) {
     raf = 0;
+    const busy = drag || Math.abs(vx) + Math.abs(vy) > 0.002;
+    if (!busy && now - lastDraw < IDLE_MS) { if (running) raf = requestAnimationFrame(frame); return; }
+    lastDraw = now;
     const dt = lastT ? Math.min(64, now - lastT) : 16;
     lastT = now;
     if (!drag) {

@@ -42,7 +42,7 @@
 /* the artwork */
 .sp-media { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
 .sp-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transform: scale(1.04); transform-origin: 50% 35%; pointer-events: none; -webkit-user-drag: none; transition: transform 1.2s var(--sp-ease); }
-.sp-card.is-active .sp-img { animation: sp-drift 11s ease-in-out infinite alternate; }
+.cf-live .sp-card.is-active .sp-img { animation: sp-drift 11s ease-in-out infinite alternate; }
 @keyframes sp-drift { from { transform: scale(1.04) translate3d(0, 0, 0); } to { transform: scale(1.12) translate3d(0, -1.5%, 0); } }
 .sp-card.-noimg .sp-media { display: none; }
 /* legible text over any artwork: a dark foot, a hint of the card hue, and a soft top edge */

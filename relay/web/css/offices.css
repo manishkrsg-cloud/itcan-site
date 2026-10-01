@@ -149,6 +149,6 @@
 .globe-art { overflow: visible; }
 .globe-canvas { position: absolute; left: -1.9375rem; right: -1.9375rem; top: -0.5rem; bottom: 0; width: calc(100% + 3.875rem); height: calc(100% + 0.5rem); cursor: grab; touch-action: pan-y; }
 .globe-canvas:active { cursor: grabbing; }
-.globe-hq { position: absolute; left: 0; top: 0; width: 1.625rem; height: 1.625rem; border-radius: 8px; pointer-events: none; visibility: hidden; box-shadow: 0 0 18px rgba(255, 61, 72, 0.7); }
+.globe-hq { position: absolute; left: 0; top: 0; will-change: transform; width: 1.625rem; height: 1.625rem; border-radius: 8px; pointer-events: none; visibility: hidden; box-shadow: 0 0 18px rgba(255, 61, 72, 0.7); }
 .globe-cap { left: 50%; transform: translateX(-50%); top: auto; bottom: 0; white-space: nowrap; color: var(--foreground-dim); font-size: 0.8125rem; }
 .hub-art .of-cap.globe-cap { top: auto; }

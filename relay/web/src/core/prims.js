@@ -2,39 +2,45 @@
 //   data-a="rise|fade|focus|type|draw|drawy|pulse|count|pop"  data-d="delay ms"
 //   data-of="#id" (play when that element is seen instead of self)
 //   focus: data-blur (10 default, 8 for body copy); type: data-ms (30)
-import { Spring, springs, SPRING, SPRING_SOFT, reduced, ease, tween } from "./engine.js";
+import { Spring, SPRING, SPRING_SOFT, SPRING_QUICK, reduced, ease, tween } from "./engine.js";
 import { onSeen } from "./seen.js";
 
 const px = (n) => `${n}px`;
 const R = () => (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
 
-export function rise(el, cfg = SPRING, dist = 24) {
-  const s = springs({ o: 0, y: dist }, (v) => {
-    el.style.opacity = v.o >= 1 ? "1" : v.o;
-    el.style.transform = v.y === 0 ? "none" : `translate3d(0,${v.y * R()}px,0)`;
-  });
+// Entrances run as Web Animations on opacity and transform only, so the compositor plays
+// them off the main thread and nothing repaints per frame. The end state is written inline,
+// a backwards fill holds the start state through the delay.
+const EASE_OUT = "cubic-bezier(0.22, 1, 0.36, 1)";
+const durOf = (cfg) => (cfg === SPRING_SOFT ? 900 : cfg === SPRING_QUICK ? 620 : 700);
+function reveal(el, from, to, cfg) {
+  let a = null;
+  const put = (o) => { for (const k in o) el.style[k] = o[k]; };
   return {
-    play(delay = 0) { s.start({ o: 1, y: 0 }, { config: cfg, delay }); },
-    reset() { s.set({ o: 0, y: dist }); },
-    s,
+    play(delay = 0) {
+      if (a) a.cancel();
+      put(to);
+      if (reduced || !el.animate) { a = null; return; }
+      a = el.animate([from, to], { duration: durOf(cfg), delay, easing: EASE_OUT, fill: "backwards" });
+      a.onfinish = () => { a = null; };
+    },
+    reset() { if (a) { a.cancel(); a = null; } put(from); },
   };
 }
 
-export function fade(el, cfg = SPRING_SOFT) {
-  const sp = new Spring(0, (v) => { el.style.opacity = v >= 1 ? "1" : v; });
-  return { play(delay = 0) { sp.start(1, { config: cfg, delay }); }, reset() { sp.set(0); }, sp };
+export function rise(el, cfg = SPRING, dist = 24) {
+  return reveal(el, { opacity: "0", transform: `translate3d(0, ${dist * R()}px, 0)` }, { opacity: "1", transform: "none" }, cfg);
 }
 
+export function fade(el, cfg = SPRING_SOFT) {
+  return reveal(el, { opacity: "0" }, { opacity: "1" }, cfg);
+}
+
+// "focus" used to blur text in; a short lift reads the same and costs nothing to paint.
 export function focus(el, blur = 10, cfg = SPRING_SOFT) {
-  const sp = new Spring(0, (p) => {
-    const st = el.style;
-    if (p >= 1) { st.opacity = "1"; st.filter = "none"; st.maskImage = st.webkitMaskImage = "none"; return; }
-    st.opacity = Math.max(0, p);
-    st.filter = `blur(${((1 - p) * blur).toFixed(2)}px)`;
-    const r = p * 140;
-    st.maskImage = st.webkitMaskImage = `linear-gradient(90deg, #000 ${r - 40}%, transparent ${r}%)`;
-  });
-  return { play(delay = 0) { sp.start(1, { config: cfg, delay }); }, reset() { sp.set(0); }, sp };
+  const d = Math.round(4 + blur * 0.8);
+  el.style.filter = "none";
+  return reveal(el, { opacity: "0", translate: `0 ${d}px` }, { opacity: "1", translate: "none" }, cfg);
 }
 
 // Labels reveal left to right with a soft wipe (works for any typeface).
@@ -55,8 +61,8 @@ export function type(el, ms = 30) {
 }
 
 export function draw(el, axis = "x", cfg = SPRING_SOFT) {
-  const sp = new Spring(0, (p) => { el.style.transform = p >= 1 ? "none" : `scale${axis.toUpperCase()}(${Math.max(0, p)})`; });
-  return { play(delay = 0) { sp.start(1, { config: cfg, delay }); }, reset() { sp.set(0); }, sp };
+  const f = axis === "y" ? "scaleY" : "scaleX";
+  return reveal(el, { transform: `${f}(0)` }, { transform: "none" }, cfg);
 }
 
 export function pulse(el) {
@@ -69,11 +75,7 @@ export function pulse(el) {
 }
 
 export function pop(el, cfg = SPRING) {
-  const sp = new Spring(0, (p) => {
-    el.style.opacity = p >= 1 ? "1" : Math.max(0, Math.min(1, p));
-    el.style.transform = p >= 1 ? "none" : `scale(${0.6 + 0.4 * p})`;
-  });
-  return { play(delay = 0) { sp.start(1, { config: cfg, delay }); }, reset() { sp.set(0); } };
+  return reveal(el, { opacity: "0", transform: "scale(0.6)" }, { opacity: "1", transform: "none" }, cfg);
 }
 
 // Counts 0 -> value over 1400 ms easeOutCubic, tabular while counting.

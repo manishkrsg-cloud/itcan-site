@@ -137,7 +137,7 @@ export function createCoverflow({
   root.addEventListener("focusin", (e) => { focused = !!(e.target.matches && e.target.matches(":focus-visible")); sync(); });
   root.addEventListener("focusout", () => { if (focused) { focused = false; sync(true); } });
   document.addEventListener("visibilitychange", () => sync(true));
-  onView(root, (hit) => { inView = hit; sync(true); if (hit) kick(); });
+  onView(root, (hit) => { inView = hit; root.classList.toggle("cf-live", hit); sync(true); if (hit) kick(); });
 
   let rz = 0;
   addEventListener("resize", () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { layout(); paint(); }); });

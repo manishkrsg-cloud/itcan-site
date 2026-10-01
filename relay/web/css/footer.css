@@ -68,7 +68,7 @@
 
 .motion .ft-brand, .motion .ft-cta, .motion .ft-form-wrap, .motion .ft-company, .motion .ft-cols > div { opacity: 0; transform: translateY(1.5rem); }
 .motion .ft-line { transform: translateY(108%); }
-.motion .ft-copy, .motion .ft-tag { opacity: 0; filter: blur(8px); }
+.motion .ft-copy, .motion .ft-tag { opacity: 0; translate: 0 10px; }
 .motion .ft-eye span { clip-path: inset(0 100% 0 0); }
 .motion .ft-phair, .motion .ft-hair { transform: scaleX(0); }
 .motion .ft-social, .motion .ft-status > li > span, .motion .ft-legal { opacity: 0; }

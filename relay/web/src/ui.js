@@ -106,24 +106,9 @@ export function initTheme() {
 
 // Breathing status dot: the dot scales 1 -> 1.35 -> 1 -> 1 in three 600 ms legs,
 // the halo scales 1 -> 3 and fades .8 -> 0 over 1800 ms, forever.
-export function initBreath() {
-  if (reduced) return;
-  document.querySelectorAll("[data-breath]").forEach((el) => {
-    const dot = el.querySelector(".b-dot"), halo = el.querySelector(".b-halo");
-    let off = null, t0 = performance.now();
-    const run = (now) => {
-      const t = ((now - t0) % 1800) / 1800;
-      const s = t < 1 / 3 ? 1 + 0.35 * (t * 3) : t < 2 / 3 ? 1.35 - 0.35 * ((t - 1 / 3) * 3) : 1;
-      dot.style.transform = `scale(${s})`;
-      halo.style.transform = `scale(${1 + 2 * t})`;
-      halo.style.opacity = 0.8 * (1 - t);
-    };
-    onView(el, (hit) => {
-      if (hit && !off) off = ticker.add(run, 16);
-      else if (!hit && off) { off(); off = null; }
-    });
-  });
-}
+// The status dot breathes with a CSS animation (compositor only); this used to be a JS
+// loop that repainted the whole nav bar on every frame.
+export function initBreath() {}
 
 // Primary CTA "handoff" hover + glass button ring sweep.
 export function initButtons(root = document) {

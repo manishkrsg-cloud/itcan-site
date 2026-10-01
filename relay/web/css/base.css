@@ -132,11 +132,13 @@ html[data-bot] .stream { display: none; }
 .slab::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(50% - 50vw); right: calc(50% - 50vw); background: var(--glass-slab); border-top: 1px solid var(--glass-slab-edge); border-bottom: 1px solid var(--glass-slab-edge); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); pointer-events: none; }
 .slab > * { position: relative; }
 .sb, .sb-in { position: relative; }
+/* scroll fades move whole sections; their own layer keeps that off the paint path */
+.motion .sb-in { will-change: transform, opacity; }
 
 /* ------------------------------------------------------------ hidden entrance states (JS takes over) */
 .motion [data-a~="rise"] { opacity: 0; transform: translate3d(0, 1.5rem, 0); }
 .motion [data-a~="fade"], .motion [data-a~="pop"] { opacity: 0; }
-.motion [data-a~="focus"] { opacity: 0; filter: blur(10px); }
+.motion [data-a~="focus"] { opacity: 0; translate: 0 12px; }
 .motion [data-a~="type"] { clip-path: inset(0 100% 0 0); }
 .motion [data-a~="draw"] { transform: scaleX(0); }
 .motion [data-a~="drawy"] { transform: scaleY(0); }

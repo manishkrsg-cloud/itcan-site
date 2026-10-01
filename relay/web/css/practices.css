@@ -28,10 +28,12 @@
 .pr-mark { position: relative; width: 100%; height: 100%; box-shadow: 0 0 34px -4px rgba(255, 61, 72, 0.7), 0 12px 30px -10px rgba(0, 0, 0, 0.8); }
 .pr-ping { position: absolute; left: 50%; top: 50%; width: 5rem; height: 5rem; margin: -2.5rem 0 0 -2.5rem; border-radius: 31.58%; border: 1px solid rgba(255, 90, 100, 0.35); opacity: 0; }
 .pr-ping.-b { width: 6rem; height: 6rem; margin: -3rem 0 0 -3rem; border-color: rgba(255, 90, 100, 0.18); }
-.practices.is-live .pr-mark { animation: pr-breathe 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+/* the breathing glow is a separate layer whose opacity animates, so the shadow never repaints */
+.pr-core::before { content: ""; position: absolute; inset: 0; border-radius: 31.58%; box-shadow: 0 0 56px 0 rgba(255, 61, 72, 0.8); opacity: 0; pointer-events: none; }
+.practices.is-live .pr-core::before { animation: pr-breathe 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 .practices.is-live .pr-ping { animation: pr-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite; }
 .practices.is-live .pr-ping.-b { animation-delay: 0.6s; }
-@keyframes pr-breathe { 50% { box-shadow: 0 0 56px 0 rgba(255, 61, 72, 0.8), 0 12px 30px -10px rgba(0, 0, 0, 0.8); } }
+@keyframes pr-breathe { 50% { opacity: 1; } }
 @keyframes pr-ping { 0% { opacity: 0.8; transform: scale(1); } 75%, 100% { opacity: 0; transform: scale(2); } }
 
 /* nodes: practices.js sets each li's transform, opacity and z-index */
@@ -103,7 +105,7 @@
   .pr-name { top: 2rem; font-size: 0.6875rem; letter-spacing: 0.02em; white-space: normal; width: 5.5rem; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .practices.is-live .pr-mark, .practices.is-live .pr-ping, .practices.is-live .pr-nodes li.is-rel .pr-node, .practices.is-live .pr-nodes li.is-rel .pr-glow { animation: none; }
+  .practices.is-live .pr-core::before, .practices.is-live .pr-ping, .practices.is-live .pr-nodes li.is-rel .pr-node, .practices.is-live .pr-nodes li.is-rel .pr-glow { animation: none; }
   .pr-card, .pr-node, .pr-name { transition: none; }
 }
 @media (pointer: coarse) { .pr-chip { height: 2.5rem; } .pr-rel button { height: 2rem; } }

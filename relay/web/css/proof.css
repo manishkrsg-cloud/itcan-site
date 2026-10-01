@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------ 08 proof (numbers + people) */
 .proof { position: relative; padding: 6rem 5rem 4rem; }
 .pf-blooms { position: absolute; inset: 0; overflow: clip; pointer-events: none; }
-.pf-drift { position: absolute; inset: 0; }
-.pf-bloom { position: absolute; width: calc(940 * var(--u)); height: calc(680 * var(--u)); border-radius: 50%; filter: blur(40px); }
+.pf-drift { position: absolute; inset: 0; will-change: transform; }
+.pf-bloom { position: absolute; width: calc(940 * var(--u)); height: calc(680 * var(--u)); border-radius: 50%; }
 .pf-bloom.r { top: calc(20 * var(--u)); left: calc(600 * var(--u)); background: radial-gradient(closest-side, rgba(229, 34, 46, 0.2), transparent); }
 .pf-bloom.l { top: calc(60 * var(--u)); left: calc(-40 * var(--u)); background: radial-gradient(closest-side, rgba(109, 136, 255, 0.14), transparent); }
 .pf-head { position: relative; display: flex; justify-content: space-between; align-items: flex-start; }
@@ -31,7 +31,7 @@
 .pf-num { margin-top: 1.25rem; font-weight: 600; font-size: 4rem; line-height: 4.25rem; letter-spacing: -0.15rem; font-variant-numeric: tabular-nums;
   background: linear-gradient(180deg, #ffffff 30%, #b8c3ff 140%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .pf-cap { margin-top: 0.25rem; color: var(--foreground-muted); }
-.pf-vis { position: relative; margin-top: 1.5rem; width: 100%; height: 3.5rem; }
+.pf-vis { position: relative; margin-top: 1.5rem; width: 100%; height: 3.5rem; will-change: transform; }
 .pf-vis svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .pf-vis.bars stop:first-child { stop-color: var(--pb); }
 .pf-vis.bars stop:last-child { stop-color: var(--pa); }

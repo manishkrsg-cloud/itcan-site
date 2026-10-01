@@ -2,6 +2,8 @@
 .awards { padding: 6rem 5rem 0; }
 .wg-grid { margin-top: 4rem; display: grid; grid-template-columns: 413fr 413fr 10fr 384fr; grid-template-rows: 16rem 15.25rem; grid-template-areas: "y y y r" "f c m m"; gap: 1.25rem; }
 .wg { border-radius: 1.5rem; }
+/* each widget loops on its own layer, so a frame repaints the widget, not the section */
+.motion .wg { will-change: transform; }
 .wg > * { position: absolute; }
 .wg-years { grid-area: y; } .wg-ring { grid-area: r; } .wg-faces { grid-area: f; } .wg-curves { grid-area: c; } .wg-map { grid-area: m; }
 .wg-title { left: calc(23 * var(--u)); top: calc(23 * var(--u)); color: var(--foreground-dim); }
@@ -187,7 +189,7 @@
 .aw-arrow:active { transform: scale(0.94); }
 .aw-arrow svg { width: 1.125rem; height: 1.125rem; }
 .aw-swap { animation: aw-in 0.45s var(--aw-ease); }
-@keyframes aw-in { from { opacity: 0; transform: translateY(6px); filter: blur(4px); } }
+@keyframes aw-in { from { opacity: 0; transform: translateY(6px); } }
 @media (width <= 580px) {
   .aw-foot { gap: 0.75rem; }
   .aw-title { font-size: 1.125rem; }
