@@ -42,7 +42,7 @@ export function initPractices() {
       const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
       const li = items[i], isOpen = i === open;
       li.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
-      li.style.opacity = isOpen ? "1" : Math.max(0.4, 0.4 + 0.6 * ((1 + Math.sin(a)) / 2)).toFixed(3);
+      li.style.opacity = isOpen ? "1" : Math.max(0.55, 0.55 + 0.45 * ((1 + Math.sin(a)) / 2)).toFixed(3);
       li.style.zIndex = String(isOpen ? 200 : Math.round(100 + 50 * Math.cos(a)));
     }
   };
