@@ -152,7 +152,7 @@
   .sy-node { grid-row: 1 / span 2; align-self: start; margin-bottom: 0; width: 1.875rem; height: 1.875rem; }
   .sy-when { grid-column: 2; grid-row: 1; display: none; }
   .sy-title { grid-column: 2; grid-row: 1; margin-top: 0.25rem; font-size: 0.9375rem; line-height: 1.25rem; }
-  .sy-title::after { content: " · " attr(data-when); }
+  .sy-title::before { content: attr(data-when) " · "; font-weight: 500; color: var(--foreground-dim); }
   .sy-text { grid-column: 2 / span 2; grid-row: 2; margin-top: 0.125rem; font-size: 0.8125rem; line-height: 1.15rem; }
   .sy-out { grid-column: 3; grid-row: 1; margin-top: 0; justify-self: end; }
   .sy-line { left: 0.9375rem; top: 0.9375rem; width: 2px; height: calc(100% - 2.75rem); margin: 0 0 0 -1px; }

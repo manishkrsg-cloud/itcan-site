@@ -166,7 +166,7 @@
 
 /* storyline cards on paper */
 :root[data-theme="light"] .sy-kick, :root[data-theme="light"] .sy-title { color: var(--ink); }
-:root[data-theme="light"] .sy-sum, :root[data-theme="light"] .sy-when { color: #6b7385; }
+:root[data-theme="light"] .sy-sum, :root[data-theme="light"] .sy-when, :root[data-theme="light"] .sy-title::before { color: #6b7385; }
 :root[data-theme="light"] .sy-text { color: #4a5163; }
 :root[data-theme="light"] .sy-rule { background: rgba(11, 18, 51, 0.08); }
 :root[data-theme="light"] .sy-line { background: rgba(11, 18, 51, 0.08); }
