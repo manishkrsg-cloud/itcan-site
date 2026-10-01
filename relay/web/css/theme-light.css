@@ -60,7 +60,6 @@
 :root[data-theme="light"] .pr-orbit::before { background: radial-gradient(closest-side, #ffffff 0%, #ffffff 74%, rgba(255, 255, 255, 0.7) 88%, transparent 100%); box-shadow: none; }
 :root[data-theme="light"] .pr-orbit::after { background: radial-gradient(closest-side, rgba(255, 61, 72, 0.1), transparent); }
 :root[data-theme="light"] .pr-ring { border-color: rgba(15, 20, 35, 0.12); }
-:root[data-theme="light"] .pr-node { background: #0a0c12; border-color: rgba(15, 20, 35, 0.2); box-shadow: 0 12px 26px -12px rgba(16, 24, 40, 0.55); }
 :root[data-theme="light"] .pr-name { color: var(--ink); text-shadow: none; }
 :root[data-theme="light"] .pr-nodes li.is-open .pr-name { color: var(--ink); }
 :root[data-theme="light"] .pr-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
@@ -72,12 +71,10 @@
 
 /* black and blue: ITCAN navy for ink and dark surfaces, ITCAN blue for the second accent */
 :root[data-theme="light"] .display { background: linear-gradient(180deg, #0b1233 0%, #22317f 100%); -webkit-background-clip: text; background-clip: text; }
-:root[data-theme="light"] .mark--dark { background: linear-gradient(135deg, #2b44c9, #13238f 55%, #0b1233); border-color: rgba(255, 255, 255, 0.18); }
 :root[data-theme="light"] .sp-cta { background: var(--blue); color: #fff; box-shadow: 0 12px 26px -12px rgba(31, 63, 214, 0.6); }
 :root[data-theme="light"] .sp-dot { background: #fff; color: var(--blue); }
 :root[data-theme="light"] .pr-chip[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
 :root[data-theme="light"] .pr-chip.is-rel { border-color: rgba(31, 63, 214, 0.45); color: var(--blue-deep); }
-:root[data-theme="light"] .pr-node { background: #0b1233; }
 :root[data-theme="light"] .ft-form button { background: var(--blue); color: #fff; }
 /* the outsourcing stack: red on top, then ITCAN blue, then navy */
 :root[data-theme="light"] .ly-slab.s2 path:first-child { fill: #2b44c9; stroke: rgba(255, 255, 255, 0.35); }
@@ -121,3 +118,16 @@
 :root[data-theme="light"] .sp-card.-lightart .sp-desc { color: #4a5163; }
 :root[data-theme="light"] .sp-card.-lightart .sp-kind { background: rgba(255, 255, 255, 0.82); border-color: rgba(15, 20, 35, 0.12); color: var(--ink); }
 :root[data-theme="light"] .sp-card.-lightart .sp-tags i { background: rgba(255, 255, 255, 0.85); border-color: rgba(31, 63, 214, 0.25); color: var(--blue-deep); }
+
+/* button hover wipe: ITCAN blue with white type (the dark theme wipes to white) */
+:root[data-theme="light"] .cta-ink { background: var(--blue); color: #fff; }
+
+/* practice icons: the neon art inverted into blue and red linework on white glass tiles */
+:root[data-theme="light"] .pr-node { background: #fff; border-color: rgba(31, 63, 214, 0.18); box-shadow: 0 14px 28px -14px rgba(19, 35, 143, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.8); }
+:root[data-theme="light"] .pr-thumb { filter: invert(1) hue-rotate(180deg) saturate(1.35) contrast(1.05); }
+:root[data-theme="light"] .pr-nodes li.is-open .pr-node { border-color: rgba(31, 63, 214, 0.5); box-shadow: 0 16px 32px -14px rgba(31, 63, 214, 0.55), 0 0 0 3px rgba(31, 63, 214, 0.12); }
+:root[data-theme="light"] .pr-node::after { background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent 42%); }
+/* awards grid on paper: soft blue for quiet years, red for awards */
+:root[data-theme="light"] .hm button.c0 { background: linear-gradient(90deg, rgba(31, 63, 214, 0.22), rgba(31, 63, 214, 0.07)); }
+:root[data-theme="light"] .hm button.c1 { background: linear-gradient(90deg, rgba(229, 34, 46, 0.6), rgba(229, 34, 46, 0.26)); }
+:root[data-theme="light"] .hm button.peak { background: linear-gradient(90deg, #ff3d48, rgba(255, 61, 72, 0.72)); }

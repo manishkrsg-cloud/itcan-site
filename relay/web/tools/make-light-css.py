@@ -22,6 +22,8 @@ SKIP = re.compile(r"\.sp-(card|inner|media|img|shade|sheen|top|num|kind|body|nam
 KEEP_VARS = re.compile(r"^--(glow|halo|accent|raw-color-red|raw-color-blue|card-|persp|u$|hero-|nav-h|page-width|ease|sp-ease|stream-|on-accent)")
 COLOR = re.compile(r"rgba?\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*(?:,\s*[\d.]+\s*)?\)|#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b|(?<![-\w])white(?![-\w])|(?<![-\w])black(?![-\w])")
 INK = (11, 18, 51)   # ITCAN navy ink for light pages
+BLUE = (31, 63, 214) # ITCAN blue: what white hover/selected states become on light pages
+STATE = re.compile(r":hover|:focus|:active|is-rel\b|is-on\b|aria-pressed=\"true\"|aria-selected=\"true\"|aria-current")
 
 def parse(c):
     c = c.strip()
@@ -40,13 +42,13 @@ def fmt(r, g, b, a):
     r, g, b = (max(0, min(255, int(round(v)))) for v in (r, g, b))
     return f"rgba({r}, {g}, {b}, {a:g})" if a is not None else f"#{r:02x}{g:02x}{b:02x}"
 
-def flip(c, shadow=False):
+def flip(c, shadow=False, state=False):
     r, g, b, a = parse(c)
     chroma, avg = max(r, g, b) - min(r, g, b), (r + g + b) / 3
     if shadow and avg < 60 and chroma < 30:           # drop shadows stay dark but softer
         return fmt(r, g, b, round((a if a is not None else 1) * 0.35, 3))
     if chroma < 40:                                    # neutrals
-        if avg >= 200: return fmt(*INK, a)             # white and near-white: ink
+        if avg >= 200: return fmt(*(BLUE if state else INK), a)  # white: ink (blue on hover/selected)
         if avg < 90:                                   # dark surfaces: light surfaces
             v = 255 - avg * 0.55
             return fmt(v - 3, v - 2, v, a)
@@ -56,9 +58,9 @@ def flip(c, shadow=False):
         return fmt(192, 24, 42, a) if r >= max(g, b) else fmt(50, 73, 201, a)
     return c                                           # brand colours stay
 
-def flip_value(prop, val):
+def flip_value(prop, val, state=False):
     shadow = prop in ("box-shadow", "text-shadow") or "drop-shadow" in val or (prop.startswith("--") and re.search(r"shadow|elevation", prop) is not None)
-    return COLOR.sub(lambda m: flip(m.group(0), shadow), val)
+    return COLOR.sub(lambda m: flip(m.group(0), shadow, state), val)
 
 def scope(sel):
     out = []
@@ -104,7 +106,7 @@ def rules(text):
             prop, val = prop.strip(), val.strip()
             if not PROPS.match(prop) or (prop.startswith("--") and KEEP_VARS.match(prop)): continue
             if not COLOR.search(val): continue
-            nv = flip_value(prop, val)
+            nv = flip_value(prop, val, bool(STATE.search(prelude)))
             if nv != val:
                 # a bare colour in the shorthand would reset size, position and repeat set elsewhere
                 if prop == "background" and COLOR.fullmatch(nv.strip()): prop = "background-color"

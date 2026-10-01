@@ -15,6 +15,11 @@
 .hm-rows li { height: calc(34 * var(--u)); line-height: calc(20 * var(--u)); }
 .hm { left: calc(88 * var(--u)); right: calc(23 * var(--u)); top: calc(65 * var(--u)); display: grid; grid-template-columns: repeat(17, 1fr); grid-template-rows: repeat(4, calc(28 * var(--u))) calc(30 * var(--u)); grid-auto-flow: column; column-gap: calc(6 * var(--u)); row-gap: calc(6 * var(--u)); }
 .hm button { all: unset; position: relative; border-radius: 4px; cursor: pointer; }
+/* cells: ITCAN blue shades for years without an award of that kind, red shades for awards */
+.hm button.c0 { background: linear-gradient(90deg, rgba(53, 82, 230, 0.36), rgba(43, 68, 201, 0.12)); }
+.hm button.c1 { background: linear-gradient(90deg, rgba(229, 34, 46, 0.66), rgba(229, 34, 46, 0.32)); }
+.hm button.c2 { background: linear-gradient(90deg, rgba(255, 61, 72, 0.95), rgba(255, 61, 72, 0.6)); }
+.hm button.peak { background: linear-gradient(90deg, #ff3d48, rgba(255, 61, 72, 0.72)); }
 .hm button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .hm .glow { position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 14px 2px rgba(255, 61, 72, 0.55); opacity: 0; }
 .hm .yr { align-self: end; text-align: center; font-family: var(--font-inter); font-size: 0.875rem; line-height: 1.25rem; color: var(--foreground-dim); position: relative; }

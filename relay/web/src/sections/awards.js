@@ -29,9 +29,9 @@ function heatmap(card) {
       const b = document.createElement("button");
       b.type = "button";
       b.setAttribute("aria-label", `${y}: ${n} ${CAT_NAME[c]} award${n === 1 ? "" : "s"}`);
-      const g = n === 0 ? [62, 65, 69, 0.42, 0.16] : n === 1 ? [229, 34, 46, 0.62, 0.32] : [255, 61, 72, 0.95, 0.6];
-      b.style.background = `linear-gradient(90deg, rgb(${g[0]} ${g[1]} ${g[2]} / ${g[3]}), rgb(${g[0]} ${g[1]} ${g[2]} / ${g[4]}))`;
-      if (y === latest && c === "e50") { b.style.background = "linear-gradient(90deg, #ff3d48, rgba(255,61,72,.72))"; const gl = document.createElement("i"); gl.className = "glow"; b.appendChild(gl); peak = gl; }
+      // shades live in CSS (awards.css): blue for a quiet year, red for a year with awards
+      b.className = n === 0 ? "c0" : n === 1 ? "c1" : "c2";
+      if (y === latest && c === "e50") { b.classList.add("peak"); const gl = document.createElement("i"); gl.className = "glow"; b.appendChild(gl); peak = gl; }
       b.addEventListener("click", () => setFilter({ year: y }));
       hm.appendChild(b);
       cells.push({ el: b, col, row });
