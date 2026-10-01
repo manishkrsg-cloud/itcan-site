@@ -1,0 +1,16 @@
+/* ------------------------------------------------------------ sectors: twelve industries, kept high level */
+.sectors { padding: 6rem 5rem 0; }
+.sectors > .shead { padding-bottom: 3rem; }
+.sc-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; }
+.sc-item { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; min-height: 9.5rem; padding: 1.25rem 1.25rem 1.375rem; border-radius: 1.25rem; border: 1px solid var(--border-subtle);
+  background: linear-gradient(to bottom, rgba(23, 24, 26, 0.55), rgba(14, 15, 17, 0.4)); transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease, box-shadow 0.5s ease; }
+.sc-item:hover { transform: translate3d(0, -4px, 0); border-color: rgba(109, 136, 255, 0.45); }
+.sc-ico { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 31.58%; border: 1px solid rgba(109, 136, 255, 0.22); background: rgba(109, 136, 255, 0.12); color: #8ea2ff;
+  --pi-fill: rgba(109, 136, 255, 0.16); --pi-red: #ff3d48; transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease; }
+.sc-ico svg { width: 1.875rem; height: 1.875rem; overflow: visible; }
+.sc-item:hover .sc-ico { background: linear-gradient(135deg, #2b44c9, #13238f); border-color: transparent; color: #fff; --pi-fill: rgba(255, 255, 255, 0.14); }
+.sc-name { margin-top: auto; font-weight: 500; font-size: 1rem; line-height: 1.3rem; letter-spacing: -0.01em; color: var(--foreground); text-wrap: balance; }
+@media (width <= 1200px) { .sectors { padding: 5rem 3rem 0; } .sc-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (width <= 900px) { .sectors { padding: 5rem 2.5rem 0; } .sc-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (width <= 580px) { .sectors { padding: 3rem 1.25rem 0; } .sectors > .shead { padding-bottom: 2rem; } .sc-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; } .sc-item { min-height: 8rem; padding: 1rem; } .sc-name { font-size: 0.9375rem; } }
+@media (prefers-reduced-motion: reduce) { .sc-item, .sc-item:hover { transform: none; } }
