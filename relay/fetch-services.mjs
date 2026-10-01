@@ -59,11 +59,19 @@ const LIST = [
   ['sec-tech', 'hf_20261001_095435_267fa85f-97a0-41fd-bb85-9d76894220a9'],
 ];
 
-// nine practice thumbnails, cut from one 3 x 3 sheet (1024 px, tiles ~316 px with even gaps)
-const PRACTICE_SHEET = 'hf_20261001_041754_ffba951e-a93c-44a9-88b3-5534c6470494';
+// nine practice thumbnails (the modern practice set, 1 Oct 2026), one photograph each
 const PRACTICE_OUT = path.join(__dirname, 'public', 'assets', 'practices');
-const PRACTICES = ['erp', 'apps', 'os', 'lang', 'rdbms', 'portals', 'web', 'microsoft', 'java'];
-const CELL = [17, 353, 689], TILE = 316, INSET = 10;
+const PRACTICES = [
+  ['ai', 'hf_20261001_115730_61aa476c-ba4a-4936-a4ec-75fb9faf9f7c'],
+  ['cloud', 'hf_20261001_115730_90c41d20-7e05-4f8d-a86e-fdcc0c5ddc51'],
+  ['data', 'hf_20261001_115730_983b0403-9007-4746-ae60-52f4d7a34d9e'],
+  ['security', 'hf_20261001_115730_26bdf9d9-9ee9-4923-aade-db14df3cb6c3'],
+  ['erpcrm', 'hf_20261001_115730_9b069751-bbd5-4294-beb5-d82c2c9b2a0f'],
+  ['automation', 'hf_20261001_115730_353ecd9c-178b-420a-9457-792f810ebc5d'],
+  ['webmobile', 'hf_20261001_115730_9e25f222-7ac1-4e8b-9555-11beddc7cb07'],
+  ['modern', 'hf_20261001_115730_146ff282-dcda-4260-bf18-b248450451f7'],
+  ['quality', 'hf_20261001_115730_5c14d088-d1d6-4f11-9ad3-84de4870b09c'],
+];
 
 const VIDEO_OUT = path.join(__dirname, 'public', 'assets', 'video');
 const FILM = 'https://d2ol7oe51mr4n9.cloudfront.net/user_2zirxwP6e4obj22XOM5lG6LDlk1/';
@@ -113,17 +121,16 @@ async function processOne([slug, id]) {
 
 async function practices() {
   await fs.mkdir(PRACTICE_OUT, { recursive: true });
-  const outs = PRACTICES.map((n) => path.join(PRACTICE_OUT, n + '.webp'));
-  if ((await Promise.all(outs.map(exists))).every(Boolean)) return console.log('[practices] cached');
-  if (!sharp) return console.log('[practices] skipped: sharp not available');
-  try {
-    const sheet = await get(BASE + PRACTICE_SHEET + '.png');
-    await Promise.all(PRACTICES.map((n, i) => {
-      const left = CELL[i % 3] + INSET, top = CELL[Math.floor(i / 3)] + INSET, size = TILE - INSET * 2;
-      return sharp(sheet).extract({ left, top, width: size, height: size }).resize(200, 200).webp({ quality: 80, effort: 5 }).toFile(outs[i]);
-    }));
-    console.log('[practices] ok     9 thumbnails');
-  } catch (err) { console.log('[practices] FAILED:', err.message); }
+  await Promise.all(PRACTICES.map(async ([name, id]) => {
+    const out = path.join(PRACTICE_OUT, name + '.webp');
+    if (await exists(out)) return console.log(`[practices] cached ${name}`);
+    try {
+      const buf = await get(BASE + id + '.png');
+      if (sharp) await sharp(buf).resize(200, 200, { fit: 'cover' }).webp({ quality: 80, effort: 5 }).toFile(out);
+      else await fs.writeFile(out, buf);
+      console.log(`[practices] ok     ${name}`);
+    } catch (err) { console.log(`[practices] FAILED ${name}: ${err.message}`); }
+  }));
 }
 
 async function main() {

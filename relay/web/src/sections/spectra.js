@@ -24,14 +24,14 @@ const SLIDES = [
     desc: "We support and upgrade your existing systems while new ones roll out, so your team stays focused on the business.",
     tags: ["Support", "Upgrades", "Roll-outs"] },
   { name: "ERP and CRM", kind: "Practice", img: "erp-p", href: "#integrations", glow: "#e6ad66",
-    desc: "Enterprise systems selected, rolled out and supported, and connected to the rest of your business.",
-    tags: ["ERP", "CRM", "Enterprise apps"] },
-  { name: "Java and Microsoft", kind: "Practice", img: "code-p", href: "#integrations", glow: "#79a2dc",
-    desc: "Engineering across Java and Microsoft technologies, programming languages, databases and operating systems.",
-    tags: ["Java", "Microsoft", "RDBMS"] },
-  { name: "Web and portals", kind: "Practice", img: "web-p", href: "#integrations", glow: "#ff6f9a",
-    desc: "Websites and portals, from the screens your users see to the systems behind them.",
-    tags: ["Web", "Portals", "Front-end"] },
+    desc: "SAP, Microsoft Dynamics 365, Salesforce and Oracle, selected, rolled out and supported, and connected to the rest of your business.",
+    tags: ["SAP", "Dynamics 365", "Salesforce"] },
+  { name: "Cloud and modernisation", kind: "Practice", img: "code-p", href: "#integrations", glow: "#79a2dc",
+    desc: "Legacy Java and .NET systems moved to microservices and the cloud, with DevOps pipelines and AI built in.",
+    tags: ["Cloud", "Microservices", "AI"] },
+  { name: "Web and mobile", kind: "Practice", img: "web-p", href: "#integrations", glow: "#ff6f9a",
+    desc: "Web apps, portals and mobile apps, from the screens your users see to the systems behind them.",
+    tags: ["React", "Next.js", "Flutter"] },
 ];
 const N = SLIDES.length;
 const CARD_W = 440, CARD_H = 584;
