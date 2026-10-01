@@ -53,8 +53,9 @@ function bars(box) {
     svg.setAttribute("preserveAspectRatio", "none");
     svg.style.width = "100%";
     svg.innerHTML = `<defs><linearGradient id="brG" x1="0" y1="0" x2="1" y2="1"><stop offset=".4171" stop-color="#ffd6d9"/><stop offset="1" stop-color="#ff3d48"/></linearGradient></defs>` +
-      Array.from({ length: 11 }, (_, i) => `<rect x="${(i * pitch).toFixed(2)}" width="${bw.toFixed(2)}" rx="${Math.min(6, bw / 3)}" fill="url(#brG)" y="56" height="0"/>`).join("");
-    rects = Array.from(svg.querySelectorAll("rect"));
+      Array.from({ length: 11 }, (_, i) => `<rect class="b" x="${(i * pitch).toFixed(2)}" width="${bw.toFixed(2)}" rx="${Math.min(6, bw / 3)}" fill="url(#brG)" y="56" height="0"/>`).join("") +
+      Array.from({ length: 3 }, (_, i) => `<rect class="dim" x="${((11 + i) * pitch).toFixed(2)}" width="${bw.toFixed(2)}" rx="${Math.min(6, bw / 3)}" y="22" height="34"/>`).join("");
+    rects = Array.from(svg.querySelectorAll("rect.b"));
   };
   build();
   new ResizeObserver(build).observe(box);

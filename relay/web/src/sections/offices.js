@@ -77,12 +77,16 @@ export function initOffices() {
   // live clocks on the address cards
   const cards = Array.from(sec.querySelectorAll(".of-addr[data-tz]"));
   const tickCards = () => cards.forEach((c) => {
-    const t = c.querySelector(".of-clock");
+    const t = c.querySelector(".of-clock"), st = c.querySelector(".of-state"), on = isOpen(c.dataset.tz);
     t.textContent = localTime(c.dataset.tz, false);
-    t.classList.toggle("open", isOpen(c.dataset.tz));
-    t.setAttribute("title", isOpen(c.dataset.tz) ? "office hours now" : "outside office hours");
+    t.classList.toggle("open", on);
+    if (st) st.textContent = on ? "Open" : "After hours";
+    t.setAttribute("title", on ? "office hours now" : "outside office hours");
   });
   tickCards();
   let iv = 0;
+  const grid = sec.querySelector(".of-grid");
   onView(sec, (hit) => { clearInterval(iv); if (hit) { tickCards(); iv = setInterval(tickCards, 15000); } });
+  // the map pins only ping while the cards are on screen
+  if (grid) onView(grid, (hit) => grid.classList.toggle("is-live", hit));
 }

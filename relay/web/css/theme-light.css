@@ -9,11 +9,12 @@
 :root[data-theme="light"] {
   color-scheme: light;
   --paper: #f5f6f8;
-  --ink: #0c101c;
+  --ink: #0b1233;
+  --blue: #1f3fd6;
+  --blue-deep: #13238f;
   --hair: rgba(15, 20, 35, 0.08);
   --lift: 0 1px 2px rgba(16, 24, 40, 0.04), 0 18px 40px -20px rgba(16, 24, 40, 0.18);
   --background: var(--paper);
-  --plate: var(--paper);
   --card-glass: #ffffff;
   --glass-slab: transparent;
   --glass-slab-edge: transparent;
@@ -68,3 +69,45 @@
 :root[data-theme="light"] .g-bloom, :root[data-theme="light"] .g-blue, :root[data-theme="light"] .g-violet, :root[data-theme="light"] .pf-bloom { display: none; }
 :root[data-theme="light"] .ft-brand { background: #fff; border-color: var(--hair); box-shadow: var(--lift); }
 :root[data-theme="light"] .ft-title em { color: #d41e2b; }
+
+/* black and blue: ITCAN navy for ink and dark surfaces, ITCAN blue for the second accent */
+:root[data-theme="light"] .display { background: linear-gradient(180deg, #0b1233 0%, #22317f 100%); -webkit-background-clip: text; background-clip: text; }
+:root[data-theme="light"] .mark--dark { background: linear-gradient(135deg, #2b44c9, #13238f 55%, #0b1233); border-color: rgba(255, 255, 255, 0.18); }
+:root[data-theme="light"] .sp-cta { background: var(--blue); color: #fff; box-shadow: 0 12px 26px -12px rgba(31, 63, 214, 0.6); }
+:root[data-theme="light"] .sp-dot { background: #fff; color: var(--blue); }
+:root[data-theme="light"] .pr-chip[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+:root[data-theme="light"] .pr-chip.is-rel { border-color: rgba(31, 63, 214, 0.45); color: var(--blue-deep); }
+:root[data-theme="light"] .pr-node { background: #0b1233; }
+:root[data-theme="light"] .ft-form button { background: var(--blue); color: #fff; }
+/* the outsourcing stack: red on top, then ITCAN blue, then navy */
+:root[data-theme="light"] .ly-slab.s2 path:first-child { fill: #2b44c9; stroke: rgba(255, 255, 255, 0.35); }
+:root[data-theme="light"] .ly-slab.s3 path:first-child { fill: #0b1233; stroke: rgba(255, 255, 255, 0.2); }
+:root[data-theme="light"] .ly-slab.s2 path:nth-child(2) { fill: #1a2c9e; }
+:root[data-theme="light"] .ly-slab.s2 path:nth-child(3) { fill: #13238f; }
+:root[data-theme="light"] .ly-slab.s3 path:nth-child(2) { fill: #0d1640; }
+:root[data-theme="light"] .ly-slab.s3 path:nth-child(3) { fill: #080e2c; }
+
+/* office cards: white body under the navy map band */
+:root[data-theme="light"] .of-addr { background: #fff; border-color: var(--hair); box-shadow: var(--lift); }
+:root[data-theme="light"] .of-addr:hover { border-color: rgba(31, 63, 214, 0.28); box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 30px 50px -26px rgba(19, 35, 143, 0.4); }
+:root[data-theme="light"] .of-addr.hq { border-color: rgba(229, 34, 46, 0.3); }
+:root[data-theme="light"] .of-addr.hq:hover { border-color: rgba(229, 34, 46, 0.5); box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 30px 50px -26px rgba(229, 34, 46, 0.35); }
+:root[data-theme="light"] .of-top h3 { color: var(--ink); }
+:root[data-theme="light"] .of-ic { color: var(--blue); }
+:root[data-theme="light"] .of-addr.hq .of-ic { color: #e5222e; }
+:root[data-theme="light"] .of-line a:hover { color: var(--blue); }
+:root[data-theme="light"] .of-map { background: #fff; border-color: rgba(31, 63, 214, 0.22); color: var(--blue-deep); }
+:root[data-theme="light"] .of-map:hover { background: var(--blue); border-color: var(--blue); color: #fff; }
+:root[data-theme="light"] .of-addr.hq .of-map:hover { background: #e5222e; border-color: #e5222e; }
+
+/* numbers and quotes: white cards, navy-to-blue figures */
+:root[data-theme="light"] .pf-stat, :root[data-theme="light"] .pf-quote { background: #fff; border-color: var(--hair); box-shadow: var(--lift); }
+:root[data-theme="light"] .pf-stat:hover, :root[data-theme="light"] .pf-quote:hover { box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 30px 50px -26px rgba(19, 35, 143, 0.35); }
+:root[data-theme="light"] .pf-num { background: linear-gradient(180deg, #0b1233 20%, #2b44c9 130%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+:root[data-theme="light"] .pf-quote blockquote { color: var(--ink); }
+:root[data-theme="light"] .pf-quote blockquote + figcaption { border-top-color: var(--hair); }
+:root[data-theme="light"] .pf-vis.bars .dim { fill: rgba(11, 18, 51, 0.07); }
+:root[data-theme="light"] .pg-track { background: rgba(11, 18, 51, 0.07); }
+:root[data-theme="light"] .pf-navy .pf-pill { color: var(--blue-deep); background: rgba(31, 63, 214, 0.06); border-color: rgba(31, 63, 214, 0.3); }
+:root[data-theme="light"] .pf-navy .pf-qmark { color: var(--blue); }
+:root[data-theme="light"] .pf-stat::after { opacity: 0.6; }

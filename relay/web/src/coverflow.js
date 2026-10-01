@@ -9,7 +9,7 @@ const wrapOf = (n) => (o) => { o = ((o % n) + n) % n; return o > n / 2 ? o - n :
 export function createCoverflow({
   root, stage, deck, count, build, cardClass = "cf-card",
   geo = { gap: 150, rotate: 38, depth: 150, drop: 22, shrink: 0.14, fade: 0.3, dim: 0.22, visible: 2 },
-  cardW = 240, cardH = 310, persp = 1680, autoplayMs = 3600, ease = 0.14, sensitivity = 0.0072, start = 0,
+  cardW = 240, cardH = 310, persp = 1680, autoplayMs = 3600, firstMs = 1200, ease = 0.14, sensitivity = 0.0072, start = 0,
   fit = () => 1, onActive = () => {}, onOpen = () => {}, near = null,
 }) {
   let N = count, wrap = wrapOf(N);
@@ -24,7 +24,7 @@ export function createCoverflow({
       el.classList.add(cardClass);
       el.addEventListener("click", () => {
         if (moved) return;
-        if (i === activeIndex()) onOpen(i); else go(i);
+        if (i === activeIndex()) onOpen(i); else { go(i); sync(true); }
       });
       deck.appendChild(el);
       return el;
@@ -54,7 +54,7 @@ export function createCoverflow({
       const sc = Math.max(0.4, 1 - ao * shrink);
       cards[i].style.transform = `translate3d(${(o * gap * scale).toFixed(2)}px, ${(ao * drop * scale).toFixed(2)}px, ${(-ao * depth * scale).toFixed(2)}px) rotateY(${(-o * rotate).toFixed(2)}deg) scale(${sc.toFixed(4)})`;
       set(i, "opacity", Math.max(0, 1 - ao * fade).toFixed(3));
-      set(i, "filter", `brightness(${Math.max(0.3, 1 - ao * dim).toFixed(3)}) saturate(${(1 + (1 - Math.min(1, ao)) * 0.25).toFixed(3)})`);
+      set(i, "filter", `brightness(${Math.max(0.3, 1 - ao * dim).toFixed(2)})`);
       set(i, "zIndex", String(Math.round(100 - ao * 10)));
       set(i, "pointerEvents", "auto");
     }
@@ -119,16 +119,25 @@ export function createCoverflow({
     else if (e.key === "End") { go(N - 1); e.preventDefault(); }
   });
 
-  // autoplay pauses on hover, focus, drag, a hidden tab, or when scrolled away
-  let hovering = false, focused = false, started = false, paused = false, timer = 0;
+  // autoplay pauses while the pointer rests on the front card, during keyboard focus, a drag,
+  // a hidden tab, or when scrolled away. The first move comes soon after start, then a steady beat.
+  let hovering = false, focused = false, started = false, paused = false, timer = 0, first = true;
   const active = () => started && !paused && autoplayMs > 0 && !reduced && !hovering && !focused && !dragging && inView && !document.hidden;
-  function sync() { clearInterval(timer); timer = 0; if (active()) timer = setInterval(next, autoplayMs); }
-  stage.addEventListener("mouseenter", () => { hovering = true; sync(); });
-  stage.addEventListener("mouseleave", () => { hovering = false; sync(); });
-  root.addEventListener("focusin", () => { focused = true; sync(); });
-  root.addEventListener("focusout", () => { focused = false; sync(); });
-  document.addEventListener("visibilitychange", sync);
-  onView(root, (hit) => { inView = hit; sync(); if (hit) kick(); });
+  const beat = () => { next(); timer = 0; first = false; sync(); };
+  function sync(resume) {
+    clearTimeout(timer); timer = 0;
+    if (active()) timer = setTimeout(beat, first ? firstMs : resume ? Math.min(autoplayMs, 2200) : autoplayMs);
+  }
+  stage.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    const h = !!(e.target.closest && e.target.closest(`.${cardClass}.is-active`));
+    if (h !== hovering) { hovering = h; sync(!h); }
+  }, { passive: true });
+  stage.addEventListener("pointerleave", () => { if (hovering) { hovering = false; sync(true); } });
+  root.addEventListener("focusin", (e) => { focused = !!(e.target.matches && e.target.matches(":focus-visible")); sync(); });
+  root.addEventListener("focusout", () => { if (focused) { focused = false; sync(true); } });
+  document.addEventListener("visibilitychange", () => sync(true));
+  onView(root, (hit) => { inView = hit; sync(true); if (hit) kick(); });
 
   let rz = 0;
   addEventListener("resize", () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { layout(); paint(); }); });
@@ -139,7 +148,7 @@ export function createCoverflow({
     start() { started = true; sync(); },
     pause(p) { paused = p; sync(); },
     layout() { layout(); paint(); },
-    go, next, prev,
+    go(i) { go(i); sync(true); }, next() { next(); sync(true); }, prev() { prev(); sync(true); },
     get index() { return activeIndex(); },
     rebuild(n, fn, at = 0) {
       N = n; wrap = wrapOf(N); build = fn || build;
