@@ -9,7 +9,7 @@
 .mt-input { -webkit-appearance: none; appearance: none; left: 0; top: calc(18 * var(--u)); width: 100%; height: calc(26 * var(--u)); margin: 0; opacity: 0; cursor: pointer; z-index: 2; }
 .mt-input::-webkit-slider-thumb { -webkit-appearance: none; width: 1px; height: 1px; }
 .mt-input::-moz-range-thumb { width: 1px; height: 1px; border: 0; }
-.mt-track { left: 0; top: calc(25 * var(--u)); width: calc(var(--tw) * var(--u)); height: calc(12 * var(--u)); border-radius: 999px; overflow: clip; background: rgba(255, 255, 255, 0.08); }
+.mt-track { left: 0; top: calc(25 * var(--u)); width: calc(var(--tw) * var(--u)); height: calc(12 * var(--u)); border-radius: 999px; overflow: clip; background: rgba(109, 136, 255, 0.16); }
 .mt-input:focus-visible ~ .mt-track { outline: 2px solid var(--accent); outline-offset: 4px; }
 .mt-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: linear-gradient(to right, rgba(255, 61, 72, 0.35), rgba(255, 61, 72, 0.95)); }
 .mt-knob-box { left: 0; top: 0; width: 100%; height: calc(76 * var(--u)); pointer-events: none; }

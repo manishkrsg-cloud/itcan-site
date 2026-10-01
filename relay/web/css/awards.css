@@ -27,7 +27,7 @@
 .hm .rule { position: absolute; left: 0; right: 0; top: -0.3rem; height: 2px; border-radius: 1px; background: rgba(255, 61, 72, 0.75); transform-origin: left; transform: scaleX(0); }
 
 .ring { left: 50%; top: calc(62 * var(--u)); width: calc(130 * var(--u)); height: calc(130 * var(--u)); margin-left: calc(-65 * var(--u)); overflow: visible; }
-.ring-track { fill: none; stroke: #383b3e; stroke-width: 10; }
+.ring-track { fill: none; stroke: rgba(109, 136, 255, 0.22); stroke-width: 10; }
 .ring-arc { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
 .ring-fig { left: 50%; top: calc(107 * var(--u)); width: calc(130 * var(--u)); margin-left: calc(-65 * var(--u)); text-align: center; font-weight: 500; font-size: 2rem; line-height: 2.5rem; letter-spacing: -0.0625rem; font-variant-numeric: tabular-nums; }
 .ring-cap { left: calc(23 * var(--u)); right: calc(23 * var(--u)); top: calc(209 * var(--u)); text-align: center; font-size: 1rem; line-height: 1.5rem; color: var(--foreground-muted); }
@@ -54,9 +54,9 @@
 .lg-all { background: var(--accent); } .lg-e50 { background: var(--blue); }
 
 .dotmap { left: calc(23 * var(--u)); top: calc(53 * var(--u)); width: calc(366 * var(--u)); height: calc(132 * var(--u)); overflow: visible; }
-.dotmap .d { fill: rgba(166, 166, 166, 0.38); }
-.dotmap .ring0 { fill: none; stroke: rgba(194, 194, 194, 0.35); }
-.dotmap .halo { fill: rgba(194, 194, 194, 0.22); filter: blur(3px); }
+.dotmap .d { fill: rgba(109, 136, 255, 0.5); }
+.dotmap .ring0 { fill: none; stroke: rgba(109, 136, 255, 0.5); }
+.dotmap .halo { fill: rgba(109, 136, 255, 0.28); filter: blur(3px); }
 .dotmap .pin { fill: #ffd6d9; }
 .dotmap .ping { fill: none; stroke: var(--accent); opacity: 0; }
 .dotmap .plate { fill: rgba(11, 11, 11, 0.9); }

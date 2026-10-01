@@ -133,3 +133,22 @@
 :root[data-theme="light"] .hm button.c0 { background: linear-gradient(90deg, rgba(31, 63, 214, 0.22), rgba(31, 63, 214, 0.07)); }
 :root[data-theme="light"] .hm button.c1 { background: linear-gradient(90deg, rgba(229, 34, 46, 0.6), rgba(229, 34, 46, 0.26)); }
 :root[data-theme="light"] .hm button.peak { background: linear-gradient(90deg, #ff3d48, rgba(255, 61, 72, 0.72)); }
+
+/* moving lines and lanes: ITCAN blue on paper (the lead item keeps its red) */
+:root[data-theme="light"] .tr-span { background: linear-gradient(to right, #13238f, #3f5ff0); }
+:root[data-theme="light"] .tr-span.s1 { background: linear-gradient(to right, #b3161f, #ff3d48); }
+:root[data-theme="light"] .es-lane, :root[data-theme="light"] .tz-lane { background: rgba(31, 63, 214, 0.1); }
+:root[data-theme="light"] .es-lane i, :root[data-theme="light"] .tz-fill { background: linear-gradient(to right, #13238f, #3f5ff0); }
+:root[data-theme="light"] .es-rows li:first-child .es-lane i { background: linear-gradient(to right, #b3161f, #ff3d48); }
+:root[data-theme="light"] .tz-rows li:first-child .tz-fill { background: var(--accent); }
+:root[data-theme="light"] .ring-track { stroke: rgba(31, 63, 214, 0.14); }
+:root[data-theme="light"] .dotmap .d { fill: rgba(31, 63, 214, 0.42); }
+:root[data-theme="light"] .dotmap .ring0 { stroke: rgba(31, 63, 214, 0.45); }
+:root[data-theme="light"] .dotmap .halo { fill: rgba(31, 63, 214, 0.2); }
+:root[data-theme="light"] .mt-track { background: rgba(31, 63, 214, 0.12); }
+:root[data-theme="light"] .pr-ring { border-color: rgba(31, 63, 214, 0.28); }
+:root[data-theme="light"] .ft-glyph path { stroke: var(--blue); }
+/* footer email field: a white pill with a blue button, as in dark */
+:root[data-theme="light"] .ft-form { background: #fff; border: 1px solid rgba(31, 63, 214, 0.2); box-shadow: 0 10px 24px -16px rgba(19, 35, 143, 0.4); }
+:root[data-theme="light"] .ft-form input { color: var(--ink); }
+:root[data-theme="light"] .ft-form input::placeholder { color: rgba(11, 18, 51, 0.45); }

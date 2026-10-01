@@ -27,7 +27,7 @@
 .pending .tr-lab { color: var(--foreground-muted); }
 .tr-track { position: relative; height: 0.75rem; }
 .tr-span, .tr-pend { position: absolute; top: 0; height: 100%; left: calc(var(--x) * 1%); width: calc(var(--w) * 1%); transform-origin: left center; }
-.tr-span { border-radius: 4px; background: rgba(255, 255, 255, 0.8); }
+.tr-span { border-radius: 4px; background: linear-gradient(to right, #2b44c9, #6d88ff); }
 .tr-span.s1 { background: linear-gradient(to right, #b3161f, #ff3d48); }
 .tr-pend { overflow: visible; }
 .tr-pend rect { fill: rgba(255, 61, 72, 0.18); stroke: rgba(255, 61, 72, 0.55); stroke-dasharray: 3 4; vector-effect: non-scaling-stroke; }
@@ -90,8 +90,8 @@
 .es-rows li:last-child { border-bottom: 0; }
 .es-name { font-weight: 500; font-size: 1rem; line-height: 1.5rem; white-space: nowrap; }
 .es-what { color: var(--foreground-dim); white-space: nowrap; }
-.es-lane { position: relative; height: 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); overflow: clip; }
-.es-lane i { position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--f) * 100%); border-radius: inherit; background: rgba(255, 255, 255, 0.32); transform-origin: left; }
+.es-lane { position: relative; height: 10px; border-radius: 999px; background: rgba(109, 136, 255, 0.12); overflow: clip; }
+.es-lane i { position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--f) * 100%); border-radius: inherit; background: linear-gradient(to right, #2b44c9, #6d88ff); transform-origin: left; }
 .es-rows li:first-child .es-lane i { background: linear-gradient(to right, #b3161f, #ff3d48); }
 .es-tag { justify-self: end; border-radius: 6px; padding: 0.125rem 0.5rem; border: 1px solid rgba(255, 61, 72, 0.4); background: rgba(255, 61, 72, 0.08); color: var(--accent); white-space: nowrap; }
 
@@ -180,3 +180,10 @@
   .es-name { font-size: 0.8125rem; }
   .es-lane { height: 5px; }
 }
+/* the outsourcing stack: red on top, then ITCAN blue, then deep blue (no grey plates) */
+.ly-slab.s2 path:first-child { fill: #2b44c9; stroke: rgba(255, 255, 255, 0.3); }
+.ly-slab.s2 path:nth-child(2) { fill: #1a2c9e; }
+.ly-slab.s2 path:nth-child(3) { fill: #13238f; }
+.ly-slab.s3 path:first-child { fill: #16236b; stroke: rgba(255, 255, 255, 0.18); }
+.ly-slab.s3 path:nth-child(2) { fill: #0f1a52; }
+.ly-slab.s3 path:nth-child(3) { fill: #0b1440; }
