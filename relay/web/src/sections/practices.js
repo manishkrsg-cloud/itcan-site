@@ -14,6 +14,11 @@ const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 export function initPractices() {
   const sec = document.getElementById("integrations");
   if (!sec) return;
+  // a daylight photo that fails to load is removed, so the line icon shows instead
+  sec.querySelectorAll(".pr-thumb--l").forEach((img) => {
+    const drop = () => img.remove();
+    if (img.complete && !img.naturalWidth && img.currentSrc) drop(); else img.addEventListener("error", drop, { once: true });
+  });
   const orbit = sec.querySelector("[data-orbit]");
   if (!orbit) return;
   const items = Array.from(orbit.querySelectorAll(".pr-nodes li"));
@@ -29,7 +34,8 @@ export function initPractices() {
   const measure = () => {
     const W = orbit.clientWidth, H = orbit.clientHeight;
     cx = W / 2; cy = H / 2;
-    r = Math.max(90, Math.min(205, W / 2 - 70, H / 2 - 70));
+    const edge = W < 520 ? 48 : 70; // phones show names only for the open practice, so the ring can sit wider
+    r = Math.max(90, Math.min(205, W / 2 - edge, H / 2 - edge));
     orbit.style.setProperty("--r", `${r.toFixed(1)}px`);
     card.style.top = `${(cy - r + (W < 520 ? 78 : 98)).toFixed(1)}px`;
   };

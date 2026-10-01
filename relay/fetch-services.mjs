@@ -71,6 +71,16 @@ const PRACTICES = [
   ['webmobile', 'hf_20261001_115730_9e25f222-7ac1-4e8b-9555-11beddc7cb07'],
   ['modern', 'hf_20261001_115730_146ff282-dcda-4260-bf18-b248450451f7'],
   ['quality', 'hf_20261001_115730_5c14d088-d1d6-4f11-9ad3-84de4870b09c'],
+  // daylight versions of the same scenes, used in the light theme
+  ['ai-l', 'hf_20261001_120729_5636854b-d977-49aa-8c9f-24a6de1a1de6'],
+  ['cloud-l', 'hf_20261001_120728_97341205-343f-48e2-8ddc-8cc18f9f6b54'],
+  ['data-l', 'hf_20261001_120728_aa16f9b6-256d-4afb-9f02-87ad132a1fd0'],
+  ['security-l', 'hf_20261001_120729_f468d9b4-ffb4-437c-ba32-15db05a89b62'],
+  ['erpcrm-l', 'hf_20261001_120729_0621f70f-e00d-4dbe-93d0-233fa907cca0'],
+  ['automation-l', 'hf_20261001_120729_32b64ac3-e7a6-482e-b059-ca20535e2b82'],
+  ['webmobile-l', 'hf_20261001_120729_158de9e7-f5d8-48df-9a9a-98703be5c46b'],
+  ['modern-l', 'hf_20261001_120729_b8c1ebe1-5b82-44a8-91e3-d1aaf83f7ae9'],
+  ['quality-l', 'hf_20261001_120729_a6bc1122-f856-4789-9295-9470b4098ffe'],
 ];
 
 const VIDEO_OUT = path.join(__dirname, 'public', 'assets', 'video');

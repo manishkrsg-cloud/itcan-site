@@ -127,6 +127,9 @@
 /* light theme: crisp vector icons (ITCAN blue line work, one red accent) replace the neon art */
 :root[data-theme="light"] .pr-thumb { display: none; }
 :root[data-theme="light"] .pr-ico { display: block; color: var(--blue); --pi-fill: #eaf0ff; --pi-red: #e5222e; }
+/* daylight photographs on the practice markers; the line icons stay as the fallback */
+:root[data-theme="light"] .pr-thumb--l { display: block; filter: saturate(1.05) contrast(1.02); }
+:root[data-theme="light"] .pr-node:has(.pr-thumb--l) .pr-ico { display: none; }
 :root[data-theme="light"] .pr-nodes li.is-open .pr-node { border-color: rgba(31, 63, 214, 0.5); box-shadow: 0 16px 32px -14px rgba(31, 63, 214, 0.55), 0 0 0 3px rgba(31, 63, 214, 0.12); }
 :root[data-theme="light"] .pr-node::after { background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent 42%); }
 /* awards grid on paper: soft blue for quiet years, red for awards */
