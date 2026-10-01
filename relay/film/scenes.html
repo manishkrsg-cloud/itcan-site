@@ -1,0 +1,240 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- ITCAN story film: every graphic frame is drawn here and captured by render.mjs.
+     setFrame(scene, t) puts the page in the exact state for time t (seconds). -->
+<style>
+@font-face { font-family: Geist; src: url(a/geist.woff2) format("woff2"); font-weight: 100 900; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; font-family: Geist, system-ui, sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+body.solid { background: #050609; }
+body.clear { background: transparent; }
+.scene { position: absolute; inset: 0; display: none; }
+.scene.on { display: block; }
+.bg { position: absolute; inset: 0; background:
+  radial-gradient(900px 700px at 74% 42%, rgba(255, 61, 72, 0.22), transparent 70%),
+  radial-gradient(800px 600px at 12% 88%, rgba(70, 100, 255, 0.16), transparent 70%), #050609; }
+.dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.09) 1.2px, transparent 1.6px); background-size: 34px 34px; }
+.black { position: absolute; inset: 0; background: #000; pointer-events: none; }
+.tile { position: relative; display: block; border-radius: 31.58%; background: linear-gradient(135deg, #ff7a82, #e5222e 71%); border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 0 40px -4px rgba(255,61,72,0.75); overflow: hidden; }
+.tile svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tile::after { content: ""; position: absolute; left: 12%; right: 12%; top: -30%; height: 55%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,0.25), transparent); }
+/* clip overlays */
+.wm { position: absolute; left: 72px; top: 60px; display: flex; align-items: center; gap: 14px; }
+.wm img { height: 40px; width: auto; }
+.sup { position: absolute; left: 96px; bottom: 120px; max-width: 1300px; }
+.sup .bar { display: block; width: 64px; height: 4px; border-radius: 4px; background: #ff3d48; margin-bottom: 26px; }
+.sup h2 { font-size: 84px; line-height: 1.04; font-weight: 600; letter-spacing: -0.035em; text-shadow: 0 6px 40px rgba(0,0,0,0.55); }
+.sup h2 em { font-style: normal; color: #ff5a64; }
+.shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.25), transparent 30%, transparent 50%, rgba(0,0,0,0.6)); }
+/* service scenes */
+.svc .copy { position: absolute; left: 150px; top: 0; bottom: 0; width: 820px; display: flex; flex-direction: column; justify-content: center; }
+.eyebrow { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 500; letter-spacing: 0.02em; color: rgba(236,238,243,0.75); }
+.eyebrow .tile { width: 44px; height: 44px; box-shadow: 0 0 24px -4px rgba(255,61,72,0.7); }
+.eyebrow b { color: #ff5a64; font-weight: 600; }
+.svc h1 { margin-top: 34px; font-size: 156px; line-height: 0.98; font-weight: 600; letter-spacing: -0.05em; background: linear-gradient(180deg, #fff, #c9ccd4); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.svc p { margin-top: 40px; font-size: 40px; line-height: 1.32; font-weight: 400; color: rgba(236,238,243,0.82); letter-spacing: -0.01em; }
+.svc p span { display: block; }
+.card { position: absolute; right: 190px; top: 130px; width: 616px; height: 820px; border-radius: 40px; overflow: hidden; border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 60px 120px -40px rgba(0,0,0,0.95), 0 0 120px -30px var(--glow, #ff3d48); background: #0b0c10; }
+.card img.art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transform-origin: 50% 35%; }
+.card .fade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(5,6,9,0.85)); }
+.card .tile { position: absolute; left: 30px; top: 30px; width: 54px; height: 54px; }
+.card .name { position: absolute; left: 34px; bottom: 34px; font-size: 38px; font-weight: 600; letter-spacing: -0.03em; }
+/* reach scene */
+.reach h1, .awards h1 { position: absolute; left: 0; right: 0; top: 120px; text-align: center; font-size: 92px; font-weight: 600; letter-spacing: -0.045em; }
+.reach h1 b, .awards h1 b { color: #ff4a55; font-weight: 600; }
+.ring { position: absolute; left: 50%; top: 600px; width: 720px; height: 720px; margin: -360px 0 0 -360px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.14); }
+.ring2 { width: 560px; height: 560px; margin: -280px 0 0 -280px; border-style: dashed; border-color: rgba(109,136,255,0.28); }
+.hub { position: absolute; left: 50%; top: 600px; width: 150px; height: 150px; margin: -75px 0 0 -75px; }
+.city { position: absolute; left: 0; top: 0; padding: 14px 26px; border-radius: 999px; background: rgba(10,11,16,0.9); border: 1px solid rgba(255,255,255,0.18); font-size: 30px; font-weight: 500; white-space: nowrap; transform-origin: center; }
+.city.hq { border-color: rgba(255,61,72,0.8); box-shadow: 0 0 30px -6px rgba(255,61,72,0.8); }
+.city i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ff3d48; margin-right: 14px; vertical-align: 3px; box-shadow: 0 0 12px #ff3d48; }
+.awards .row { position: absolute; left: 0; right: 0; top: 330px; display: flex; justify-content: center; gap: 34px; }
+.awards .ph { width: 380px; height: 470px; border-radius: 28px; overflow: hidden; border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 40px 80px -30px rgba(0,0,0,0.9); background: #111; }
+.awards .ph img { width: 100%; height: 100%; object-fit: cover; }
+.awards .one { position: absolute; left: 0; right: 0; bottom: 120px; text-align: center; font-size: 72px; font-weight: 600; letter-spacing: -0.04em; }
+/* end card */
+.end .tile { position: absolute; left: 50%; top: 380px; width: 180px; height: 180px; margin-left: -90px; }
+.end .logo { position: absolute; left: 50%; top: 360px; width: 700px; margin-left: -350px; }
+.end .tag { position: absolute; left: 0; right: 0; top: 680px; text-align: center; font-size: 64px; font-weight: 600; letter-spacing: -0.035em; }
+.end .tag span { display: inline-block; }
+.end .tag em { font-style: normal; background: linear-gradient(90deg, #ff3d48, #ff8a8f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.end .url { position: absolute; left: 0; right: 0; top: 800px; text-align: center; font-size: 34px; font-weight: 500; letter-spacing: 0.04em; color: rgba(236,238,243,0.7); }
+</style></head>
+<body class="solid">
+<svg width="0" height="0" style="position:absolute"><symbol id="gi" viewBox="0 0 76 76"><circle cx="38" cy="22" r="7.6" fill="#fff"/><path d="M32.2 33h8.6a3.8 3.8 0 0 1 3.8 3.8v17.9a3.4 3.4 0 0 1-3.4 3.4h-5.8a3.4 3.4 0 0 1-3.4-3.4V33z" fill="#fff"/></symbol></svg>
+
+<!-- s1, s2, s6: text over the AI clips (transparent) -->
+<section class="scene" id="ov">
+  <div class="shade"></div>
+  <div class="wm"><img src="a/logo.png" alt=""></div>
+  <div class="sup" id="supA"><i class="bar"></i><h2></h2></div>
+  <div class="sup" id="supB"><i class="bar"></i><h2></h2></div>
+</section>
+
+<!-- s3, s4, s5: one service each -->
+<section class="scene svc" id="svc">
+  <div class="bg"></div><div class="dots"></div>
+  <div class="copy">
+    <div class="eyebrow"><span class="tile"><svg><use href="#gi"/></svg></span><span><b class="kind"></b> &middot; <span class="num"></span></span></div>
+    <h1></h1>
+    <p></p>
+  </div>
+  <div class="card"><img class="art" alt=""><div class="fade"></div><span class="tile"><svg><use href="#gi"/></svg></span></div>
+  <div class="black"></div>
+</section>
+
+<!-- s7a: offices -->
+<section class="scene reach" id="reach">
+  <div class="bg"></div><div class="dots"></div>
+  <h1><b>6</b> offices across Asia Pacific</h1>
+  <div class="ring"></div><div class="ring ring2"></div>
+  <span class="tile hub"><svg><use href="#gi"/></svg></span>
+  <div id="cities"></div>
+  <div class="black"></div>
+</section>
+
+<!-- s7b: awards -->
+<section class="scene awards" id="awards">
+  <div class="bg"></div><div class="dots"></div>
+  <h1><b class="count">0</b> awards</h1>
+  <div class="row"></div>
+  <div class="one">One team.</div>
+  <div class="black"></div>
+</section>
+
+<!-- s8: end card -->
+<section class="scene end" id="end">
+  <div class="bg"></div><div class="dots"></div>
+  <span class="tile"><svg><use href="#gi"/></svg></span>
+  <img class="logo" src="a/logo.png" alt="">
+  <div class="tag"><span class="l1">Leading technology.</span> <span class="l2"><em>Lasting relationships.</em></span></div>
+  <div class="url">itcan.biz</div>
+  <div class="black"></div>
+</section>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const clamp = (v) => Math.max(0, Math.min(1, v));
+const k = (t, a, b) => clamp((t - a) / (b - a));
+const out3 = (x) => 1 - Math.pow(1 - x, 3);
+const inout = (x) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+function rise(el, p, dy = 40, blur = 10) {
+  const e = out3(p);
+  el.style.opacity = e;
+  el.style.transform = `translate3d(0, ${(1 - e) * dy}px, 0)`;
+  el.style.filter = p >= 1 ? "none" : `blur(${((1 - e) * blur).toFixed(2)}px)`;
+}
+function blackout(sc, t, dur, inD = 0.45, outD = 0.45) {
+  const a = Math.max(1 - k(t, 0, inD), k(t, dur - outD, dur));
+  $(".black", sc).style.opacity = a.toFixed(3);
+}
+
+const SVC = {
+  s3: { num: "01", kind: "Service", title: "We consult.", lines: ["Pick the right platform.", "Roll it out.", "Get a fast return."], img: "a/consult.png", name: "Business consulting", glow: "#ff3d48" },
+  s4: { num: "03", kind: "Service", title: "We build.", lines: ["Software built around", "how your business works."], img: "a/build.png", name: "Customized solutions", glow: "#6d88ff" },
+  s5: { num: "02", kind: "Service", title: "We staff.", lines: ["Skilled IT people who join your team.", "One specialist or a full team."], img: "a/staff.png", name: "Staffing solutions", glow: "#ff8a4c" },
+};
+const SUPS = {
+  s1: [["Every business runs on <em>technology.</em>", 0.9, 6.6]],
+  s2: [["And technology runs on <em>people.</em>", 0.4, 3.0], ["ITCAN brings the two <em>together.</em>", 3.3, 7.0]],
+  s6: [["We run the systems you <em>depend on.</em>", 0.4, 2.6], ["Day and <em>night.</em>", 2.9, 7.0]],
+};
+const CITIES = [["Singapore HQ", -90, true], ["Kuala Lumpur", -30], ["Hong Kong", 30], ["Sydney", 90], ["Jakarta", 150], ["New Delhi", 210]];
+const AWARD_IMGS = ["a/aw1.jpg", "a/aw2.jpg", "a/aw3.jpg", "a/aw4.jpg"];
+
+let built = false;
+function build() {
+  if (built) return; built = true;
+  $("#cities").innerHTML = CITIES.map(([n, a, hq]) => `<div class="city${hq ? " hq" : ""}" data-a="${a}"><i></i>${n}</div>`).join("");
+  $("#awards .row").innerHTML = AWARD_IMGS.map((s) => `<div class="ph"><img src="${s}" alt=""></div>`).join("");
+}
+
+function show(id, clear) {
+  document.querySelectorAll(".scene").forEach((s) => s.classList.toggle("on", s.id === id));
+  document.body.className = clear ? "clear" : "solid";
+  return document.getElementById(id);
+}
+
+window.setFrame = function (scene, t, dur) {
+  build();
+  if (SUPS[scene]) {
+    const sc = show("ov", true);
+    const list = SUPS[scene];
+    ["#supA", "#supB"].forEach((sel, i) => {
+      const el = $(sel, sc), item = list[i];
+      if (!item) { el.style.opacity = 0; return; }
+      const [html, a, b] = item;
+      $("h2", el).innerHTML = html;
+      const p = k(t, a, a + 0.8), q = k(t, b - 0.35, b);
+      rise(el, p, 46, 12);
+      if (q > 0) el.style.opacity = (out3(p) * (1 - q)).toFixed(3);
+    });
+    const wm = $(".wm", sc); wm.style.opacity = (out3(k(t, 0.2, 1.0)) * 0.95).toFixed(3);
+    return;
+  }
+  if (SVC[scene]) {
+    const d = SVC[scene], sc = show("svc", false);
+    $(".num", sc).textContent = d.name; $(".kind", sc).textContent = d.kind;
+    $("h1", sc).textContent = d.title;
+    const p = $("p", sc);
+    if (p.dataset.k !== scene) { p.innerHTML = d.lines.map((l) => `<span>${l}</span>`).join(""); p.dataset.k = scene; }
+    const art = $(".art", sc); if (art.getAttribute("src") !== d.img) art.setAttribute("src", d.img);
+    $(".card", sc).style.setProperty("--glow", d.glow);
+    rise($(".eyebrow", sc), k(t, 0.15, 0.75), 24, 6);
+    rise($("h1", sc), k(t, 0.3, 1.05), 60, 14);
+    p.querySelectorAll("span").forEach((s, i) => rise(s, k(t, 0.9 + i * 0.28, 1.6 + i * 0.28), 24, 6));
+    const c = $(".card", sc), cp = out3(k(t, 0.05, 1.1));
+    c.style.opacity = cp;
+    c.style.transform = `perspective(1600px) translate3d(${(1 - cp) * 160}px, ${Math.sin(t * 0.9) * 6}px, 0) rotateY(${(1 - cp) * -16 + Math.sin(t * 0.6) * 1.5}deg)`;
+    art.style.transform = `scale(${1.04 + 0.1 * (t / dur)}) translate3d(0, ${-1.2 * (t / dur)}%, 0)`;
+    blackout(sc, t, dur);
+    return;
+  }
+  if (scene === "s7a") {
+    const sc = show("reach", false);
+    rise($("h1", sc), k(t, 0.15, 0.9), 40, 12);
+    const hub = $(".hub", sc), hp = out3(k(t, 0.1, 0.8));
+    hub.style.opacity = hp; hub.style.transform = `scale(${0.6 + 0.4 * hp})`;
+    sc.querySelectorAll(".ring").forEach((r, i) => { r.style.opacity = out3(k(t, 0.2 + i * 0.15, 1.0 + i * 0.15)); r.style.transform = `rotate(${t * (i ? -8 : 5)}deg)`; });
+    sc.querySelectorAll(".city").forEach((el, i) => {
+      const a = ((+el.dataset.a + t * 4) * Math.PI) / 180, R = 360;
+      const x = 960 + R * Math.cos(a), y = 600 + R * Math.sin(a) * 0.82;
+      const pp = out3(k(t, 0.5 + i * 0.22, 1.1 + i * 0.22));
+      el.style.opacity = pp;
+      el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${0.7 + 0.3 * pp})`;
+    });
+    blackout(sc, t, dur, 0.35, 0.35);
+    return;
+  }
+  if (scene === "s7b") {
+    const sc = show("awards", false);
+    rise($("h1", sc), k(t, 0.1, 0.8), 40, 12);
+    $(".count", sc).textContent = Math.round(28 * inout(k(t, 0.2, 1.4)));
+    sc.querySelectorAll(".ph").forEach((ph, i) => {
+      const pp = out3(k(t, 0.3 + i * 0.18, 1.1 + i * 0.18));
+      ph.style.opacity = pp;
+      ph.style.transform = `translate3d(0, ${(1 - pp) * 80 + Math.sin(t * 0.8 + i) * 5}px, 0) rotate(${(i - 1.5) * 1.6 * pp}deg)`;
+      $("img", ph).style.transform = `scale(${1.05 + 0.06 * (t / dur)})`;
+    });
+    rise($(".one", sc), k(t, 2.5, 3.2), 30, 10);
+    blackout(sc, t, dur, 0.3, 0.45);
+    return;
+  }
+  if (scene === "s8") {
+    const sc = show("end", false);
+    const tile = $(".tile", sc), tp = out3(k(t, 0.1, 0.7)), tq = inout(k(t, 0.75, 1.3));
+    tile.style.opacity = (tp * (1 - tq)).toFixed(3);
+    tile.style.transform = `translate3d(0, ${-tq * 60}px, 0) scale(${(0.5 + 0.5 * tp) * (1 - 0.3 * tq)})`;
+    const logo = $(".logo", sc), lp = out3(k(t, 0.8, 1.5));
+    logo.style.opacity = lp; logo.style.transform = `translate3d(0, ${(1 - lp) * 30}px, 0) scale(${0.96 + 0.04 * lp})`;
+    logo.style.filter = lp >= 1 ? "none" : `blur(${((1 - lp) * 10).toFixed(2)}px)`;
+    rise($(".l1", sc), k(t, 2.6, 3.3), 30, 10);
+    rise($(".l2", sc), k(t, 4.9, 5.6), 30, 10);
+    rise($(".url", sc), k(t, 6.0, 6.7), 20, 6);
+    blackout(sc, t, dur, 0.35, 0.7);
+    return;
+  }
+};
+window.ready = () => Promise.all(Array.from(document.images).map((i) => i.complete ? 1 : new Promise((r) => { i.onload = i.onerror = r; }))).then(() => document.fonts.ready);
+</script>
+</body></html>
