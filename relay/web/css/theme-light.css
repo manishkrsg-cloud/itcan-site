@@ -1,17 +1,70 @@
 /* ------------------------------------------------------------ light theme
-   theme-light.auto.css flips every colour; this file fixes what a flip cannot judge. */
-.brand .logo-light, .ft-logo .logo-light, .logo-light { display: none; }
+   theme-light.auto.css flips every colour; this file sets the clean light look on top:
+   one calm paper tone, white cards with hairlines and soft shadows, solid brand reds,
+   and no particle stream (it only reads on black). */
+.logo-light { display: none; }
 :root[data-theme="light"] .logo-dark { display: none; }
 :root[data-theme="light"] .logo-light { display: block; }
 
-:root[data-theme="light"] { color-scheme: light; --background: #f4f5f8; --plate: #f4f5f8; --accent: #d91f2b; }
-:root[data-theme="light"], :root[data-theme="light"] body { background: #f4f5f8; }
+:root[data-theme="light"] {
+  color-scheme: light;
+  --paper: #f5f6f8;
+  --ink: #0c101c;
+  --hair: rgba(15, 20, 35, 0.08);
+  --lift: 0 1px 2px rgba(16, 24, 40, 0.04), 0 18px 40px -20px rgba(16, 24, 40, 0.18);
+  --background: var(--paper);
+  --plate: var(--paper);
+  --card-glass: #ffffff;
+  --glass-slab: transparent;
+  --glass-slab-edge: transparent;
+  --foreground-muted: #4a5163;
+  --foreground-dim: #6a7183;
+  --accent-text: linear-gradient(92deg, #d41e2b 0%, #e8333a 50%, #f5583f 100%);
+}
+:root[data-theme="light"], :root[data-theme="light"] body { background: var(--paper); }
+
 /* a soft cross-fade while the theme changes */
 :root.theme-switching, :root.theme-switching * { transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease !important; }
 
-/* the particle stream, inverted so the strands read dark red and blue on paper */
-:root[data-theme="light"] .stream { filter: invert(1) hue-rotate(180deg) saturate(1.25); mix-blend-mode: multiply; opacity: 0.85; }
+/* no particle stream and no dark glass band on paper */
+:root[data-theme="light"] .stream { display: none !important; }
+:root[data-theme="light"] .slab::before { background: transparent; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
+:root[data-theme="light"] .bd-dots { opacity: 0.55; }
+:root[data-theme="light"] .bd-marks, :root[data-theme="light"] .bd-field { opacity: 0.5; }
 
-/* small fixes the flip cannot judge */
-:root[data-theme="light"] .ft-title em { color: #d81f2c; }
-:root[data-theme="light"] .ct-form select option { background: #fff; color: #0c101c; }
+/* a quiet bar */
+:root[data-theme="light"] .nav-plate { background: rgba(245, 246, 248, 0.88); border-bottom: 1px solid var(--hair); }
+:root[data-theme="light"] .status-pill, :root[data-theme="light"] .theme-btn, :root[data-theme="light"] .menu-btn { background: #fff; border-color: var(--hair); box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05); }
+:root[data-theme="light"] .menu-card { background: #fff; border-color: var(--hair); box-shadow: var(--lift); }
+
+/* cards: white, a hairline and a soft lift */
+:root[data-theme="light"] .card, :root[data-theme="light"] .md-video, :root[data-theme="light"] .ct-form,
+:root[data-theme="light"] .ct-inbox, :root[data-theme="light"] .meter, :root[data-theme="light"] .plan-card,
+:root[data-theme="light"] .pr-card { background: #fff; border-color: var(--hair); box-shadow: var(--lift); }
+:root[data-theme="light"] .badge { background: #fff; border-color: var(--hair); box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05); }
+:root[data-theme="light"] .hair { background: var(--hair); }
+
+/* hero: the service cards keep their dark art; a faint brand light sits behind them */
+:root[data-theme="light"] .sp-halo { opacity: 0.1; }
+:root[data-theme="light"] .sp-inner { box-shadow: 0 30px 60px -30px rgba(16, 24, 40, 0.45), 0 8px 20px -12px rgba(16, 24, 40, 0.3); }
+:root[data-theme="light"] .sp-card.is-active .sp-inner { box-shadow: 0 30px 60px -28px rgba(16, 24, 40, 0.5), 0 0 60px -30px var(--glow); }
+:root[data-theme="light"] .sp-nav { background: #fff; border-color: var(--hair); box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06); }
+:root[data-theme="light"] .sp-kicker { color: #6a7183; }
+:root[data-theme="light"] .sp-kicker [data-sp-kind] { color: var(--ink); }
+:root[data-theme="light"] .sp-arrow { background: #f5f6f8; border-color: var(--hair); color: var(--ink); }
+:root[data-theme="light"] .sp-cta { background: var(--ink); color: #fff; }
+:root[data-theme="light"] .sp-dot { background: #fff; color: var(--ink); }
+
+/* practices: the stage turns into a white plate, the tiles keep their dark glass */
+:root[data-theme="light"] .pr-orbit::before { background: radial-gradient(closest-side, #ffffff 0%, #ffffff 74%, rgba(255, 255, 255, 0.7) 88%, transparent 100%); box-shadow: none; }
+:root[data-theme="light"] .pr-orbit::after { background: radial-gradient(closest-side, rgba(255, 61, 72, 0.1), transparent); }
+:root[data-theme="light"] .pr-ring { border-color: rgba(15, 20, 35, 0.12); }
+:root[data-theme="light"] .pr-node { background: #0a0c12; border-color: rgba(15, 20, 35, 0.2); box-shadow: 0 12px 26px -12px rgba(16, 24, 40, 0.55); }
+:root[data-theme="light"] .pr-name { color: var(--ink); text-shadow: none; }
+:root[data-theme="light"] .pr-nodes li.is-open .pr-name { color: var(--ink); }
+:root[data-theme="light"] .pr-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* footer and numbers: no coloured fog on paper */
+:root[data-theme="light"] .g-bloom, :root[data-theme="light"] .g-blue, :root[data-theme="light"] .g-violet, :root[data-theme="light"] .pf-bloom { display: none; }
+:root[data-theme="light"] .ft-brand { background: #fff; border-color: var(--hair); box-shadow: var(--lift); }
+:root[data-theme="light"] .ft-title em { color: #d41e2b; }

@@ -37,14 +37,14 @@
 :root[data-theme="light"] .pr-chip.is-rel { border-color: rgba(12, 16, 28, 0.4); color: #0c101c; }
 :root[data-theme="light"] .pr-chip[aria-pressed="true"] { background-color: #0c101c; border-color: #0c101c; color: #f7f8fa; }
 :root[data-theme="light"] .pr-chip:focus-visible { outline: 2px solid #0c101c; }
-:root[data-theme="light"] .pr-orbit::before { background: radial-gradient(closest-side, rgba(252, 253, 255, 0.72), rgba(252, 253, 255, 0.45) 60%, transparent); }
-:root[data-theme="light"] .pr-ring { border: 1px solid rgba(12, 16, 28, 0.1); }
+:root[data-theme="light"] .pr-orbit::before { background: radial-gradient(closest-side, #f7f8fa 0%, #f7f8fa 72%, rgba(247, 248, 250, 0.85) 86%, transparent 100%); box-shadow: inset 0 0 0 1px rgba(12, 16, 28, 0.04); }
+:root[data-theme="light"] .pr-ring { border: 1px solid rgba(12, 16, 28, 0.14); }
 :root[data-theme="light"] .pr-mark { box-shadow: 0 0 34px -4px rgba(255, 61, 72, 0.7), 0 12px 30px -10px rgba(0, 0, 0, 0.28); }
-:root[data-theme="light"] .pr-glow { background: radial-gradient(circle, rgba(12, 16, 28, 0.16) 0%, rgba(12, 16, 28, 0) 70%); }
-:root[data-theme="light"] .pr-node { border: 1px solid rgba(12, 16, 28, 0.28); background-color: #f8f9fb; color: #0c101c; box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.315); }
-:root[data-theme="light"] .pr-node:hover { border-color: rgba(12, 16, 28, 0.8); }
+:root[data-theme="light"] .pr-node { border: 1px solid rgba(12, 16, 28, 0.22); background-color: #f5f6f8; color: #0c101c; box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.332), 0 0 0 4px rgba(12, 16, 28, 0.03); }
+:root[data-theme="light"] .pr-node::after { background: linear-gradient(180deg, rgba(12, 16, 28, 0.16), transparent 42%); }
+:root[data-theme="light"] .pr-node:hover { border-color: rgba(12, 16, 28, 0.7); }
 :root[data-theme="light"] .pr-node:focus-visible { box-shadow: 0 0 0 3px rgba(12, 16, 28, 0.35); }
-:root[data-theme="light"] .pr-name { color: rgba(12, 16, 28, 0.7); }
+:root[data-theme="light"] .pr-name { color: rgba(12, 16, 28, 0.92); text-shadow: 0 1px 10px rgba(0, 0, 0, 0.315); }
 :root[data-theme="light"] .pr-nodes li.is-open .pr-name { color: #0c101c; }
 :root[data-theme="light"] .pr-nodes li.is-rel .pr-node { border-color: #0c101c; box-shadow: 0 0 0 2px rgba(12, 16, 28, 0.25), 0 0 24px -6px rgba(12, 16, 28, 0.6); }
 :root[data-theme="light"] .pr-card { border: 1px solid rgba(12, 16, 28, 0.3); background-color: rgba(252, 253, 255, 0.9); box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.315), 0 0 15px rgba(12, 16, 28, 0.1); }

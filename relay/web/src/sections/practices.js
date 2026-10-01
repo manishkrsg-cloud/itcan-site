@@ -31,7 +31,7 @@ export function initPractices() {
     cx = W / 2; cy = H / 2;
     r = Math.max(90, Math.min(205, W / 2 - 70, H / 2 - 70));
     orbit.style.setProperty("--r", `${r.toFixed(1)}px`);
-    card.style.top = `${(cy - r + (W < 520 ? 66 : 84)).toFixed(1)}px`;
+    card.style.top = `${(cy - r + (W < 520 ? 78 : 98)).toFixed(1)}px`;
   };
 
   // ---- place every node for the current ring angle
@@ -41,8 +41,9 @@ export function initPractices() {
       const a = (((i / N) * 360 + rot) * Math.PI) / 180;
       const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
       const li = items[i], isOpen = i === open;
-      li.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
-      li.style.opacity = isOpen ? "1" : Math.max(0.55, 0.55 + 0.45 * ((1 + Math.sin(a)) / 2)).toFixed(3);
+      // depth reads through size, never through fading: every tile stays clear
+      const s = isOpen ? 1 : 0.86 + 0.14 * ((1 + Math.sin(a)) / 2);
+      li.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${s.toFixed(3)})`;
       li.style.zIndex = String(isOpen ? 200 : Math.round(100 + 50 * Math.cos(a)));
     }
   };

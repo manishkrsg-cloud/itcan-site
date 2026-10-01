@@ -93,9 +93,12 @@ function initStream() {
       prev = now;
       if (seen >= 120) { judged = true; if (slow / seen > 0.35) s.degrade(); }
     };
-    const run = () => { if (!off && visible && !document.hidden) { prev = 0; off = ticker.add((now) => { watch(now); s.render(now); }, coarse ? 20 : 0); } };
+    const light = () => html.getAttribute("data-theme") === "light";
+    const run = () => { if (!off && visible && !document.hidden && !light()) { prev = 0; off = ticker.add((now) => { watch(now); s.render(now); }, coarse ? 20 : 0); } };
     const stop = () => { if (off) { off(); off = null; } };
     document.addEventListener("visibilitychange", () => (document.hidden ? stop() : run()));
+    // the light theme has no particle stream, so it costs nothing there
+    window.addEventListener("itcan:theme", (e) => (e.detail && e.detail.light ? stop() : run()));
     run();
     // a safety reveal if the hero never asked (e.g. page opened scrolled down)
     setTimeout(() => { if (!revealAsked) { revealAsked = true; s.reveal(performance.now()); } }, 1200);
