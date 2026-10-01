@@ -122,9 +122,11 @@
 /* button hover wipe: ITCAN blue with white type (the dark theme wipes to white) */
 :root[data-theme="light"] .cta-ink { background: var(--blue); color: #fff; }
 
-/* practice icons: the neon art inverted into blue and red linework on white glass tiles */
-:root[data-theme="light"] .pr-node { background: #fff; border-color: rgba(31, 63, 214, 0.18); box-shadow: 0 14px 28px -14px rgba(19, 35, 143, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.8); }
-:root[data-theme="light"] .pr-thumb { filter: invert(1) hue-rotate(180deg) saturate(1.35) contrast(1.05); }
+/* practice tiles: white with a faint blue lift */
+:root[data-theme="light"] .pr-node { background: linear-gradient(160deg, #ffffff 0%, #f3f6ff 100%); border-color: rgba(31, 63, 214, 0.18); box-shadow: 0 14px 28px -14px rgba(19, 35, 143, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.8); }
+/* light theme: crisp vector icons (ITCAN blue line work, one red accent) replace the neon art */
+:root[data-theme="light"] .pr-thumb { display: none; }
+:root[data-theme="light"] .pr-ico { display: block; color: var(--blue); --pi-fill: #eaf0ff; --pi-red: #e5222e; }
 :root[data-theme="light"] .pr-nodes li.is-open .pr-node { border-color: rgba(31, 63, 214, 0.5); box-shadow: 0 16px 32px -14px rgba(31, 63, 214, 0.55), 0 0 0 3px rgba(31, 63, 214, 0.12); }
 :root[data-theme="light"] .pr-node::after { background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent 42%); }
 /* awards grid on paper: soft blue for quiet years, red for awards */
