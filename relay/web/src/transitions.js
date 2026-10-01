@@ -125,7 +125,8 @@ export function initLogoOpen() {
     const grow = smooth(Math.min(opening, closing));
     plate.style.setProperty("--grow", grow);
     plate.style.clipPath = fold(grow, plateW, plateH, mx, my, markSize, plateRound, lin);
-    if (s >= openEnd) wrap.dataset.open = "true";
+    // the words start while the iris finishes, so the open plate is never an empty red card
+    if (s >= openEnd - 0.2 * OPEN * k) wrap.dataset.open = "true";
     if (s < seenAt) wrap.dataset.open = "false";
     const t = clamp((s - closeEnd) / (FLIGHT * k));
     const flying = t > 0 && t < 1;

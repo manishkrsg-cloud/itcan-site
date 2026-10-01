@@ -1,6 +1,6 @@
 # Issues and backlog: ITCAN website
 
-Updated 1 Oct 2026, after the design audit (desktop 1440px, phone 390px, both themes) and the mobile UX pass.
+Updated 1 Oct 2026, after the design audit (desktop 1440px, phone 390px, both themes), the mobile UX pass and the second mobile pass (bottom dock, sectors animation).
 
 Priority: **P1** blocks the itcan.biz cut-over · **P2** visible quality problem · **P3** polish.
 
@@ -9,10 +9,6 @@ Priority: **P1** blocks the itcan.biz cut-over · **P2** visible quality problem
 | ID | P | Area | Issue | Proposed fix |
 |---|---|---|---|---|
 | ISS-01 | P1 | Deploy | `git push` to `manishkrsg-cloud/itcan-site` returns 403 for the local credentials. The 1 Oct mobile pass was deployed by CLI upload and is committed locally only. | Restore write access for the deploy account, then push commit "Mobile UX pass…" from `~/Documents/itcan-site`. |
-| ISS-02 | P2 | Statement plate | Partway through the scroll animation the headline is clipped at the plate edge, and the "i" mark can sit over the Offices heading. On phones the plate shows as a large empty red block before its text fades in. | In `src/sections` (statement), keep the title visible for the whole iris animation and fade the mark out when the section leaves; start the phone text fade earlier. |
-| ISS-03 | P2 | Sectors | On desktop the "One way of working" heading sits beneath the tilted photo stack until the stack fans out. | Raise the heading above the stack (z-index) or delay the heading until the fan-out finishes. |
-| ISS-04 | P2 | Services | Steps 3–4 in the worked-example cards are dimmed below 4.5:1 contrast. | Raise the inactive-step opacity so the text passes AA; keep the "done" emphasis with the icon and colour. |
-| ISS-05 | P2 | Security | Path check in `server.js` uses `startsWith(ROOT)` without a trailing separator (see SECURITY.md, SEC-01). | `startsWith(ROOT + path.sep)`. |
 | ISS-06 | P2 | Nav (desktop) | 10 links, a status pill and two buttons in one bar. | Fold "Numbers" into Awards and "Teams" into Contact, or move them to the footer. |
 | ISS-07 | P3 | Awards | Award heat-map cells are 26px tall on phones (below the 44px tap target). | Make cells non-interactive on phones, or enlarge the hit area. |
 | ISS-08 | P3 | Type | Some labels are 11px (`.pr-name` on phones, small mono captions). | 12px floor. |
@@ -34,3 +30,17 @@ Priority: **P1** blocks the itcan.biz cut-over · **P2** visible quality problem
 | M-FIX-08 | Tap targets of 18–38px on chips, maps buttons, footer and contact links. | 44px minimum. |
 | M-FIX-09 | Footer social links were text ("in", "yt", "@", "tel"). | LinkedIn, YouTube, email and phone icons. |
 | M-FIX-10 | Statement title overflowed the phone plate after the type-size change; caption clipped. | Statement title keeps its fitted size; caption hidden on phones. |
+
+## Closed (1 Oct 2026, second pass)
+
+| ID | Issue | Fix |
+|---|---|---|
+| ISS-02 | Statement plate showed an empty red card for about a second after the iris opened. The clipped headline and the flying "i" mid-scroll are intended choreography. | Text starts once the iris is 80% open (`transitions.js`). |
+| ISS-03 | Sectors heading under the photo stack mid-scroll. | By design: the stack fans out to reveal the heading. No change. |
+| ISS-04 | Upcoming Services steps at 38% opacity failed contrast. | 65% (`services.css`). |
+| ISS-05 / SEC-01, SEC-02 | Server path check without a separator; health, 302 and 500 responses lacked security headers. | `startsWith(ROOT + path.sep)`; `SECURITY_HEADERS` on every response. |
+| M-FIX-11 | Menu and "Talk to us" sat at the top of the phone screen, out of thumb reach. | Floating bottom dock on phones; the menu opens upward as a two-column sheet with the theme switch. |
+| M-FIX-12 | The ten sectors were a static grid on phones. | Phone layout for the stack-to-spread animation: 3 + 2 cards above the heading and 2 + 3 below, clear of the dock. |
+| M-FIX-13 | The hero card was inset 26px; every other card sits at 20px. | Phone card width is the page width minus the margins (`spectra.js`). |
+| M-FIX-14 | The "Awards over time" chart was hidden on phones. | Restored as a fifth tile. |
+| M-FIX-15 | Award filter chips were centred under left-aligned headings. | Left-aligned on phones. |

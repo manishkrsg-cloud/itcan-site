@@ -32,8 +32,8 @@ The real assets are:
 
 | ID | Severity | Finding | Fix |
 |---|---|---|---|
-| SEC-01 | Low | `absPath.startsWith(ROOT)` has no trailing separator, so a sibling folder whose name starts with `public` (for example `public-old/`) would be reachable with an encoded `../`. No such folder exists in the deployed tree today. | `if (!absPath.startsWith(ROOT + path.sep))` |
-| SEC-02 | Low | `/healthz`, the 500 response and the award-photo 302 are sent without the security headers. | Spread `SECURITY_HEADERS` into those three responses. |
+| SEC-01 | Low (fixed 1 Oct) | `absPath.startsWith(ROOT)` has no trailing separator, so a sibling folder whose name starts with `public` (for example `public-old/`) would be reachable with an encoded `../`. No such folder exists in the deployed tree, and Node's URL parser already normalises `%2e%2e`, so this was hardening rather than an exploitable hole. | `if (!absPath.startsWith(ROOT + path.sep))` |
+| SEC-02 | Low (fixed 1 Oct) | `/healthz`, the 500 response and the award-photo 302 are sent without the security headers. | Spread `SECURITY_HEADERS` into those three responses. |
 | SEC-03 | Low | `style-src 'unsafe-inline'` is needed because the motion engine writes inline styles. That is acceptable because script is locked to `'self'`, but it widens CSS-injection impact. | Leave for now; revisit if user content is ever rendered. |
 | SEC-04 | Info | Brotli quality 11 runs synchronously on the first request for each file. It is cached afterwards and the file set is fixed, so the cost is bounded. | Optional: pre-compress at build time. |
 | SEC-05 | Medium (process) | Deploy credentials: a Railway **workspace** token (reaches every itcanbiz project) and a project token for `relay-site` are stored in plain text in the ITCAN Hub `deploy/.env` (gitignored). | Keep the file out of every repo and backup sync. Prefer the project-scoped token. Rotate both if the machine is shared or lost. |

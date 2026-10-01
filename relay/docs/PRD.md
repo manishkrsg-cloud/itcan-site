@@ -58,8 +58,11 @@ Give ITCAN a website that wins enterprise IT services and staffing work across A
 | M-04 | The phone header holds three items only: logo, "Talk to us", menu. Theme lives in the menu. | Met |
 | M-05 | Every tap target is at least 44px tall. | Met for chips, maps buttons, footer and contact links; award grid cells open (ISS-07) |
 | M-06 | Section heads align with the content below them (left on phones). | Met |
-| M-07 | No text overlaps other text at rest, at any scroll position. | Mostly met; statement plate open (ISS-02) |
+| M-07 | No text overlaps other text at rest, at any scroll position. | Met (the statement iris and the sectors fan are scroll choreography) |
 | M-08 | Body text is at least 16px; form inputs are 16px so iOS does not zoom. | Met |
+| M-09 | Primary actions (Talk to us, menu) are in thumb reach at the bottom of the screen. | Met (bottom dock) |
+| M-10 | Phones get the same content and motion as desktop: no section or chart is dropped. | Met (sectors animation and the awards chart restored) |
+| M-11 | Cards share the 20px page margins. | Met |
 
 ## 7. Non-functional requirements
 

@@ -100,7 +100,8 @@ export function initSpectra(root) {
   // wide screens: the fan fills the right column inside the first screen.
   // stacked (tablet, phone): the fan sits under the headline and may run past the fold.
   const fit = (w) => {
-    if (w < 600) return Math.max(0.56, Math.min(0.77, w / 500));
+    // phones: the active card spans the page width minus the 20px page margins, like every other card
+    if (w < 600) return Math.max(0.56, Math.min(0.9, (w - 40) / CARD_W));
     if (innerWidth <= 900) return Math.max(0.58, Math.min(0.82, w / 720));
     const footH = foot ? foot.offsetHeight : 64;
     const room = innerHeight - 88 - footH - 100;

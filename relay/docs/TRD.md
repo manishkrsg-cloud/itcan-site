@@ -39,6 +39,9 @@ All in the "mobile UX pass" block at the end of `web/css/mobile.css`, plus:
 - `.nav-plate` at ≤900px: `rgba(5,6,9,0.9)` with an 18px blur; the light theme uses `rgba(244,245,248,0.92)`.
 - At ≤580px the header theme button is hidden. A second `[data-theme-toggle]` sits in the menu card (`.menu-theme`); `initTheme()` already binds every toggle.
 - Minimum tap height of 2.75rem (44px) for `.pr-chip`, `.of-map`, `.ft-social a`, and the tel: and mailto: links in office cards.
+- **Bottom dock (≤580px):** `.nav-actions` becomes a fixed pill at the bottom (`--dock-h` 3.75rem, above `env(safe-area-inset-bottom)`). `body` gets matching bottom padding. The menu card is fixed above the dock and opens upward as a two-column sheet. `.nav` must keep no transform or filter, or the fixed dock would position relative to it.
+- **Sectors on phones:** `sectors.js` runs the stack-to-spread animation when `(max-width: 580px) and (min-height: 600px)`, using the `LP` layout (3+2 above, 2+3 below). The spread band excludes the dock height (`--ss-bot`). Tablets (581–1000px) keep the static grid.
+- **Hero coverflow on phones:** the active card is `(width − 40px)`, so it lines up with the 20px page margins.
 
 ### Motion and accessibility
 

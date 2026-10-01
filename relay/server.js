@@ -166,7 +166,7 @@ const server = http.createServer(async (req, res) => {
     const versioned = url.searchParams.has('v');
 
     if (urlPath === '/healthz') {
-      res.writeHead(200, { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' });
+      res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' });
       return res.end('ok');
     }
 
@@ -176,7 +176,7 @@ const server = http.createServer(async (req, res) => {
 
     if (urlPath.endsWith('/')) urlPath += 'index.html';
     const absPath = path.normalize(path.join(ROOT, urlPath));
-    if (!absPath.startsWith(ROOT)) {
+    if (absPath !== ROOT && !absPath.startsWith(ROOT + path.sep)) {
       res.writeHead(400, SECURITY_HEADERS);
       return res.end('Bad request');
     }
@@ -186,7 +186,7 @@ const server = http.createServer(async (req, res) => {
     // Award photo not cached locally: send the browser to the original.
     const m = urlPath.match(/^\/awards\/([a-z0-9-]+?)(-sm)?\.jpg$/);
     if (m && awardSources[m[1]]) {
-      res.writeHead(302, { Location: ORIGIN_UPLOADS + awardSources[m[1]], 'Cache-Control': 'public, max-age=3600' });
+      res.writeHead(302, { ...SECURITY_HEADERS, Location: ORIGIN_UPLOADS + awardSources[m[1]], 'Cache-Control': 'public, max-age=3600' });
       return res.end();
     }
 
@@ -198,7 +198,7 @@ const server = http.createServer(async (req, res) => {
     return await sendFile(req, res, path.join(ROOT, '404.html'), '/404.html', 404);
   } catch (err) {
     console.error('[server]', req.url, err);
-    if (!res.headersSent) res.writeHead(500, { 'Content-Type': 'text/plain' });
+    if (!res.headersSent) res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain' });
     res.end('Server error');
   }
 });

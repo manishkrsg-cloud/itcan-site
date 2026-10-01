@@ -132,7 +132,7 @@
 .fwrap[data-tone="red"] .story { --a1: #ff5a63; --a2: #d81f2b; --a-ring: rgba(255, 61, 72, 0.16); --a-glow: rgba(216, 31, 43, 0.8); --a-fg: #ff9aa0; --a-bg: rgba(255, 61, 72, 0.1); --a-line: rgba(255, 61, 72, 0.4);
   --b1: #5b73ff; --b2: #2b44c9; --b-ring: rgba(74, 99, 240, 0.16); --b-glow: rgba(43, 68, 201, 0.8); --b-fg: #b8c4ff; --b-bg: rgba(74, 99, 240, 0.12); --b-line: rgba(109, 136, 255, 0.35); }
 /* chapter states, driven by services.js (the default is the finished story) */
-.story.is-armed .sy-step:not(.is-on) .sy-when, .story.is-armed .sy-step:not(.is-on) .sy-title, .story.is-armed .sy-step:not(.is-on) .sy-text { opacity: 0.38; }
+.story.is-armed .sy-step:not(.is-on) .sy-when, .story.is-armed .sy-step:not(.is-on) .sy-title, .story.is-armed .sy-step:not(.is-on) .sy-text { opacity: 0.65; } /* upcoming steps stay readable (AA) */
 .story.is-armed .sy-step:not(.is-on) .sy-out { opacity: 0; transform: translateY(4px); }
 .sy-when, .sy-title, .sy-text { transition: opacity 0.5s ease; }
 .sy-out { transition: opacity 0.45s ease 0.15s, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.15s; }
