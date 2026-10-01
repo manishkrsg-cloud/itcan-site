@@ -67,7 +67,41 @@ export function initNav() {
   addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
   addEventListener("pointerdown", (e) => { if (open && !card.contains(e.target) && !btn.contains(e.target)) setOpen(false); });
   card.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
-  matchMedia("(max-width: 580px)").addEventListener("change", (e) => { if (!e.matches) setOpen(false); });
+  matchMedia("(max-width: 1180px)").addEventListener("change", (e) => { if (!e.matches) setOpen(false); });
+
+  // mark the section in view, in the bar and in the menu
+  const links = Array.from(nav.querySelectorAll(".nav-links a, .menu-card a"));
+  const byId = new Map();
+  links.forEach((a) => { const id = a.getAttribute("href").slice(1); if (!byId.has(id)) byId.set(id, []); byId.get(id).push(a); });
+  const seen = new Map();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => seen.set(e.target.id, e.isIntersecting));
+    let cur = null;
+    for (const id of byId.keys()) if (seen.get(id)) { cur = id; break; }
+    links.forEach((a) => { const on = a.getAttribute("href").slice(1) === cur; a.classList.toggle("is-on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  byId.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+}
+
+// Light and dark theme: the button flips data-theme on <html> and remembers the choice.
+export function initTheme() {
+  const root = document.documentElement;
+  const btns = Array.from(document.querySelectorAll("[data-theme-toggle]"));
+  const meta = document.querySelector('meta[name="theme-color"]');
+  const apply = (light) => {
+    if (light) root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
+    btns.forEach((b) => { b.setAttribute("aria-pressed", String(light)); b.setAttribute("aria-label", light ? "Switch to dark theme" : "Switch to light theme"); });
+    if (meta) meta.setAttribute("content", light ? "#f4f5f8" : "#000000");
+    window.dispatchEvent(new CustomEvent("itcan:theme", { detail: { light } }));
+  };
+  apply(root.getAttribute("data-theme") === "light");
+  btns.forEach((b) => b.addEventListener("click", () => {
+    const light = root.getAttribute("data-theme") !== "light";
+    root.classList.add("theme-switching");
+    apply(light);
+    try { localStorage.setItem("itcan-theme", light ? "light" : "dark"); } catch (e) { /* private mode */ }
+    setTimeout(() => root.classList.remove("theme-switching"), 450);
+  }));
 }
 
 // Breathing status dot: the dot scales 1 -> 1.35 -> 1 -> 1 in three 600 ms legs,

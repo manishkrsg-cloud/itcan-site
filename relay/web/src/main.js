@@ -6,7 +6,7 @@ import { initPrims } from "./core/prims.js";
 import { onView } from "./core/seen.js";
 import { runPreloader } from "./preloader.js";
 import { initScrollBlur, initLogoOpen, initCursor } from "./transitions.js";
-import { initNav, initBreath, initButtons } from "./ui.js";
+import { initNav, initBreath, initButtons, initTheme } from "./ui.js";
 import { initHero } from "./sections/hero.js";
 import { initPractices } from "./sections/practices.js";
 import { initServices } from "./sections/services.js";
@@ -88,6 +88,7 @@ function initStream() {
 
 try {
   safe("scroll", initScroll);
+  safe("theme", initTheme);
   safe("nav", initNav);
   safe("breath", initBreath);
   safe("buttons", () => initButtons());

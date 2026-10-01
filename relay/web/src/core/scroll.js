@@ -44,4 +44,9 @@ export function scrollTo(target) {
 }
 
 export function resize() { lenis && lenis.resize(); }
-export function lock(on) { if (!lenis) return; on ? lenis.stop() : lenis.start(); }
+export function lock(on) {
+  // the page and the bar behind an open dialog cannot be focused or clicked
+  document.querySelectorAll(".page, [data-nav]").forEach((el) => { el.inert = !!on; });
+  if (!lenis) return;
+  on ? lenis.stop() : lenis.start();
+}

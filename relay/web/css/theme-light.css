@@ -1,0 +1,17 @@
+/* ------------------------------------------------------------ light theme
+   theme-light.auto.css flips every colour; this file fixes what a flip cannot judge. */
+.brand .logo-light, .ft-logo .logo-light, .logo-light { display: none; }
+:root[data-theme="light"] .logo-dark { display: none; }
+:root[data-theme="light"] .logo-light { display: block; }
+
+:root[data-theme="light"] { color-scheme: light; --background: #f4f5f8; --plate: #f4f5f8; }
+:root[data-theme="light"], :root[data-theme="light"] body { background: #f4f5f8; }
+/* a soft cross-fade while the theme changes */
+:root.theme-switching, :root.theme-switching * { transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease !important; }
+
+/* the particle stream, inverted so the strands read dark red and blue on paper */
+:root[data-theme="light"] .stream { filter: invert(1) hue-rotate(180deg) saturate(1.25); mix-blend-mode: multiply; opacity: 0.85; }
+
+/* small fixes the flip cannot judge */
+:root[data-theme="light"] .ft-title em { color: #d81f2c; }
+:root[data-theme="light"] .ct-form select option { background: #fff; color: #0c101c; }

@@ -144,6 +144,7 @@
 .vm-body { position: relative; width: min(92vw, 60rem); }
 .vm-frame { aspect-ratio: 16 / 9; border-radius: 1.25rem; overflow: clip; background: #000; border: 1px solid rgba(255, 255, 255, 0.1); }
 .vm-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.vm-frame video { width: 100%; height: 100%; display: block; object-fit: contain; background: #000; }
 .vm-foot { margin-top: 0.75rem; color: var(--foreground-dim); }
 .vm-foot a { color: var(--accent); }
 @media (width <= 580px) {

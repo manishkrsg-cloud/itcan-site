@@ -41,14 +41,23 @@ function video() {
   let last = null;
   const close = () => { modal.hidden = true; frame.innerHTML = ""; lock(false); last && last.focus(); };
   document.addEventListener("click", (e) => {
-    const b = e.target.closest && e.target.closest("[data-video]");
+    const b = e.target.closest && e.target.closest("[data-video], [data-film]");
     if (!b) return;
     e.preventDefault();
     last = b;
-    const id = b.dataset.video;
-    frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="${b.dataset.title || "Video"}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+    if (b.dataset.film) {
+      // our own film: 720p on phones and tablets, 1080p on wider screens
+      const f = b.dataset.film;
+      frame.innerHTML = `<video controls autoplay playsinline preload="auto" poster="${f}-poster.jpg" aria-label="${b.dataset.title || "Video"}">`
+        + `<source src="${f}-720.mp4" type="video/mp4" media="(max-width: 900px)"><source src="${f}-1080.mp4" type="video/mp4"></video>`;
+      link.hidden = true; link.previousSibling && (link.previousSibling.textContent = "");
+    } else {
+      const id = b.dataset.video;
+      frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="${b.dataset.title || "Video"}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+      link.hidden = false; link.previousSibling && (link.previousSibling.textContent = " / ");
+      link.href = `https://www.youtube.com/watch?v=${id}`;
+    }
     title.textContent = b.dataset.title || "";
-    link.href = `https://www.youtube.com/watch?v=${id}`;
     modal.hidden = false;
     lock(true);
     modal.querySelector(".lb-close").focus();

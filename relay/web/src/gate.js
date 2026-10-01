@@ -1,6 +1,8 @@
 // Runs first in <head>, before any stylesheet: decides whether the preloader plays.
 (function () {
   var d = document.documentElement;
+  // theme: a saved choice wins, otherwise dark (the brand look)
+  try { if (localStorage.getItem("itcan-theme") === "light") d.setAttribute("data-theme", "light"); } catch (e) {}
   var rm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var bot = /lighthouse|googlebot|pagespeed|headlesschrome|gtmetrix|pingdom|bingbot|yandexbot/i.test(navigator.userAgent);
   var esm = "noModule" in document.createElement("script");

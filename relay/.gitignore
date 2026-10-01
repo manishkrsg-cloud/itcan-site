@@ -3,3 +3,4 @@ public/awards/
 .DS_Store
 public/assets/services/*
 !public/assets/services/staff-*.webp
+public/assets/video/

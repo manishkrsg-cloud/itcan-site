@@ -52,7 +52,7 @@ export function initSpectra(root) {
     el.innerHTML = `<span class="sp-inner">`
       + `<span class="sp-media"><img class="sp-img" src="${src(s.img, 480)}" srcset="${src(s.img, 480)} 480w, ${src(s.img, 880)} 880w" sizes="(max-width: 600px) 86vw, 440px" width="880" height="1168" alt="" decoding="async" draggable="false" fetchpriority="${i === 0 ? "high" : "low"}"></span>`
       + `<span class="sp-shade" aria-hidden="true"></span><span class="sp-sheen" aria-hidden="true"></span>`
-      + `<span class="sp-top"><span class="sp-num">${pad(i + 1)}</span><span class="sp-kind">${s.kind}</span></span>`
+      + `<span class="sp-top"><span class="sp-id"><span class="sp-mark mark mark--lit" aria-hidden="true"><svg><use href="#g-i"/></svg></span><span class="sp-num">${pad(i + 1)}</span></span><span class="sp-kind">${s.kind}</span></span>`
       + `<span class="sp-body"><span class="sp-name">${s.name}</span><span class="sp-desc">${s.desc}</span>`
       + `<span class="sp-tags">${s.tags.map((t) => `<i>${t}</i>`).join("")}</span></span>`
       + `</span>`;

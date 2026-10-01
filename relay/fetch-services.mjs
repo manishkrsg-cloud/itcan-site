@@ -1,6 +1,8 @@
 // Build step: download the hero card artwork (AI images made for ITCAN with Higgsfield)
-// and save web-sized copies to public/assets/services/<slug>-880.webp and <slug>-480.webp.
-// Never fails the build. A card whose image is missing keeps its gradient background.
+// and save web-sized copies to public/assets/services/<slug>-880.webp and <slug>-480.webp,
+// then download the one-minute story film (see film/) to public/assets/video/.
+// Never fails the build. A card whose image is missing keeps its gradient background;
+// a missing film leaves the Watch our story player empty.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,6 +21,14 @@ const LIST = [
   ['web', 'hf_20260930_115615_a7c397fd-30cf-40e6-b1e2-1a05399c2d88'],
 ];
 
+const VIDEO_OUT = path.join(__dirname, 'public', 'assets', 'video');
+const FILM = 'https://d2ol7oe51mr4n9.cloudfront.net/user_2zirxwP6e4obj22XOM5lG6LDlk1/';
+const VIDEOS = [
+  ['itcan-story-1080.mp4', 'ef0ec47c-2767-48b1-b059-2a9dd15fb8bc.mp4'],
+  ['itcan-story-720.mp4', '4f3254d5-1958-4cae-ab3b-adb8649246e6.mp4'],
+  ['itcan-story-poster.jpg', 'ec8c90ad-7797-4396-9580-986575a1549c.jpg'],
+];
+
 let sharp = null;
 try { sharp = (await import('sharp')).default; } catch { console.log('[services] sharp not available, saving originals'); }
 
@@ -26,7 +36,7 @@ async function get(url, tries = 3) {
   for (let i = 1; i <= tries; i++) {
     try {
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 25000);
+      const t = setTimeout(() => ctrl.abort(), 90000);
       const res = await fetch(url, { signal: ctrl.signal, headers: { 'User-Agent': 'Mozilla/5.0 (ITCAN site build)' } });
       clearTimeout(t);
       if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -65,6 +75,13 @@ async function main() {
     catch (err) { failed++; console.log(`[services] FAILED ${item[0]}: ${err.message}`); }
   }));
   console.log(`[services] done: ${ok} saved, ${failed} missing`);
+  await fs.mkdir(VIDEO_OUT, { recursive: true });
+  await Promise.all(VIDEOS.map(async ([name, id]) => {
+    const out = path.join(VIDEO_OUT, name);
+    if (await exists(out)) return console.log(`[film] cached ${name}`);
+    try { await fs.writeFile(out, await get(FILM + id)); console.log(`[film] ok     ${name}`); }
+    catch (err) { console.log(`[film] FAILED ${name}: ${err.message}`); }
+  }));
 }
 
 main().catch(err => { console.log('[services] skipped:', err.message); }).finally(() => process.exit(0));

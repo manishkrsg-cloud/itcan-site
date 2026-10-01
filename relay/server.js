@@ -31,6 +31,8 @@ const TYPES = {
   '.webp': 'image/webp',
   '.ico': 'image/x-icon',
   '.woff2': 'font/woff2',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
 };
 const COMPRESSIBLE = new Set(['.html', '.css', '.js', '.mjs', '.json', '.webmanifest', '.xml', '.txt', '.svg']);
 
@@ -103,6 +105,22 @@ async function sendFile(req, res, absPath, urlPath, status = 200) {
     headers['Content-Length'] = entry.buf.length;
     res.writeHead(status, headers);
     return res.end(req.method === 'HEAD' ? undefined : entry.buf);
+  }
+  headers['Accept-Ranges'] = 'bytes';
+  // byte ranges, so video can stream and seek (Safari needs this)
+  const range = status === 200 && /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || '');
+  if (range && (range[1] || range[2])) {
+    let start = range[1] ? Number(range[1]) : Math.max(0, stat.size - Number(range[2]));
+    let end = range[1] && range[2] ? Math.min(Number(range[2]), stat.size - 1) : stat.size - 1;
+    if (start >= stat.size || start > end) {
+      res.writeHead(416, { ...SECURITY_HEADERS, 'Content-Range': `bytes */${stat.size}` });
+      return res.end();
+    }
+    headers['Content-Range'] = `bytes ${start}-${end}/${stat.size}`;
+    headers['Content-Length'] = end - start + 1;
+    res.writeHead(206, headers);
+    if (req.method === 'HEAD') return res.end();
+    return fs.createReadStream(absPath, { start, end }).pipe(res);
   }
   headers['Content-Length'] = stat.size;
   res.writeHead(status, headers);
