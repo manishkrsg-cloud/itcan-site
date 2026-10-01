@@ -2,6 +2,7 @@ node_modules/
 public/awards/
 .DS_Store
 public/assets/services/*
-!public/assets/services/staff-*.webp
+!public/assets/services/staff-480.webp
+!public/assets/services/staff-880.webp
 public/assets/video/
 public/assets/practices/

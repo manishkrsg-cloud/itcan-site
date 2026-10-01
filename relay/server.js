@@ -75,6 +75,9 @@ const LEGACY = {
   '/media': '/#media', '/our-offices': '/#scale', '/offices': '/#scale',
 };
 
+// legal pages live at /<slug>/; the bare address gets the slash added
+const DIRS = new Set(['/privacy-policy', '/terms-of-use', '/disclaimer']);
+
 const gzCache = new Map(); // abs path -> { mtimeMs, buf }
 
 function cacheControl(ext, urlPath, versioned) {
@@ -167,6 +170,7 @@ const server = http.createServer(async (req, res) => {
       return res.end('ok');
     }
 
+    if (DIRS.has(urlPath.toLowerCase())) { res.writeHead(301, { Location: urlPath.toLowerCase() + '/', 'Cache-Control': 'public, max-age=86400', ...SECURITY_HEADERS }); return res.end(); }
     const legacy = LEGACY[urlPath.replace(/\/+$/, '').toLowerCase()];
     if (legacy) { res.writeHead(301, { Location: legacy, 'Cache-Control': 'public, max-age=86400', ...SECURITY_HEADERS }); return res.end(); }
 

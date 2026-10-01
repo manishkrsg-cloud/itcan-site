@@ -11,6 +11,7 @@ import { initHero } from "./sections/hero.js";
 import { initPractices } from "./sections/practices.js";
 import { initServices } from "./sections/services.js";
 import { initStatement } from "./sections/statement.js";
+import { initSectors } from "./sections/sectors.js";
 import { initOffices } from "./sections/offices.js";
 import { initAwards } from "./sections/awards.js";
 import { initProof } from "./sections/proof.js";
@@ -120,6 +121,7 @@ try {
   safe("hero", initHero);
   safe("practices", initPractices);
   safe("services", initServices);
+  safe("sectors", initSectors);
   safe("statement", initStatement);
   safe("offices", initOffices);
   safe("awards", initAwards);

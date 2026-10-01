@@ -157,7 +157,12 @@
 :root[data-theme="light"] .filters button[aria-selected="true"] { color: var(--ink); }
 
 /* sectors on paper */
-:root[data-theme="light"] .sc-item:hover { border-color: rgba(31, 63, 214, 0.3); box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 26px 44px -24px rgba(19, 35, 143, 0.35); }
-:root[data-theme="light"] .sc-ico { background: #eef2ff; border-color: rgba(31, 63, 214, 0.16); color: var(--blue); --pi-fill: #dfe6ff; --pi-red: #e5222e; }
-:root[data-theme="light"] .sc-item:hover .sc-ico { background: linear-gradient(135deg, #2b44c9, #13238f); color: #fff; --pi-fill: rgba(255, 255, 255, 0.16); }
-:root[data-theme="light"] .sc-name { color: var(--ink); }
+:root[data-theme="light"] .ss-face { box-shadow: 0 0 0 1px rgba(11, 18, 51, 0.06), 0 26px 50px -26px rgba(19, 35, 143, 0.42); }
+:root[data-theme="light"] .ss-card:hover .ss-face { box-shadow: 0 0 0 1px rgba(31, 63, 214, 0.35), 0 34px 64px -28px rgba(19, 35, 143, 0.55); }
+:root[data-theme="light"] .ss-sub { color: var(--foreground-muted); }
+
+/* service cards: white glass on the blue or red glow plate */
+:root[data-theme="light"] .fwrap { --tone-glow: rgba(31, 63, 214, 0.45); }
+:root[data-theme="light"] .fwrap[data-tone="red"] { --tone-glow: rgba(229, 34, 46, 0.4); }
+:root[data-theme="light"] .fwrap > .fcard { border-color: rgba(11, 18, 51, 0.08); background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.92));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 1px 2px rgba(16, 24, 40, 0.05), 0 28px 50px -30px rgba(19, 35, 143, 0.35); }

@@ -12,6 +12,23 @@ const OUT = path.join(__dirname, 'public', 'assets', 'services');
 const BASE = 'https://d8j0ntlcm91z4.cloudfront.net/user_2zirxwP6e4obj22XOM5lG6LDlk1/';
 
 const LIST = [
+  // hero cards: editorial photographs in the site palette (1 Oct 2026), dark set and daylight set
+  ['consult-p', 'hf_20261001_100000_6eb9b453-a1df-416a-bb88-9e6828dd98c3'],
+  ['staff-p', 'hf_20261001_100000_84c6025f-39c6-474d-b999-b4c42ba08cad'],
+  ['build-p', 'hf_20261001_095959_60e9c541-1f9f-4a27-b6fe-e0bd9ca67e70'],
+  ['layers-p', 'hf_20261001_100000_0a590443-b16e-4da8-b465-25902ea0f01d'],
+  ['run-p', 'hf_20261001_095959_162d540e-16d6-4cc3-91e2-322407751744'],
+  ['erp-p', 'hf_20261001_100000_7de473b1-d3f4-4df3-aee2-2b091731df60'],
+  ['code-p', 'hf_20261001_100000_f0393d50-844d-4c63-8cb3-20e6e9735bdf'],
+  ['web-p', 'hf_20261001_100000_de1eb8c1-0a50-4e53-ad45-2ed41ab4eea0'],
+  ['consult-pl', 'hf_20261001_100000_e4b96840-4da8-4e51-b24f-9906da3d770d'],
+  ['staff-pl', 'hf_20261001_100000_3964e8b3-edf1-4c21-bfa9-2177c790fe00'],
+  ['build-pl', 'hf_20261001_100000_d4e7dee4-90b1-4f73-a617-e2d1924d34b6'],
+  ['layers-pl', 'hf_20261001_100000_72b5c4b6-a0c1-42a1-9618-d2cb2b82c4d2'],
+  ['run-pl', 'hf_20261001_100004_9274eb9f-d5ab-4988-9c1f-2d0ffc3c95b1'],
+  ['erp-pl', 'hf_20261001_100004_a5e322ff-53c0-488b-8153-6cb249be96aa'],
+  ['code-pl', 'hf_20261001_100004_2a560510-5494-4445-b33d-b40259c9beb0'],
+  ['web-pl', 'hf_20261001_100004_f9c4e3f5-660e-4e61-9a78-5de682c4a5d0'],
   // the ITCAN i tile placed inside each story (edits of the first set, 1 Oct 2026)
   ['consult-i', 'hf_20261001_041759_991fc9c8-c2b8-4a1d-a33d-ae98c7bd62f9'],
   ['build-i', 'hf_20261001_041754_9ad5d806-02db-41d4-a0b4-197d471936a3'],
@@ -29,6 +46,19 @@ const LIST = [
   ['code-l', 'hf_20261001_072238_194b8a86-3f8e-4e5f-95fc-722608a60b50'],
   ['web-l', 'hf_20261001_072236_206a5004-a854-49b0-80ff-a02e48f66294'],
   ['staff-l', 'hf_20261001_073915_f0327507-0499-4611-a029-2f6e1c26fb52'],
+  // the twelve sector photographs (Sectors section)
+  ['sec-bank', 'hf_20261001_095436_c004368b-eeb9-4ce8-861b-db5b3b6da1bb'],
+  ['sec-insure', 'hf_20261001_095435_3f2745bd-765e-4bcc-915e-f7a8d926e005'],
+  ['sec-gov', 'hf_20261001_095435_8572aa65-3a27-4290-9232-7e8dff69f2bb'],
+  ['sec-edu', 'hf_20261001_095435_6f80946e-a2cf-4fcc-9d29-0266af3e3fcb'],
+  ['sec-telco', 'hf_20261001_095436_ff167cc8-f380-490a-89bc-4dec6690972c'],
+  ['sec-health', 'hf_20261001_095435_17a6dc9e-362c-423b-970c-a21e83c8cf10'],
+  ['sec-logi', 'hf_20261001_095436_e3ee6ca6-1139-4a81-b2c4-1ec03e81fadb'],
+  ['sec-mfg', 'hf_20261001_095435_231b7886-677f-4a40-84c2-5463d2803e49'],
+  ['sec-retail', 'hf_20261001_095435_99472904-f271-4b7b-82f8-e18501091c1c'],
+  ['sec-energy', 'hf_20261001_095435_543af290-9139-4fea-a49a-f9a5ae7849c1'],
+  ['sec-estate', 'hf_20261001_095435_1717650e-279e-484a-9b46-e64144899e54'],
+  ['sec-tech', 'hf_20261001_095435_267fa85f-97a0-41fd-bb85-9d76894220a9'],
 ];
 
 // nine practice thumbnails, cut from one 3 x 3 sheet (1024 px, tiles ~316 px with even gaps)

@@ -8,28 +8,28 @@ import { scrollTo } from "../core/scroll.js";
 import { createCoverflow } from "../coverflow.js";
 
 const SLIDES = [
-  { name: "Business consulting", kind: "Service", img: "consult-i", href: "#product", glow: "#ff3d48",
+  { name: "Business consulting", kind: "Service", img: "consult-p", href: "#product", glow: "#ff3d48",
     desc: "Consultants who help you define requirements, select the right platform and roll it out with confidence.",
     tags: ["Requirements", "Platform selection", "Roll-out"] },
-  { name: "Staffing solutions", kind: "Service", img: "staff", href: "#pricing", glow: "#ff8a4c", cta: "Build your team",
+  { name: "Staffing solutions", kind: "Service", img: "staff-p", href: "#pricing", glow: "#ff8a4c", cta: "Build your team",
     desc: "Qualified IT professionals who join your team when you need them. Start with one specialist or a full team, and scale as priorities change.",
     tags: ["IT specialists", "Dedicated teams", "Scale up or down"] },
-  { name: "Customised solutions", kind: "Service", img: "build-i", href: "#product", glow: "#6d88ff",
+  { name: "Customised solutions", kind: "Service", img: "build-p", href: "#product", glow: "#6d88ff",
     desc: "Software designed around how your business works. We understand the problem first, then design, build and deliver the solution.",
     tags: ["On-site consulting", "Turnkey projects"] },
-  { name: "Outsourcing", kind: "Service", img: "layers-i", href: "#product", glow: "#a57bff",
+  { name: "Outsourcing", kind: "Service", img: "layers-p", href: "#product", glow: "#a57bff",
     desc: "A dedicated development team across front-end, application and database layers, with a clear owner for each.",
     tags: ["Front-end", "Application layer", "Database"] },
-  { name: "Managed applications", kind: "Service", img: "run-i", href: "#product", glow: "#35d0b2",
+  { name: "Managed applications", kind: "Service", img: "run-p", href: "#product", glow: "#35d0b2",
     desc: "We support and upgrade your existing systems while new ones roll out, so your team stays focused on the business.",
     tags: ["Support", "Upgrades", "Roll-outs"] },
-  { name: "ERP and CRM", kind: "Practice", img: "erp-i", href: "#integrations", glow: "#e6ad66",
+  { name: "ERP and CRM", kind: "Practice", img: "erp-p", href: "#integrations", glow: "#e6ad66",
     desc: "Enterprise systems selected, rolled out and supported, and connected to the rest of your business.",
     tags: ["ERP", "CRM", "Enterprise apps"] },
-  { name: "Java and Microsoft", kind: "Practice", img: "code-i", href: "#integrations", glow: "#79a2dc",
+  { name: "Java and Microsoft", kind: "Practice", img: "code-p", href: "#integrations", glow: "#79a2dc",
     desc: "Engineering across Java and Microsoft technologies, programming languages, databases and operating systems.",
     tags: ["Java", "Microsoft", "RDBMS"] },
-  { name: "Web and portals", kind: "Practice", img: "web-i", href: "#integrations", glow: "#ff6f9a",
+  { name: "Web and portals", kind: "Practice", img: "web-p", href: "#integrations", glow: "#ff6f9a",
     desc: "Websites and portals, from the screens your users see to the systems behind them.",
     tags: ["Web", "Portals", "Front-end"] },
 ];
@@ -37,11 +37,11 @@ const N = SLIDES.length;
 const CARD_W = 440, CARD_H = 584;
 const pad = (n) => String(n).padStart(2, "0");
 const src = (slug, w) => `/assets/services/${slug}-${w}.webp`;
-// light-theme versions of the artwork (daylight, white glass). A card without one, or whose
+// light-theme versions of the photographs (the same scenes in daylight). A card without one, or whose
 // light file fails to load, keeps its dark art in light mode.
 const LIGHT = {
-  "consult-i": "consult-l", "staff": "staff-l", "build-i": "build-l", "layers-i": "layers-l", "run-i": "run-l",
-  "erp-i": "erp-l", "code-i": "code-l", "web-i": "web-l",
+  "consult-p": "consult-pl", "staff-p": "staff-pl", "build-p": "build-pl", "layers-p": "layers-pl", "run-p": "run-pl",
+  "erp-p": "erp-pl", "code-p": "code-pl", "web-p": "web-pl",
 };
 const failed = new Set();
 const isLight = () => document.documentElement.getAttribute("data-theme") === "light";

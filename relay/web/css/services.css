@@ -187,3 +187,25 @@
 .ly-slab.s3 path:first-child { fill: #16236b; stroke: rgba(255, 255, 255, 0.18); }
 .ly-slab.s3 path:nth-child(2) { fill: #0f1a52; }
 .ly-slab.s3 path:nth-child(3) { fill: #0b1440; }
+
+/* ------------------------------------------------------------ glass cards on a coloured glow plate (blue or red)
+   The plate sits behind the bottom of each card and carries a one-line caption. */
+.fwrap { --tone: #2b44c9; --tone-2: #4a63f0; --tone-glow: rgba(43, 68, 201, 0.75); position: relative; flex: none; padding-bottom: 2.875rem; isolation: isolate; }
+.fwrap[data-tone="red"] { --tone: #d81f2b; --tone-2: #ff4752; --tone-glow: rgba(229, 34, 46, 0.62); }
+.fwrap::before { content: ""; position: absolute; z-index: -1; left: 0.875rem; right: 0.875rem; bottom: 0; height: 4.875rem; border-radius: 0 0 1.75rem 1.75rem;
+  background: linear-gradient(180deg, var(--tone-2), var(--tone)); box-shadow: 0 40px 80px -16px var(--tone-glow), inset 0 -1px 0 rgba(255, 255, 255, 0.18); }
+.fwrap > .fcard { z-index: 1; border-color: rgba(255, 255, 255, 0.1); background: linear-gradient(180deg, rgba(24, 26, 33, 0.94), rgba(13, 15, 21, 0.92));
+  -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 24px 48px -28px rgba(0, 0, 0, 0.9); }
+.fglow { position: absolute; left: 0; right: 0; bottom: 0; height: 2.875rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  font-weight: 500; font-size: 0.875rem; line-height: 1.25rem; letter-spacing: -0.005em; color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18); }
+.fglow svg { width: 0.9375rem; height: 0.9375rem; fill: currentColor; flex: none; }
+/* a live status dot on each card's title line */
+.tr-run::before, .ap-chan::before, .ly-cap::before, .es-title::before { content: ""; display: inline-block; vertical-align: 0.1em; width: 0.5rem; height: 0.5rem; margin-right: 0.5rem; border-radius: 50%;
+  background: var(--tone-2); box-shadow: 0 0 0 0 var(--tone-glow); animation: fw-dot 2.4s ease-out infinite; }
+@keyframes fw-dot { 0% { box-shadow: 0 0 0 0 var(--tone-glow); } 70%, 100% { box-shadow: 0 0 0 7px rgba(0, 0, 0, 0); } }
+@media (width <= 580px) {
+  .fwrap { width: 100%; padding-bottom: 2.5rem; }
+  .fwrap::before { left: 0.625rem; right: 0.625rem; height: 4.25rem; border-radius: 0 0 1.375rem 1.375rem; }
+  .fglow { height: 2.5rem; font-size: 0.8125rem; }
+}
+@media (prefers-reduced-motion: reduce) { .tr-run::before, .ap-chan::before, .ly-cap::before, .es-title::before { animation: none; } }

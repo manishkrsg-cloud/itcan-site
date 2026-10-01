@@ -18,6 +18,28 @@ function html() {
   out = out.replaceAll("{{v}}", version);
   writeFileSync(join(pub, "index.html"), out);
   writeFileSync(join(pub, "404.html"), read("404.html").replaceAll("{{v}}", version));
+  legal(read);
+}
+
+// Legal pages: one template, three bodies, served at /<slug>/
+const LEGAL = [
+  { slug: "terms-of-use", file: "terms", title: "Terms of use", h1: "Terms <em>of use.</em>", desc: "The terms that apply when you use the ITCAN website." },
+  { slug: "privacy-policy", file: "privacy", title: "Privacy policy", h1: "Privacy <em>policy.</em>", desc: "How ITCAN Pte Ltd handles personal data in connection with its website, in line with Singapore's PDPA." },
+  { slug: "disclaimer", file: "disclaimer", title: "Disclaimer", h1: "Website <em>disclaimer.</em>", desc: "Disclaimer for information published on the ITCAN website." },
+];
+const UPDATED = "1 October 2026";
+function legal(read) {
+  const tpl = read("legal.html");
+  for (const page of LEGAL) {
+    const tabs = LEGAL.map((p) => `<a href="/${p.slug}/"${p === page ? ' aria-current="page"' : ""}>${p.title}</a>`).join("");
+    const out = tpl.replaceAll("{{v}}", version).replaceAll("{{title}}", page.title).replaceAll("{{h1}}", page.h1)
+      .replaceAll("{{desc}}", page.desc).replaceAll("{{slug}}", page.slug).replaceAll("{{updated}}", UPDATED)
+      .replace("{{tabs}}", tabs).replace("{{body}}", read(`legal/${page.file}.html`).trim());
+    mkdirSync(join(pub, page.slug), { recursive: true });
+    writeFileSync(join(pub, page.slug, "index.html"), out);
+  }
+  // the legal pages read the saved theme before first paint (no inline scripts under the CSP)
+  writeFileSync(join(pub, "js", "theme.js"), 'try{localStorage.getItem("itcan-theme")==="light"&&document.documentElement.setAttribute("data-theme","light")}catch(e){}\n');
 }
 
 async function build() {
