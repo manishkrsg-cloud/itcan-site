@@ -29,7 +29,6 @@ export function initHero() {
   const title = rise(q(".hc-title")), titleF = focus(q(".hero-h1"), 10);
   const sub = fade(q(".hc-sub"));
   const actions = rise(q(".hc-actions"));
-  const note = rise(q(".hc-note")), noteT = type(q('[data-h="notetext"]'));
   const spIn = springs({ o: 0, y: 28, s: 0.94 }, (v) => {
     if (!spRoot) return;
     spRoot.style.opacity = v.o >= 1 ? "1" : v.o;
@@ -41,17 +40,16 @@ export function initHero() {
     title.play(70); titleF.play(70);
     sub.play(140);
     actions.play(210);
-    note.play(280); noteT.play(400);
     spIn.start({ o: 1, y: 0, s: 1 }, { config: SPRING_SOFT, delay: 240 });
     setTimeout(() => spectra && spectra.start(), 1400);
     setTimeout(() => window.dispatchEvent(new Event("itcan:stream")), 416);
   };
   if (reduced) {
-    [chip, chipT, title, titleF, sub, actions, note, noteT].forEach((c) => c.play(0));
+    [chip, chipT, title, titleF, sub, actions].forEach((c) => c.play(0));
     spIn.set({ o: 1, y: 0, s: 1 });
   } else {
-    [chip, title, note, actions].forEach((c) => c.reset());
-    chipT.reset(); noteT.reset(); titleF.reset(); sub.reset();
+    [chip, title, actions].forEach((c) => c.reset());
+    chipT.reset(); titleF.reset(); sub.reset();
     whenReleased(() => requestAnimationFrame(play));
   }
   if (document.fonts) document.fonts.ready.then(() => spectra && spectra.layout());

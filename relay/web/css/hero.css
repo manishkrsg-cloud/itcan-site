@@ -16,15 +16,11 @@
 .hero-h1 em { font-size: inherit; }
 .hc-sub { margin-top: 1.5rem; max-width: 31rem; font-size: 1.125rem; line-height: 1.75rem; color: var(--foreground-muted); }
 .hc-actions { margin-top: 2.25rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
-.hc-note { margin-top: 1.5rem; }
-.hc-note p { color: var(--foreground-muted); white-space: nowrap; }
-.hc-note a:hover { color: #fff; }
-.hc-note span { display: inline-block; }
 
 /* hidden entrance states for the hero (hero.js plays them) */
-.motion .hc-chip, .motion .hc-title, .motion .hc-actions, .motion .hc-note { opacity: 0; transform: translate3d(0, 1.5rem, 0); }
+.motion .hc-chip, .motion .hc-title, .motion .hc-actions { opacity: 0; transform: translate3d(0, 1.5rem, 0); }
 .motion .hc-sub, .motion .hero-h1 { opacity: 0; }
-.motion [data-h="chiptext"], .motion [data-h="notetext"] { clip-path: inset(0 100% 0 0); }
+.motion [data-h="chiptext"] { clip-path: inset(0 100% 0 0); }
 .motion .hero-spectra { opacity: 0; }
 
 /* ---------------- right column: the service fan */
@@ -92,7 +88,6 @@
   .hero-frame { padding-inline: 3rem; }
   .sp-stage { width: calc(100% + 5rem); margin-inline: -2rem -3rem; }
   .hc-sub { font-size: 1rem; line-height: 1.625rem; }
-  .hc-note p { white-space: normal; }
 }
 
 /* ---------------- 768 and 390 frames: the headline on top, the fan under it */
@@ -104,7 +99,6 @@
   .hero-h1 { font-size: 2.5rem; line-height: 1.1; }
   .hc-sub { margin-top: 1rem; max-width: 34rem; font-size: 1.0625rem; line-height: 1.6rem; }
   .hc-actions { margin-top: 1.5rem; justify-content: center; }
-  .hc-note { display: none; }
   .sp-stage { width: 100%; margin-inline: 0; -webkit-mask-image: none; mask-image: none; }
 }
 @media (width <= 580px) {
