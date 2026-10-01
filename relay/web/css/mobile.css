@@ -1,0 +1,51 @@
+/* ------------------------------------------------------------ phones and tablets: readable type and comfortable touch targets */
+
+/* large phones in landscape and small tablets: same floor, the 768 frame narrows to the screen */
+@media (581px <= width <= 900px) {
+  html { font-size: clamp(14.667px, 2.083333vw, 16px); }
+  :root { --page-width: min(48rem, 100vw); }
+  .of-code, .of-coord { font-size: 0.75rem; }
+  .pr-chip { height: 2.5rem; }
+  .seg button { height: 2.5rem; }
+}
+@media (width <= 900px) {
+  .theme-btn, .menu-btn { min-width: 2.5rem; min-height: 2.5rem; }
+}
+@media (width <= 1200px) {
+  .sp-top { font-size: max(0.6875rem, calc(12.5px * var(--card-f, 1))); }
+  .sp-tags i { font-size: max(0.6875rem, calc(11.5px * var(--card-f, 1))); }
+  .of-code, .of-coord { font-size: 0.75rem; }
+}
+@media (width <= 900px) {
+  .sp-top { font-size: max(0.75rem, calc(12.5px * var(--card-f, 1))); }
+  .sp-tags i { font-size: max(0.75rem, calc(11.5px * var(--card-f, 1))); }
+}
+/* the email field fills the pill, so a tap anywhere on it lands in the field */
+.ft-form input { align-self: stretch; height: auto; min-height: 2.5rem; }
+
+/* small phones: the type keeps a readable floor and the frame narrows to the screen instead */
+@media (width <= 580px) {
+  html { font-size: clamp(14.667px, 4.102564vw, 16px); } /* 0.75rem never drops below 11px */
+  :root { --page-width: min(24.375rem, 100vw); }
+
+  /* type floors */
+  .pr-chip { font-size: 0.8125rem; }
+  .of-code, .of-coord { font-size: 0.75rem; }
+  .sp-top { font-size: max(0.75rem, calc(12.5px * var(--card-f, 1))); }
+  .sp-tags i { font-size: max(0.75rem, calc(11.5px * var(--card-f, 1))); }
+
+  /* touch targets */
+  .filters button { height: 2.75rem; }
+  .seg button { height: 2.75rem; }
+  .ft-form input { min-height: 2.75rem; }
+}
+
+/* touch screens: links in lists get a taller hit area without changing the layout */
+.inboxes a, .ft-cols a { display: inline-block; padding: 0.625rem 0; margin: -0.625rem 0; }
+.brand, .ft-logo { padding: 0.5rem 0; margin: -0.5rem 0; }
+@media (width <= 900px) {
+  .ft-social a { width: 2.5rem; height: 2.5rem; }
+}
+@media (pointer: coarse) {
+  .pr-rel button { height: 2.5rem; }
+}

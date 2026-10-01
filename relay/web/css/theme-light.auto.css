@@ -149,10 +149,6 @@
 :root[data-theme="light"] .ft-phair { background-color: rgba(11, 18, 51, 0.14); }
 :root[data-theme="light"] .ft-social a { border: 1px solid rgba(11, 18, 51, 0.14); background-color: rgba(11, 18, 51, 0.1); color: rgba(11, 18, 51, 0.8); }
 :root[data-theme="light"] .ft-social a:hover, :root[data-theme="light"] .ft-social a:focus-visible { color: #1f3fd6; }
-:root[data-theme="light"] .ft-cta { color: #0b1233; }
-:root[data-theme="light"] .ft-eye { color: rgba(11, 18, 51, 0.9); }
-:root[data-theme="light"] .ft-title em { color: #f5f6f8; }
-:root[data-theme="light"] .ft-copy { color: rgba(11, 18, 51, 0.85); }
 :root[data-theme="light"] .ft-form { background-color: #0b1233; }
 :root[data-theme="light"] .ft-ring { box-shadow: inset 0 0 0 1px rgba(10, 11, 9, 0.052); }
 :root[data-theme="light"] .ft-form input::placeholder { color: rgba(246, 248, 250, 0.45); }

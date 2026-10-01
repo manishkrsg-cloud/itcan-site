@@ -78,8 +78,9 @@ export function initLogoOpen() {
     plate.style.setProperty("--grow", 1); plate.style.clipPath = "none";
     return;
   }
-  let k = 1, plateRound = 32, markSize = 76, mx = 0, my = 0;
+  let k = 1, plateRound = 32, markSize = 76, mx = 0, my = 0, short = false;
   const lin = (t) => t;
+  const nav = document.querySelector(".nav");
   const measure = () => {
     k = (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
     plateRound = parseFloat(getComputedStyle(section).borderTopLeftRadius) || 32;
@@ -93,6 +94,21 @@ export function initLogoOpen() {
   };
   function update() {
     const vh = innerHeight, plateH = plate.offsetHeight, plateW = plate.offsetWidth;
+    // a screen shorter than the plate (a phone held sideways) shows the plate as a plain card
+    const isShort = vh < plateH + (nav ? nav.offsetHeight : 0) + 16;
+    if (isShort !== short) {
+      short = isShort;
+      wrap.dataset.reduced = short ? "true" : "false";
+      if (!short) { requestAnimationFrame(measure); return; }
+    }
+    if (short) {
+      wrap.dataset.open = "true";
+      plate.style.setProperty("--grow", 1); plate.style.setProperty("--flying", 0);
+      plate.style.clipPath = "none";
+      if (target) { target.style.opacity = ""; delete target.dataset.flying; }
+      if (flight) flight.hidden = true;
+      return;
+    }
     const wrapTop = wrap.getBoundingClientRect().top;
     const to = target ? target.getBoundingClientRect() : null;
     const from = mark.getBoundingClientRect();

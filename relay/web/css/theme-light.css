@@ -67,7 +67,6 @@
 /* footer and numbers: no coloured fog on paper */
 :root[data-theme="light"] .g-bloom, :root[data-theme="light"] .g-blue, :root[data-theme="light"] .g-violet, :root[data-theme="light"] .pf-bloom { display: none; }
 :root[data-theme="light"] .ft-brand { background: #fff; border-color: var(--hair); box-shadow: var(--lift); }
-:root[data-theme="light"] .ft-title em { color: #d41e2b; }
 
 /* black and blue: ITCAN navy for ink and dark surfaces, ITCAN blue for the second accent */
 :root[data-theme="light"] .display { background: linear-gradient(180deg, #0b1233 0%, #22317f 100%); -webkit-background-clip: text; background-clip: text; }
