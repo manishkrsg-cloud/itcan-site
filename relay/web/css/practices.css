@@ -21,15 +21,15 @@
 /* a soft dark pool so the ring reads over the particle stream */
 .pr-orbit::before { content: ""; position: absolute; left: 50%; top: 50%; width: calc(var(--r) * 2 + 14rem); height: calc(var(--r) * 2 + 14rem); transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.45) 60%, transparent); pointer-events: none; }
 .pr-ring { position: absolute; left: 50%; top: 50%; width: calc(var(--r) * 2); height: calc(var(--r) * 2); margin: calc(var(--r) * -1) 0 0 calc(var(--r) * -1); border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); pointer-events: none; }
-.pr-core { position: absolute; left: 50%; top: 50%; z-index: 10; width: 4rem; height: 4rem; margin: -2rem 0 0 -2rem; border-radius: 50%; display: grid; place-items: center; pointer-events: none;
-  background: linear-gradient(135deg, #ff3d48 0%, #c2346f 45%, #6d88ff 100%); box-shadow: 0 0 40px -6px rgba(255, 61, 72, 0.6); }
-.pr-core-dot { width: 2rem; height: 2rem; border-radius: 50%; background: rgba(255, 255, 255, 0.82); }
-.pr-ping { position: absolute; left: 50%; top: 50%; width: 5rem; height: 5rem; margin: -2.5rem 0 0 -2.5rem; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.2); opacity: 0; }
-.pr-ping.-b { width: 6rem; height: 6rem; margin: -3rem 0 0 -3rem; border-color: rgba(255, 255, 255, 0.1); }
-.practices.is-live .pr-core { animation: pr-breathe 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.pr-core { position: absolute; left: 50%; top: 50%; z-index: 10; width: 4rem; height: 4rem; margin: -2rem 0 0 -2rem; display: grid; place-items: center; pointer-events: none; }
+/* the same ITCAN i tile that marks Singapore HQ on the globe */
+.pr-mark { position: relative; width: 100%; height: 100%; box-shadow: 0 0 34px -4px rgba(255, 61, 72, 0.7), 0 12px 30px -10px rgba(0, 0, 0, 0.8); }
+.pr-ping { position: absolute; left: 50%; top: 50%; width: 5rem; height: 5rem; margin: -2.5rem 0 0 -2.5rem; border-radius: 31.58%; border: 1px solid rgba(255, 90, 100, 0.35); opacity: 0; }
+.pr-ping.-b { width: 6rem; height: 6rem; margin: -3rem 0 0 -3rem; border-color: rgba(255, 90, 100, 0.18); }
+.practices.is-live .pr-mark { animation: pr-breathe 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 .practices.is-live .pr-ping { animation: pr-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite; }
 .practices.is-live .pr-ping.-b { animation-delay: 0.6s; }
-@keyframes pr-breathe { 50% { box-shadow: 0 0 60px -4px rgba(255, 61, 72, 0.75); } }
+@keyframes pr-breathe { 50% { box-shadow: 0 0 56px 0 rgba(255, 61, 72, 0.8), 0 12px 30px -10px rgba(0, 0, 0, 0.8); } }
 @keyframes pr-ping { 0% { opacity: 0.8; transform: scale(1); } 75%, 100% { opacity: 0; transform: scale(2); } }
 
 /* nodes: practices.js sets each li's transform, opacity and z-index */
@@ -92,13 +92,12 @@
   .pr-chip { height: 1.875rem; padding: 0 0.75rem; font-size: 0.75rem; }
   .pr-orbit { height: 25rem; }
   .pr-core { width: 3rem; height: 3rem; margin: -1.5rem 0 0 -1.5rem; }
-  .pr-core-dot { width: 1.5rem; height: 1.5rem; }
   .pr-ping { width: 3.75rem; height: 3.75rem; margin: -1.875rem 0 0 -1.875rem; }
   .pr-ping.-b { width: 4.5rem; height: 4.5rem; margin: -2.25rem 0 0 -2.25rem; }
   .pr-node { width: 2.25rem; height: 2.25rem; left: -1.125rem; top: -1.125rem; }
   .pr-name { top: 1.5rem; font-size: 0.625rem; letter-spacing: 0.03em; white-space: normal; width: 5.5rem; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .practices.is-live .pr-core, .practices.is-live .pr-ping, .practices.is-live .pr-nodes li.is-rel .pr-node, .practices.is-live .pr-nodes li.is-rel .pr-glow { animation: none; }
+  .practices.is-live .pr-mark, .practices.is-live .pr-ping, .practices.is-live .pr-nodes li.is-rel .pr-node, .practices.is-live .pr-nodes li.is-rel .pr-glow { animation: none; }
   .pr-card, .pr-node, .pr-name { transition: none; }
 }
