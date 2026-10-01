@@ -8,28 +8,28 @@ import { scrollTo } from "../core/scroll.js";
 import { createCoverflow } from "../coverflow.js";
 
 const SLIDES = [
-  { name: "Business consulting", kind: "Service", img: "consult", href: "#product", glow: "#ff3d48",
+  { name: "Business consulting", kind: "Service", img: "consult-i", href: "#product", glow: "#ff3d48",
     desc: "Certified consultants help you pick the right platform, roll it out and get a fast return on what you spend.",
     tags: ["Requirements", "Platform choice", "Roll-out"] },
   { name: "Staffing solutions", kind: "Service", img: "staff", href: "#pricing", glow: "#ff8a4c", cta: "Build your team",
     desc: "Skilled IT people who join your team when you need them. Start with one specialist or a full team, and scale as the work changes.",
     tags: ["IT specialists", "Dedicated teams", "Scale up or down"] },
-  { name: "Customized solutions", kind: "Service", img: "build", href: "#product", glow: "#6d88ff",
+  { name: "Customized solutions", kind: "Service", img: "build-i", href: "#product", glow: "#6d88ff",
     desc: "Software built around how your business works. We learn the problem first, then design and deliver the fix.",
     tags: ["On-site consulting", "Turnkey projects"] },
-  { name: "Outsourcing", kind: "Service", img: "layers", href: "#product", glow: "#a57bff",
+  { name: "Outsourcing", kind: "Service", img: "layers-i", href: "#product", glow: "#a57bff",
     desc: "A dedicated development team in three layers. Each layer owns its own architecture and delivery.",
     tags: ["Front-end", "Middle layer", "Back-end"] },
-  { name: "Managing applications", kind: "Service", img: "run", href: "#product", glow: "#35d0b2",
+  { name: "Managing applications", kind: "Service", img: "run-i", href: "#product", glow: "#35d0b2",
     desc: "New systems need support while old ones still need upgrades. We carry both, so your people stay on the business.",
     tags: ["Support", "Upgrades", "Roll-outs"] },
-  { name: "ERP and CRM", kind: "Practice", img: "erp", href: "#integrations", glow: "#e6ad66",
+  { name: "ERP and CRM", kind: "Practice", img: "erp-i", href: "#integrations", glow: "#e6ad66",
     desc: "Enterprise applications chosen, rolled out and supported, connected to the rest of your business.",
     tags: ["ERP", "CRM", "Enterprise apps"] },
-  { name: "Java and Microsoft", kind: "Practice", img: "code", href: "#integrations", glow: "#79a2dc",
+  { name: "Java and Microsoft", kind: "Practice", img: "code-i", href: "#integrations", glow: "#79a2dc",
     desc: "Engineers across Java and Microsoft technologies, programming languages, databases and operating systems.",
     tags: ["Java", "Microsoft", "RDBMS"] },
-  { name: "Web and portals", kind: "Practice", img: "web", href: "#integrations", glow: "#ff6f9a",
+  { name: "Web and portals", kind: "Practice", img: "web-i", href: "#integrations", glow: "#ff6f9a",
     desc: "Web technologies and portals, from the screens your users see to the systems behind them.",
     tags: ["Web", "Portals", "Front-end"] },
 ];
@@ -52,7 +52,7 @@ export function initSpectra(root) {
     el.innerHTML = `<span class="sp-inner">`
       + `<span class="sp-media"><img class="sp-img" src="${src(s.img, 480)}" srcset="${src(s.img, 480)} 480w, ${src(s.img, 880)} 880w" sizes="(max-width: 600px) 86vw, 440px" width="880" height="1168" alt="" decoding="async" draggable="false" fetchpriority="${i === 0 ? "high" : "low"}"></span>`
       + `<span class="sp-shade" aria-hidden="true"></span><span class="sp-sheen" aria-hidden="true"></span>`
-      + `<span class="sp-top"><span class="sp-id"><span class="sp-mark mark mark--lit" aria-hidden="true"><svg><use href="#g-i"/></svg></span><span class="sp-num">${pad(i + 1)}</span></span><span class="sp-kind">${s.kind}</span></span>`
+      + `<span class="sp-top"><span class="sp-num">${pad(i + 1)}</span><span class="sp-kind">${s.kind}</span></span>`
       + `<span class="sp-body"><span class="sp-name">${s.name}</span><span class="sp-desc">${s.desc}</span>`
       + `<span class="sp-tags">${s.tags.map((t) => `<i>${t}</i>`).join("")}</span></span>`
       + `</span>`;

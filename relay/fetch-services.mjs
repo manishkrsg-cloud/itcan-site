@@ -12,14 +12,21 @@ const OUT = path.join(__dirname, 'public', 'assets', 'services');
 const BASE = 'https://d8j0ntlcm91z4.cloudfront.net/user_2zirxwP6e4obj22XOM5lG6LDlk1/';
 
 const LIST = [
-  ['consult', 'hf_20260930_115616_a13c4e26-dd7a-438d-bad5-7e3aa80e138c'],
-  ['build', 'hf_20260930_115615_bdfe54f5-90b2-4b86-b691-a7282a245737'],
-  ['layers', 'hf_20260930_115614_75e1d533-3188-4c58-8fff-b8111dfc17d7'],
-  ['run', 'hf_20260930_115615_e5b94f89-7424-4d6c-88e8-80920d36d413'],
-  ['erp', 'hf_20260930_115615_49c28cd0-ce8c-482d-9222-59184222d772'],
-  ['code', 'hf_20260930_115615_bccc58bd-9460-469f-aace-a57d7ecdb84d'],
-  ['web', 'hf_20260930_115615_a7c397fd-30cf-40e6-b1e2-1a05399c2d88'],
+  // the ITCAN i tile placed inside each story (edits of the first set, 1 Oct 2026)
+  ['consult-i', 'hf_20261001_041759_991fc9c8-c2b8-4a1d-a33d-ae98c7bd62f9'],
+  ['build-i', 'hf_20261001_041754_9ad5d806-02db-41d4-a0b4-197d471936a3'],
+  ['layers-i', 'hf_20261001_041754_3832e263-3d07-4965-bcb9-82c79a157ccf'],
+  ['run-i', 'hf_20261001_041754_361b312b-ea5a-4c80-853a-1f4a5c35285a'],
+  ['erp-i', 'hf_20261001_041755_02501c65-947d-46ac-be09-08eec95235df'],
+  ['code-i', 'hf_20261001_041754_9399878d-d67d-404f-ae78-f4de62a6fbab'],
+  ['web-i', 'hf_20261001_041754_deb340c7-3171-43f3-94dc-0b65a9da24bf'],
 ];
+
+// nine practice thumbnails, cut from one 3 x 3 sheet (1024 px, tiles ~316 px with even gaps)
+const PRACTICE_SHEET = 'hf_20261001_041754_ffba951e-a93c-44a9-88b3-5534c6470494';
+const PRACTICE_OUT = path.join(__dirname, 'public', 'assets', 'practices');
+const PRACTICES = ['erp', 'apps', 'os', 'lang', 'rdbms', 'portals', 'web', 'microsoft', 'java'];
+const CELL = [17, 353, 689], TILE = 316, INSET = 10;
 
 const VIDEO_OUT = path.join(__dirname, 'public', 'assets', 'video');
 const FILM = 'https://d2ol7oe51mr4n9.cloudfront.net/user_2zirxwP6e4obj22XOM5lG6LDlk1/';
@@ -67,6 +74,21 @@ async function processOne([slug, id]) {
   return 'ok';
 }
 
+async function practices() {
+  await fs.mkdir(PRACTICE_OUT, { recursive: true });
+  const outs = PRACTICES.map((n) => path.join(PRACTICE_OUT, n + '.webp'));
+  if ((await Promise.all(outs.map(exists))).every(Boolean)) return console.log('[practices] cached');
+  if (!sharp) return console.log('[practices] skipped: sharp not available');
+  try {
+    const sheet = await get(BASE + PRACTICE_SHEET + '.png');
+    await Promise.all(PRACTICES.map((n, i) => {
+      const left = CELL[i % 3] + INSET, top = CELL[Math.floor(i / 3)] + INSET, size = TILE - INSET * 2;
+      return sharp(sheet).extract({ left, top, width: size, height: size }).resize(200, 200).webp({ quality: 80, effort: 5 }).toFile(outs[i]);
+    }));
+    console.log('[practices] ok     9 thumbnails');
+  } catch (err) { console.log('[practices] FAILED:', err.message); }
+}
+
 async function main() {
   await fs.mkdir(OUT, { recursive: true });
   let ok = 0, failed = 0;
@@ -75,6 +97,7 @@ async function main() {
     catch (err) { failed++; console.log(`[services] FAILED ${item[0]}: ${err.message}`); }
   }));
   console.log(`[services] done: ${ok} saved, ${failed} missing`);
+  await practices();
   await fs.mkdir(VIDEO_OUT, { recursive: true });
   await Promise.all(VIDEOS.map(async ([name, id]) => {
     const out = path.join(VIDEO_OUT, name);

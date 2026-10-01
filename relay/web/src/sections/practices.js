@@ -29,9 +29,9 @@ export function initPractices() {
   const measure = () => {
     const W = orbit.clientWidth, H = orbit.clientHeight;
     cx = W / 2; cy = H / 2;
-    r = Math.max(90, Math.min(200, W / 2 - 64, H / 2 - 64));
+    r = Math.max(90, Math.min(205, W / 2 - 70, H / 2 - 70));
     orbit.style.setProperty("--r", `${r.toFixed(1)}px`);
-    card.style.top = `${(cy - r + (W < 520 ? 58 : 66)).toFixed(1)}px`;
+    card.style.top = `${(cy - r + (W < 520 ? 66 : 84)).toFixed(1)}px`;
   };
 
   // ---- place every node for the current ring angle
