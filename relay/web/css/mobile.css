@@ -49,3 +49,66 @@
 @media (pointer: coarse) {
   .pr-rel button { height: 2.5rem; }
 }
+
+/* ------------------------------------------------------------ mobile UX pass (Oct 2026) */
+
+/* menu: theme switch lives in the menu card; icons follow the theme like the header button */
+.menu-theme button { display: flex; align-items: center; gap: 0.75rem; width: 100%; border-radius: 14px; padding: 9px 10px; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.menu-theme button:hover, .menu-theme button:focus-visible { background: rgba(255, 255, 255, 0.04); }
+.menu-theme { margin-top: 0.375rem; padding-top: 0.375rem; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.menu-theme .tile { position: relative; }
+.menu-theme .tile svg { position: absolute; width: 18px; height: 18px; transition: opacity 0.2s, transform 0.3s var(--ease-entrance); }
+.menu-theme .ti-moon, .menu-theme .mt-light { display: none; }
+:root[data-theme="light"] .menu-theme .ti-sun, :root[data-theme="light"] .menu-theme .mt-dark { display: none; }
+:root[data-theme="light"] .menu-theme .ti-moon, :root[data-theme="light"] .menu-theme .mt-light { display: block; }
+:root[data-theme="light"] .menu-theme { border-top-color: var(--hair); }
+.menu-card .tile { font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+@media (width > 580px) { .menu-theme { display: none; } }
+
+/* footer social icons */
+.ft-social a svg { width: 16px; height: 16px; }
+
+@media (width <= 900px) {
+  /* the header plate hides what scrolls beneath it */
+  .nav-plate { background: rgba(5, 6, 9, 0.9); -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%); border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+  :root[data-theme="light"] .nav-plate { background: rgba(244, 245, 248, 0.92); border-bottom-color: var(--hair); }
+  /* tracking eases as type gets smaller */
+  :root { --letter-spacing-title: -0.03em; }
+  .hero-h1 { letter-spacing: -0.035em; }
+  .ss-title { letter-spacing: -0.03em; }
+  /* map button never wraps */
+  .of-map { white-space: nowrap; flex: none; }
+  .of-coord { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+@media (width <= 580px) {
+  /* section titles: a touch larger, gentler tracking */
+  :root { --type-section-title: 1.875rem; --type-section-title-accent: 2rem; --line-section-title: 2.25rem; --letter-spacing-title: -0.025em; }
+  .hero-h1 { letter-spacing: -0.03em; }
+
+  /* header: logo, one CTA, menu. Theme moves into the menu */
+  .nav-actions > .theme-btn { display: none; }
+  .nav-actions .cta--md { height: 2.5rem; }
+  .menu-card { max-height: calc(100dvh - 16px); }
+
+  /* section heads read left, like the cards beneath them */
+  .shead, .shead-main, .pf-head, .pr-copy, .ss-copy, .frow-copy { align-items: flex-start; text-align: left; }
+  .frow-copy { width: 100%; }
+  .pf-head > div { align-items: flex-start; }
+  .st-cap { display: none; } /* the ruler and its hour labels already say it; the caption clipped at the plate edge */
+  .shead .badge, .pr-copy .badge, .ss-copy .badge { align-self: flex-start; }
+
+  /* the statement plate is a fixed-size frame: its title keeps the original phone size */
+  .st-title { font-size: 1.5rem; line-height: 2rem; letter-spacing: -0.02em; }
+  .pr-chips { justify-content: flex-start; }
+
+  /* touch targets: 44px floor on chips and contact links */
+  .pr-chip { height: 2.75rem; }
+  .of-card a[href^="tel:"], .of-card a[href^="mailto:"] { display: inline-block; padding: 0.75rem 0; margin: -0.75rem 0; }
+  .ft-social a { width: 2.75rem; height: 2.75rem; }
+  .of-map { min-height: 2.75rem; }
+
+  /* time-zone card: the caption sits below the four lanes, not on them */
+  .tz-art { height: 19.5rem; }
+  .tz-foot { top: 17.5rem; }
+}
