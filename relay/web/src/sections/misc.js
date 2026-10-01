@@ -72,7 +72,7 @@ function brief() {
   const err = document.getElementById("formError"), done = document.getElementById("formDone");
   const pre = document.getElementById("donePreview"), to = document.getElementById("doneTo");
   const ROUTE = { job: "jobs@itcan.biz", consulting: "sales@itcan.biz", staffing: "sales@itcan.biz", custom: "sales@itcan.biz", outsourcing: "sales@itcan.biz", managed: "sales@itcan.biz", other: "info@itcan.biz" };
-  const NEED = { consulting: "Business consulting", staffing: "IT staff for my team", custom: "A customized solution", outsourcing: "An outsourced team", managed: "Application support", job: "A job at ITCAN", other: "Something else" };
+  const NEED = { consulting: "Business consulting", staffing: "IT staff for my team", custom: "A customised solution", outsourcing: "An outsourced team", managed: "Managed applications", job: "A job at ITCAN", other: "Something else" };
   let text = "";
   form.addEventListener("submit", (e) => {
     e.preventDefault();

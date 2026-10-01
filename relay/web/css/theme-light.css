@@ -152,3 +152,6 @@
 :root[data-theme="light"] .ft-form { background: #fff; border: 1px solid rgba(31, 63, 214, 0.2); box-shadow: 0 10px 24px -16px rgba(19, 35, 143, 0.4); }
 :root[data-theme="light"] .ft-form input { color: var(--ink); }
 :root[data-theme="light"] .ft-form input::placeholder { color: rgba(11, 18, 51, 0.45); }
+/* selected states that sit on a coloured pill keep a solid label */
+:root[data-theme="light"] .seg button[aria-selected="true"] { color: #fff; }
+:root[data-theme="light"] .filters button[aria-selected="true"] { color: var(--ink); }

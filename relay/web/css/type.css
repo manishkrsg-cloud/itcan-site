@@ -1,0 +1,16 @@
+/* ------------------------------------------------------------ modern typography
+   Geist for text, Geist Mono for small labels. Headings balance their lines, body copy
+   avoids one-word last lines, numbers line up, and quote marks hang in the margin. */
+@font-face { font-family: "Geist Mono"; font-weight: 100 900; font-style: normal; font-display: swap; src: url("/assets/fonts/geist-mono-latin-wght-normal.woff2") format("woff2-variations"), url("/assets/fonts/geist-mono-latin-wght-normal.woff2") format("woff2"); }
+html { text-rendering: optimizeLegibility; font-kerning: normal; }
+h1, h2, h3, .display, .stitle, .hero-h1, .sp-name, .pr-card-title, .ca-big, .ft-title, .plan-big { text-wrap: balance; }
+p, li, dd, address, blockquote, .sp-desc, .shead-aside { text-wrap: pretty; }
+.display, .stitle, .hero-h1 { font-feature-settings: "ss01", "cv11", "kern", "calt"; }
+blockquote { hanging-punctuation: first; }
+.pf-num, .plan-big, .of-clock, .tz-time, .sp-num, .st-hours, .pr-card-n, .of-coord { font-variant-numeric: tabular-nums lining-nums; }
+/* small labels: Geist Mono, uppercase, open tracking */
+.badge, .ca-eyebrow, .pf-label, .wg-title, .of-label, .of-code, .of-coord, .pr-card-k, .tr-head-k, .es-head-k {
+  font-family: "Geist Mono", ui-monospace, "SFMono-Regular", monospace; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
+.badge { font-size: 0.75rem; }
+.pf-label, .wg-title, .of-label, .ca-eyebrow { font-size: 0.75rem; line-height: 1rem; }
+.of-code, .of-coord { font-size: 0.6875rem; }
