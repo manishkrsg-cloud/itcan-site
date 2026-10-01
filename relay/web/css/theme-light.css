@@ -135,11 +135,8 @@
 :root[data-theme="light"] .hm button.peak { background: linear-gradient(90deg, #ff3d48, rgba(255, 61, 72, 0.72)); }
 
 /* moving lines and lanes: ITCAN blue on paper (the lead item keeps its red) */
-:root[data-theme="light"] .tr-span { background: linear-gradient(to right, #13238f, #3f5ff0); }
-:root[data-theme="light"] .tr-span.s1 { background: linear-gradient(to right, #b3161f, #ff3d48); }
-:root[data-theme="light"] .es-lane, :root[data-theme="light"] .tz-lane { background: rgba(31, 63, 214, 0.1); }
-:root[data-theme="light"] .es-lane i, :root[data-theme="light"] .tz-fill { background: linear-gradient(to right, #13238f, #3f5ff0); }
-:root[data-theme="light"] .es-rows li:first-child .es-lane i { background: linear-gradient(to right, #b3161f, #ff3d48); }
+:root[data-theme="light"] .tz-lane { background: rgba(31, 63, 214, 0.1); }
+:root[data-theme="light"] .tz-fill { background: linear-gradient(to right, #13238f, #3f5ff0); }
 :root[data-theme="light"] .tz-rows li:first-child .tz-fill { background: var(--accent); }
 :root[data-theme="light"] .ring-track { stroke: rgba(31, 63, 214, 0.14); }
 :root[data-theme="light"] .dotmap .d { fill: rgba(31, 63, 214, 0.42); }
@@ -166,3 +163,17 @@
 :root[data-theme="light"] .fwrap[data-tone="red"] { --tone-glow: rgba(229, 34, 46, 0.4); }
 :root[data-theme="light"] .fwrap > .fcard { border-color: rgba(11, 18, 51, 0.08); background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.92));
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 1px 2px rgba(16, 24, 40, 0.05), 0 28px 50px -30px rgba(19, 35, 143, 0.35); }
+
+/* storyline cards on paper */
+:root[data-theme="light"] .sy-kick, :root[data-theme="light"] .sy-title { color: var(--ink); }
+:root[data-theme="light"] .sy-sum, :root[data-theme="light"] .sy-when { color: #6b7385; }
+:root[data-theme="light"] .sy-text { color: #4a5163; }
+:root[data-theme="light"] .sy-rule { background: rgba(11, 18, 51, 0.08); }
+:root[data-theme="light"] .sy-line { background: rgba(11, 18, 51, 0.08); }
+:root[data-theme="light"] .sy-node { color: #8a91a3; background: #fff; box-shadow: inset 0 0 0 1px rgba(11, 18, 51, 0.14), 0 1px 2px rgba(16, 24, 40, 0.05); }
+:root[data-theme="light"] .story { --a1: #4a63f0; --a2: #1f3fd6; --a-ring: rgba(31, 63, 214, 0.12); --a-glow: rgba(31, 63, 214, 0.6); --a-fg: #1f3fd6; --a-bg: #eef2ff; --a-line: rgba(31, 63, 214, 0.22);
+  --b1: #ff4752; --b2: #d81f2b; --b-ring: rgba(229, 34, 46, 0.12); --b-glow: rgba(216, 31, 43, 0.6); --b-fg: #c81e29; --b-bg: #fff1f2; --b-line: rgba(229, 34, 46, 0.28); }
+:root[data-theme="light"] .fwrap[data-tone="red"] .story { --a1: #ff4752; --a2: #d81f2b; --a-ring: rgba(229, 34, 46, 0.12); --a-glow: rgba(216, 31, 43, 0.6); --a-fg: #c81e29; --a-bg: #fff1f2; --a-line: rgba(229, 34, 46, 0.28);
+  --b1: #4a63f0; --b2: #1f3fd6; --b-ring: rgba(31, 63, 214, 0.12); --b-glow: rgba(31, 63, 214, 0.6); --b-fg: #1f3fd6; --b-bg: #eef2ff; --b-line: rgba(31, 63, 214, 0.22); }
+:root[data-theme="light"] .story:not(.is-armed) .sy-node, :root[data-theme="light"] .sy-step.is-on .sy-node { color: #fff; background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow: 0 0 0 4px var(--a-ring), 0 8px 18px -8px var(--a-glow); }
+:root[data-theme="light"] .story:not(.is-armed) .sy-last .sy-node, :root[data-theme="light"] .sy-last.is-on .sy-node { background: linear-gradient(135deg, var(--b1), var(--b2)); box-shadow: 0 0 0 4px var(--b-ring), 0 8px 18px -8px var(--b-glow); }

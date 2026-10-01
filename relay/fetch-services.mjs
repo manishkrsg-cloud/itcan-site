@@ -46,7 +46,7 @@ const LIST = [
   ['code-l', 'hf_20261001_072238_194b8a86-3f8e-4e5f-95fc-722608a60b50'],
   ['web-l', 'hf_20261001_072236_206a5004-a854-49b0-80ff-a02e48f66294'],
   ['staff-l', 'hf_20261001_073915_f0327507-0499-4611-a029-2f6e1c26fb52'],
-  // the twelve sector photographs (Sectors section)
+  // the ten sector photographs (Sectors section)
   ['sec-bank', 'hf_20261001_095436_c004368b-eeb9-4ce8-861b-db5b3b6da1bb'],
   ['sec-insure', 'hf_20261001_095435_3f2745bd-765e-4bcc-915e-f7a8d926e005'],
   ['sec-gov', 'hf_20261001_095435_8572aa65-3a27-4290-9232-7e8dff69f2bb'],
@@ -55,9 +55,7 @@ const LIST = [
   ['sec-health', 'hf_20261001_095435_17a6dc9e-362c-423b-970c-a21e83c8cf10'],
   ['sec-logi', 'hf_20261001_095436_e3ee6ca6-1139-4a81-b2c4-1ec03e81fadb'],
   ['sec-mfg', 'hf_20261001_095435_231b7886-677f-4a40-84c2-5463d2803e49'],
-  ['sec-retail', 'hf_20261001_095435_99472904-f271-4b7b-82f8-e18501091c1c'],
   ['sec-energy', 'hf_20261001_095435_543af290-9139-4fea-a49a-f9a5ae7849c1'],
-  ['sec-estate', 'hf_20261001_095435_1717650e-279e-484a-9b46-e64144899e54'],
   ['sec-tech', 'hf_20261001_095435_267fa85f-97a0-41fd-bb85-9d76894220a9'],
 ];
 

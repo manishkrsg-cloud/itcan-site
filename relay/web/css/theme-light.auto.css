@@ -59,18 +59,6 @@
 :root[data-theme="light"] .pr-rel button svg { color: rgba(11, 18, 51, 0.6); }
 :root[data-theme="light"] .pr-rel button:focus-visible { outline: 1px solid #1f3fd6; }
 /* services */
-:root[data-theme="light"] .tr-run { color: #0b1233; }
-:root[data-theme="light"] .tr-head { background-color: rgba(11, 18, 51, 0.07); }
-:root[data-theme="light"] .tr-steps li { border-bottom: 1px solid rgba(11, 18, 51, 0.05); }
-:root[data-theme="light"] .tr-lab { color: #0b1233; }
-:root[data-theme="light"] .tr-axis i { background-color: rgba(11, 18, 51, 0.09); }
-:root[data-theme="light"] .tr-axis span::before { background-color: rgba(11, 18, 51, 0.16); }
-:root[data-theme="light"] .ap-rule { background-color: rgba(11, 18, 51, 0.07); }
-:root[data-theme="light"] .ap-ok { color: #0b1233; }
-:root[data-theme="light"] .ap-hold { background-color: #f1f2f4; border: 1px solid rgba(11, 18, 51, 0.16); color: #0b1233; }
-:root[data-theme="light"] .es-title { color: #0b1233; }
-:root[data-theme="light"] .es-rule { background-color: rgba(11, 18, 51, 0.07); }
-:root[data-theme="light"] .es-rows li { border-bottom: 1px solid rgba(11, 18, 51, 0.05); }
 :root[data-theme="light"] .ly-slab.s2 path:first-child { stroke: rgba(11, 18, 51, 0.3); }
 :root[data-theme="light"] .ly-slab.s3 path:first-child { stroke: rgba(11, 18, 51, 0.18); }
 /* offices */

@@ -1,4 +1,4 @@
-// Sectors: twelve industry cards start as a fanned stack and spread across the screen as you
+// Sectors: ten industry cards start as a fanned stack and spread across the screen as you
 // scroll, revealing the heading in the middle. Wide screens only; phones and reduced motion
 // get the plain image grid from sectors.css.
 import { reduced, fine, clamp, smooth, ticker } from "../core/engine.js";
@@ -7,21 +7,21 @@ import { rise } from "../core/prims.js";
 import { onSeen, whenReleased } from "../core/seen.js";
 
 // rest spot from the centre of the area under the nav bar (x in % of its width, y in % of its
-// height), width in u (1u = 1% of min(width, 1.75 x height)),
+// height), width in u (1u = 1% of min(width, 1.6 x height)), in two straight rows of five,
 // a = height / width, and the offset (vw, vh) and angle while stacked. Order = paint order.
 const L = [
-  { x: -37, y: -27, w: 13, a: 1.2, sx: -5, sy: -5, sr: -14 },
-  { x: -17, y: -31, w: 12, a: 1.2, sx: 6, sy: -7, sr: 12 },
-  { x: 1, y: -33, w: 11, a: 1.1, sx: -2, sy: -8, sr: -5 },
-  { x: 19, y: -29, w: 13, a: 1.2, sx: 7, sy: -3, sr: 15 },
-  { x: 38, y: -27, w: 14, a: 1.15, sx: -7, sy: 2, sr: -9 },
-  { x: -40, y: 3, w: 12, a: 1.2, sx: 4, sy: 5, sr: 7 },
-  { x: 40, y: 5, w: 13, a: 1.1, sx: -6, sy: 6, sr: -6 },
-  { x: -33, y: 32, w: 13, a: 1.2, sx: 6, sy: 7, sr: 10 },
-  { x: -13, y: 30, w: 12, a: 1.15, sx: -4, sy: 8, sr: -12 },
-  { x: 6, y: 33, w: 13, a: 1.1, sx: 3, sy: 3, sr: 4 },
-  { x: 24, y: 29, w: 11, a: 1.3, sx: -3, sy: -2, sr: -3 },
-  { x: 41, y: 32, w: 12, a: 1.2, sx: 1, sy: 1, sr: 2 },
+  // top row
+  { x: -36, y: -30, w: 14, a: 1.1, sx: -5, sy: -5, sr: -14 },
+  { x: -18, y: -30, w: 14, a: 1.1, sx: 6, sy: -7, sr: 12 },
+  { x: 0, y: -30, w: 14, a: 1.1, sx: -2, sy: -8, sr: -5 },
+  { x: 18, y: -30, w: 14, a: 1.1, sx: 7, sy: -3, sr: 15 },
+  { x: 36, y: -30, w: 14, a: 1.1, sx: -7, sy: 2, sr: -9 },
+  // bottom row
+  { x: -36, y: 30, w: 14, a: 1.1, sx: 4, sy: 5, sr: 7 },
+  { x: -18, y: 30, w: 14, a: 1.1, sx: -6, sy: 6, sr: -6 },
+  { x: 0, y: 30, w: 14, a: 1.1, sx: 6, sy: 7, sr: 10 },
+  { x: 18, y: 30, w: 14, a: 1.1, sx: -4, sy: 8, sr: -12 },
+  { x: 36, y: 30, w: 14, a: 1.1, sx: 1, sy: 1, sr: 3 },
 ];
 const HOLD = 0.08, END = 0.86, STAGGER = 0.016, STACK_S = 0.86, LEN = 280;
 const PAR_X = 1.6, PAR_Y = 1.4; // pointer drift once spread, in vw / vh at full depth
@@ -50,7 +50,7 @@ export function initSectors() {
     vw = innerWidth; vh = stage.clientHeight || innerHeight;
     nh = nav ? Math.min(nav.offsetHeight, vh * 0.15) : 0; rh = vh - nh;
     sec.style.setProperty("--ss-top", `${nh}px`);
-    u = Math.min(vw, rh * 1.75) / 100;
+    u = Math.min(vw, rh * 1.6) / 100;
     cards.forEach((c, i) => {
       const w = L[i].w * u, h = w * L[i].a;
       size[i] = [w, h];

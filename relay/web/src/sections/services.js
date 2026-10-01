@@ -1,5 +1,5 @@
-// 04 Services: index counters and four looping cards (trace, approval, layers, estate).
-import { Spring, springs, SPRING, SPRING_SOFT, GROW, reduced, ticker } from "../core/engine.js";
+// 04 Services: index counters and the looping cards (three storylines and the layers stack).
+import { Spring, springs, SPRING, SPRING_SOFT, GROW, reduced, ticker, tween, ease } from "../core/engine.js";
 import { type } from "../core/prims.js";
 import { watchLoop } from "../core/seen.js";
 
@@ -49,93 +49,54 @@ function roll(el) {
   };
 }
 
-// ------------------------------------------------------------ trace
-function traceCard(fig) {
+// ------------------------------------------------------------ storyline (consulting, custom builds, managed applications)
+// The thread fills from chapter to chapter; each chapter lights up as the thread reaches it.
+function storyCard(fig) {
   const T = timers();
-  const run = type(fig.querySelector('[data-t="run"]'), 24), sum = type(fig.querySelector('[data-t="sum"]'), 24);
-  const rows = Array.from(fig.querySelectorAll(".tr-steps li"));
-  const parts = rows.map((li) => {
-    const span = li.querySelector(".tr-span, .tr-pend"), ico = li.querySelector(".tr-ico"), val = li.querySelector(".tr-val");
-    const path = ico.querySelector("path");
-    const to = parseFloat(val.dataset.to || "0"), unit = val.textContent.replace(/[\d.]/g, "").trim();
-    const pend = li.classList.contains("pending");
-    const g = new Spring(0, (v) => {
-      span.style.transform = `scaleX(${Math.max(0, v)})`;
-      if (pend) { setO(ico, v); setO(val, v); }
-      else if (to) val.textContent = `${Math.round(Math.max(0, Math.min(1, v)) * to)} ${unit}`;
-    });
-    const c = new Spring(1, (v) => { if (path && !pend) { path.style.strokeDasharray = "1 1"; path.style.strokeDashoffset = v; } });
-    return { g, c, pend };
-  });
-  const starts = [360, 760, 920, 1040];
-  // dashes of the pending span crawl while the card is on screen
-  const pendRect = fig.querySelector(".tr-pend rect");
-  let crawl = null;
-  const crawlOn = (on) => {
-    if (on && !crawl && !reduced) crawl = ticker.add((now) => { pendRect.style.strokeDashoffset = -((now / 1120) % 1) * 7; }, 32);
-    if (!on && crawl) { crawl(); crawl = null; }
+  const kick = type(fig.querySelector('[data-t="kick"]'), 24), sum = type(fig.querySelector('[data-t="sum"]'), 24);
+  const steps = Array.from(fig.querySelectorAll(".sy-step"));
+  const line = fig.querySelector(".sy-line"), fill = fig.querySelector(".sy-fill");
+  const nodes = steps.map((s) => s.querySelector(".sy-node"));
+  // the thread runs from the first chapter marker to the last, across or down
+  const fit = () => {
+    const a = nodes[0].getBoundingClientRect(), b = nodes[nodes.length - 1].getBoundingClientRect(), box = line.parentElement.getBoundingClientRect();
+    const across = Math.abs(b.top - a.top) < 4;
+    line.style.left = `${a.left - box.left + a.width / 2}px`;
+    line.style.top = `${a.top - box.top + a.height / 2}px`;
+    line.style.width = across ? `${b.left - a.left}px` : "";
+    line.style.height = across ? "" : `${b.top - a.top}px`;
   };
+  fit();
+  addEventListener("resize", fit);
+  if (document.fonts) document.fonts.ready.then(fit);
+  const n = steps.length, LEG = 640, FIRST = 520;
+  let p = 0, tw = null;
+  const setP = (v) => { p = v; fill.style.setProperty("--p", v.toFixed(4)); };
+  const light = (i, on) => steps[i].classList.toggle("is-on", on);
+  const settle = (i) => steps[i].classList.add("is-done");
   return {
-    playMs: 2072,
+    playMs: FIRST + (n - 1) * LEG + 400,
     play() {
-      crawlOn(true);
-      run.play(240); sum.play(1400);
-      parts.forEach((p, i) => { p.g.start(1, { config: SPRING_SOFT, delay: starts[i] }); p.c.start(0, { config: SPRING, delay: starts[i] + 240 }); });
+      fig.classList.add("is-armed");
+      kick.play(160); sum.play(900);
+      T.at(FIRST, () => light(0, true));
+      for (let i = 1; i < n; i++) {
+        T.at(FIRST + (i - 1) * LEG + 80, () => {
+          const from = (i - 1) / (n - 1), to = i / (n - 1);
+          tw && tw.stop && tw.stop();
+          tw = tween(LEG - 120, ease.inOutCubic, (t) => setP(from + (to - from) * t), () => { settle(i - 1); light(i, true); });
+        });
+      }
     },
     reverse() {
-      parts.slice().reverse().forEach((p, k) => { p.g.start(0, { config: SPRING_SOFT, delay: k * 48 }); p.c.start(1, { config: SPRING, delay: k * 48 }); });
-      T.at(200, () => { run.reset(); sum.reset(); });
+      T.clear(); tw && tw.stop && tw.stop();
+      steps.slice().reverse().forEach((s, k) => T.at(k * 70, () => s.classList.remove("is-on", "is-done")));
+      const from = p;
+      tw = tween(420, ease.inOutCubic, (t) => setP(from * (1 - t)));
+      T.at(220, () => { kick.reset(); sum.reset(); });
     },
-    reset() { T.clear(); crawlOn(false); run.reset(); sum.reset(); parts.forEach((p) => { p.g.set(0); p.c.set(1); }); },
-    rest() { run.play(0); sum.play(0); parts.forEach((p) => { p.g.set(1); p.c.set(0); }); },
-  };
-}
-
-// ------------------------------------------------------------ approval
-function approveCard(fig) {
-  const T = timers();
-  const dots = fig.querySelector(".ap-dots"), dotI = Array.from(dots.children);
-  const head = [fig.querySelector(".ap-ava"), fig.querySelector(".ap-from"), fig.querySelector(".ap-text")];
-  const fields = Array.from(fig.querySelectorAll(".ap-fields div"));
-  const bar = fig.querySelector(".ap-bar");
-  const btns = [fig.querySelector(".ap-ok"), fig.querySelector(".ap-hold"), fig.querySelector(".ap-wait")];
-  const min = fig.querySelector('[data-t="min"]');
-  const riser = (els) => springs({ o: 0, y: 8 }, (v) => els.forEach((el) => { setO(el, v.o); el.style.translate = v.y ? `0 ${v.y}px` : "none"; }));
-  const headS = riser(head), fieldS = fields.map((f) => riser([f])), btnS = btns.map((b) => riser([b]));
-  const dotO = new Spring(0, (v) => setO(dots, v));
-  const barS = new Spring(0, (v) => { bar.style.transform = `scaleY(${Math.max(0, v)})`; });
-  let hop = null;
-  const hopRun = (t0) => {
-    hop = ticker.add((now) => {
-      const t = Math.min(1, (now - t0) / 640);
-      dotI.forEach((d, i) => { const p = Math.max(0, Math.min(2, t * 2.5 - i * 0.25)); d.style.transform = `translateY(${-3 * Math.abs(Math.sin(Math.PI * p))}px)`; });
-      if (t >= 1) { hop(); hop = null; }
-    });
-  };
-  const all = [headS, ...fieldS, ...btnS];
-  return {
-    playMs: 4472,
-    play() {
-      min.textContent = "26";
-      dotO.start(1, { config: SPRING, delay: 240 });
-      T.at(360, () => hopRun(performance.now()));
-      T.at(1120, () => dotO.start(0, { config: SPRING }));
-      headS.start({ o: 1, y: 0 }, { config: SPRING, delay: 1160 });
-      fieldS.forEach((s, i) => s.start({ o: 1, y: 0 }, { config: SPRING, delay: 1360 + i * 112 }));
-      barS.start(1, { config: SPRING_SOFT, delay: 1584 });
-      btnS.forEach((s, i) => s.start({ o: 1, y: 0 }, { config: SPRING, delay: 1800 + i * 56 }));
-      for (let k = 1; k <= 4; k++) T.at(2312 + (k - 1) * 720, () => { min.textContent = String(26 + k); });
-    },
-    reverse() {
-      const d = [192, 160, 128, 96, 64, 32, 0];
-      headS.start({ o: 0, y: 8 }, { config: SPRING, delay: d[0] });
-      fieldS.forEach((s, i) => s.start({ o: 0, y: 8 }, { config: SPRING, delay: d[1 + i] }));
-      barS.start(0, { config: SPRING_SOFT, delay: 64 });
-      btnS.forEach((s, i) => s.start({ o: 0, y: 8 }, { config: SPRING, delay: [64, 32, 0][i] }));
-      T.at(280, () => { min.textContent = "26"; });
-    },
-    reset() { T.clear(); hop && hop(); hop = null; all.forEach((s) => s.set({ o: 0, y: 8 })); dotO.set(0); barS.set(0); min.textContent = "26"; },
-    rest() { all.forEach((s) => s.set({ o: 1, y: 0 })); dotO.set(0); barS.set(1); },
+    reset() { T.clear(); tw && tw.stop && tw.stop(); fig.classList.add("is-armed"); kick.reset(); sum.reset(); steps.forEach((s) => s.classList.remove("is-on", "is-done")); setP(0); },
+    rest() { fig.classList.remove("is-armed"); kick.play(0); sum.play(0); steps.forEach((s) => s.classList.add("is-on", "is-done")); setP(1); },
   };
 }
 
@@ -167,37 +128,6 @@ function layersCard(fig) {
   };
 }
 
-// ------------------------------------------------------------ estate
-function estateCard(fig) {
-  const t1 = type(fig.querySelector('[data-t="t1"]'), 24), t2 = type(fig.querySelector('[data-t="t2"]'), 24);
-  const rows = Array.from(fig.querySelectorAll(".es-rows li"));
-  const parts = rows.map((li) => {
-    const lane = li.querySelector(".es-lane i"), tag = li.querySelector(".es-tag");
-    return {
-      r: springs({ o: 0, y: 8 }, (v) => { setO(li, v.o); li.style.translate = v.y ? `0 ${v.y}px` : "none"; }),
-      g: new Spring(0, (v) => { lane.style.transform = `scaleX(${Math.max(0, v)})`; }),
-      t: new Spring(0, (v) => { setO(tag, v); tag.style.transform = `scale(${0.6 + 0.4 * v})`; }),
-    };
-  });
-  return {
-    playMs: 2000,
-    play() {
-      t1.play(240); t2.play(1400);
-      parts.forEach((p, i) => {
-        p.r.start({ o: 1, y: 0 }, { config: SPRING, delay: 360 + i * 120 });
-        p.g.start(1, { config: GROW, delay: 480 + i * 120 });
-        p.t.start(1, { config: POPC, delay: 1000 + i * 120 });
-      });
-    },
-    reverse() {
-      parts.slice().reverse().forEach((p, i) => { p.t.start(0, { config: SPRING, delay: i * 32 }); p.g.start(0, { config: GROW, delay: i * 32 }); p.r.start({ o: 0, y: 8 }, { config: SPRING, delay: 200 + i * 32 }); });
-      setTimeout(() => { t1.reset(); t2.reset(); }, 200);
-    },
-    reset() { t1.reset(); t2.reset(); parts.forEach((p) => { p.r.set({ o: 0, y: 8 }); p.g.set(0); p.t.set(0); }); },
-    rest() { t1.play(0); t2.play(0); parts.forEach((p) => { p.r.set({ o: 1, y: 0 }); p.g.set(1); p.t.set(1); }); },
-  };
-}
-
 export function initServices() {
   const sec = document.getElementById("product");
   if (!sec) return;
@@ -207,7 +137,7 @@ export function initServices() {
     let played = false;
     watchLoop(el, { arm() { if (!played) { played = true; r.play(); } }, disarm() {} });
   });
-  const make = { trace: traceCard, approve: approveCard, layers: layersCard, estate: estateCard };
+  const make = { story: storyCard, layers: layersCard };
   sec.querySelectorAll("[data-loop]").forEach((fig) => {
     const f = make[fig.dataset.loop];
     if (f) loopCard(fig, f(fig));

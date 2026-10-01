@@ -18,7 +18,7 @@ PROPS = re.compile(r"^(color|background(-color|-image)?|border(-(top|right|botto
 SKIP = re.compile(r"\.sp-(card|inner|media|img|shade|sheen|top|num|kind|body|name|desc|tags|mark|id)|"
                   r"\.st-|\.statement\b|\.logo-open|\.of-band|\.of-mapsvg|\.of-sea|\.of-land|\.of-near|\.of-pin|\.of-code|\.of-when|\.of-state|\.of-clock|\.of-badge|\.pf-col\b|\.pf-ico|\.pf-av|"
                   r"\.cta\b|\.cta-|\.lb\b|\.lb-|\.vm\b|\.vm-|dialog|\.pl-|\.preloader|\.mark\b|\.mark--|"
-                  r"\.globe-hq|\.aw-card|\.aw-lb|\.skip\b|\.ss-(face|name|ico|card)|\.fwrap|\.fglow")
+                  r"\.globe-hq|\.aw-card|\.aw-lb|\.skip\b|\.ss-(face|name|ico|card)|\.fwrap|\.fglow|\.sy-|\.story\b")
 KEEP_VARS = re.compile(r"^--(glow|halo|accent|raw-color-red|raw-color-blue|card-|persp|u$|hero-|nav-h|page-width|ease|sp-ease|stream-|on-accent)")
 COLOR = re.compile(r"rgba?\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*(?:,\s*[\d.]+\s*)?\)|#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b|(?<![-\w])white(?![-\w])|(?<![-\w])black(?![-\w])")
 INK = (11, 18, 51)   # ITCAN navy ink for light pages
