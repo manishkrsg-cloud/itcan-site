@@ -1,0 +1,26 @@
+/* ------------------------------------------------------------ dark theme ambience
+   The glass band from Services to Media used to be a flat 66% black, so the page went
+   dark after the hero. It is thinner now, so the stream reads through, and it carries
+   soft ITCAN red and blue pools, roughly one per section. Static gradients: painted once. */
+:root:not([data-theme="light"]) { --glass-slab: rgba(8, 9, 12, 0.5); }
+:root:not([data-theme="light"]) .slab::before {
+  background:
+    radial-gradient(52rem 34rem at 6% 3%, rgba(229, 34, 46, 0.176), rgba(229, 34, 46, 0) 70%),
+    radial-gradient(50rem 36rem at 94% 13%, rgba(43, 68, 201, 0.23), rgba(43, 68, 201, 0) 70%),
+    radial-gradient(56rem 38rem at 50% 24%, rgba(229, 34, 46, 0.108), rgba(229, 34, 46, 0) 70%),
+    radial-gradient(54rem 40rem at 88% 34%, rgba(43, 68, 201, 0.216), rgba(43, 68, 201, 0) 70%),
+    radial-gradient(48rem 34rem at 8% 44%, rgba(229, 34, 46, 0.149), rgba(229, 34, 46, 0) 70%),
+    radial-gradient(52rem 36rem at 14% 54%, rgba(43, 68, 201, 0.203), rgba(43, 68, 201, 0) 70%),
+    radial-gradient(50rem 34rem at 92% 60%, rgba(229, 34, 46, 0.149), rgba(229, 34, 46, 0) 70%),
+    radial-gradient(54rem 38rem at 90% 77%, rgba(229, 34, 46, 0.162), rgba(229, 34, 46, 0) 70%),
+    radial-gradient(52rem 36rem at 8% 86%, rgba(43, 68, 201, 0.216), rgba(43, 68, 201, 0) 70%),
+    radial-gradient(56rem 38rem at 86% 96%, rgba(229, 34, 46, 0.149), rgba(229, 34, 46, 0) 70%),
+    linear-gradient(to bottom, var(--glass-slab), rgba(7, 10, 26, 0.5));
+}
+/* the last two blocks sit outside the band: give them the same light */
+:root:not([data-theme="light"]) #pricing, :root:not([data-theme="light"]) #contact { position: relative; isolation: isolate; }
+:root:not([data-theme="light"]) #pricing::before, :root:not([data-theme="light"]) #contact::before {
+  content: ""; position: absolute; z-index: -1; top: -6rem; bottom: -6rem; left: calc(50% - 50vw); right: calc(50% - 50vw); pointer-events: none;
+}
+:root:not([data-theme="light"]) #pricing::before { background: radial-gradient(50rem 34rem at 12% 30%, rgba(43, 68, 201, 0.203), rgba(43, 68, 201, 0) 70%), radial-gradient(46rem 32rem at 90% 70%, rgba(229, 34, 46, 0.149), rgba(229, 34, 46, 0) 70%); }
+:root:not([data-theme="light"]) #contact::before { background: radial-gradient(50rem 34rem at 88% 30%, rgba(43, 68, 201, 0.203), rgba(43, 68, 201, 0) 70%), radial-gradient(44rem 30rem at 10% 80%, rgba(229, 34, 46, 0.135), rgba(229, 34, 46, 0) 70%); }

@@ -20,6 +20,8 @@ const LIST = [
   ['erp-i', 'hf_20261001_041755_02501c65-947d-46ac-be09-08eec95235df'],
   ['code-i', 'hf_20261001_041754_9399878d-d67d-404f-ae78-f4de62a6fbab'],
   ['web-i', 'hf_20261001_041754_deb340c7-3171-43f3-94dc-0b65a9da24bf'],
+  // light-theme versions (daylight, white glass), used when the site is in light mode
+  ['build-l', 'hf_20261001_062651_157af7ba-ddce-4b2c-a71a-fa6e3d8676c6'],
 ];
 
 // nine practice thumbnails, cut from one 3 x 3 sheet (1024 px, tiles ~316 px with even gaps)

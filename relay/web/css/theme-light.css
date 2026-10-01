@@ -111,3 +111,13 @@
 :root[data-theme="light"] .pf-navy .pf-pill { color: var(--blue-deep); background: rgba(31, 63, 214, 0.06); border-color: rgba(31, 63, 214, 0.3); }
 :root[data-theme="light"] .pf-navy .pf-qmark { color: var(--blue); }
 :root[data-theme="light"] .pf-stat::after { opacity: 0.6; }
+
+/* hero cards with light art (daylight renders): a pale card, navy type, blue tags */
+:root[data-theme="light"] .sp-card.-lightart .sp-inner { background: linear-gradient(180deg, #f7f8fb, #eef1f7); border-color: rgba(15, 20, 35, 0.08); box-shadow: 0 30px 60px -30px rgba(16, 24, 40, 0.35), 0 8px 20px -12px rgba(16, 24, 40, 0.18); }
+:root[data-theme="light"] .sp-card.-lightart.is-active .sp-inner { border-color: color-mix(in srgb, var(--glow) 45%, transparent); box-shadow: 0 34px 64px -28px rgba(19, 35, 143, 0.38), 0 0 60px -30px var(--glow); }
+:root[data-theme="light"] .sp-card.-lightart .sp-shade { background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 14%, transparent 50%, rgba(246, 247, 251, 0.8) 66%, rgba(246, 247, 251, 0.97) 84%); }
+:root[data-theme="light"] .sp-card.-lightart .sp-sheen { background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.55) 50%, transparent 58%); }
+:root[data-theme="light"] .sp-card.-lightart .sp-name { color: var(--ink); text-shadow: none; }
+:root[data-theme="light"] .sp-card.-lightart .sp-desc { color: #4a5163; }
+:root[data-theme="light"] .sp-card.-lightart .sp-kind { background: rgba(255, 255, 255, 0.82); border-color: rgba(15, 20, 35, 0.12); color: var(--ink); }
+:root[data-theme="light"] .sp-card.-lightart .sp-tags i { background: rgba(255, 255, 255, 0.85); border-color: rgba(31, 63, 214, 0.25); color: var(--blue-deep); }

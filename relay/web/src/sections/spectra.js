@@ -37,6 +37,12 @@ const N = SLIDES.length;
 const CARD_W = 440, CARD_H = 584;
 const pad = (n) => String(n).padStart(2, "0");
 const src = (slug, w) => `/assets/services/${slug}-${w}.webp`;
+// light-theme versions of the artwork (daylight, white glass). A card without one, or whose
+// light file fails to load, keeps its dark art in light mode.
+const LIGHT = { "build-i": "build-l" };
+const failed = new Set();
+const isLight = () => document.documentElement.getAttribute("data-theme") === "light";
+const artFor = (slug) => (isLight() && LIGHT[slug] && !failed.has(slug) ? LIGHT[slug] : slug);
 
 export function initSpectra(root) {
   if (!root) return null;
@@ -49,17 +55,33 @@ export function initSpectra(root) {
     el.type = "button";
     el.setAttribute("aria-label", `${s.name}. ${s.desc} ${s.kind} ${i + 1} of ${N}`);
     el.style.setProperty("--glow", s.glow);
+    const art = artFor(s.img);
+    el.dataset.art = s.img;
+    el.classList.toggle("-lightart", art !== s.img);
     el.innerHTML = `<span class="sp-inner">`
-      + `<span class="sp-media"><img class="sp-img" src="${src(s.img, 480)}" srcset="${src(s.img, 480)} 480w, ${src(s.img, 880)} 880w" sizes="(max-width: 600px) 86vw, 440px" width="880" height="1168" alt="" decoding="async" draggable="false" fetchpriority="${i === 0 ? "high" : "low"}"></span>`
+      + `<span class="sp-media"><img class="sp-img" data-cur="${art}" src="${src(art, 480)}" srcset="${src(art, 480)} 480w, ${src(art, 880)} 880w" sizes="(max-width: 600px) 86vw, 440px" width="880" height="1168" alt="" decoding="async" draggable="false" fetchpriority="${i === 0 ? "high" : "low"}"></span>`
       + `<span class="sp-shade" aria-hidden="true"></span><span class="sp-sheen" aria-hidden="true"></span>`
       + `<span class="sp-top"><span class="sp-num">${pad(i + 1)}</span><span class="sp-kind">${s.kind}</span></span>`
       + `<span class="sp-body"><span class="sp-name">${s.name}</span><span class="sp-desc">${s.desc}</span>`
       + `<span class="sp-tags">${s.tags.map((t) => `<i>${t}</i>`).join("")}</span></span>`
       + `</span>`;
     const img = el.querySelector("img");
-    img.addEventListener("error", () => el.classList.add("-noimg"), { once: true });
+    img.addEventListener("error", () => {
+      if (img.dataset.cur !== s.img) { failed.add(s.img); paintArt(el); } // light art missing: back to dark
+      else el.classList.add("-noimg");
+    });
     return el;
   };
+  // swap a card between its dark and light art when the theme changes
+  function paintArt(el) {
+    const slug = el.dataset.art, use = artFor(slug), img = el.querySelector(".sp-img");
+    if (!img || img.dataset.cur === use) return;
+    img.dataset.cur = use;
+    img.srcset = `${src(use, 480)} 480w, ${src(use, 880)} 880w`;
+    img.src = src(use, 480);
+    el.classList.toggle("-lightart", use !== slug);
+  }
+  window.addEventListener("itcan:theme", () => root.querySelectorAll(".sp-card").forEach(paintArt));
 
   const onActive = (i) => {
     const s = SLIDES[i];
