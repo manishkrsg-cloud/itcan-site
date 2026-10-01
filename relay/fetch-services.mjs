@@ -22,6 +22,13 @@ const LIST = [
   ['web-i', 'hf_20261001_041754_deb340c7-3171-43f3-94dc-0b65a9da24bf'],
   // light-theme versions (daylight, white glass), used when the site is in light mode
   ['build-l', 'hf_20261001_062651_157af7ba-ddce-4b2c-a71a-fa6e3d8676c6'],
+  ['consult-l', 'hf_20261001_072236_f699e743-c822-4c92-b67f-f61487b51011'],
+  ['layers-l', 'hf_20261001_072247_4c0ee9b9-9d4c-47c3-aad8-6335a1849796'],
+  ['run-l', 'hf_20261001_072236_4ccb54d6-16f7-4556-9ffd-107fa3c4f102'],
+  ['erp-l', 'hf_20261001_072237_56a93b13-c4b6-4820-a383-9a077de3979e'],
+  ['code-l', 'hf_20261001_072238_194b8a86-3f8e-4e5f-95fc-722608a60b50'],
+  ['web-l', 'hf_20261001_072236_206a5004-a854-49b0-80ff-a02e48f66294'],
+  ['staff-l', 'hf_20261001_073915_f0327507-0499-4611-a029-2f6e1c26fb52'],
 ];
 
 // nine practice thumbnails, cut from one 3 x 3 sheet (1024 px, tiles ~316 px with even gaps)

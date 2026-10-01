@@ -39,7 +39,10 @@ const pad = (n) => String(n).padStart(2, "0");
 const src = (slug, w) => `/assets/services/${slug}-${w}.webp`;
 // light-theme versions of the artwork (daylight, white glass). A card without one, or whose
 // light file fails to load, keeps its dark art in light mode.
-const LIGHT = { "build-i": "build-l" };
+const LIGHT = {
+  "consult-i": "consult-l", "staff": "staff-l", "build-i": "build-l", "layers-i": "layers-l", "run-i": "run-l",
+  "erp-i": "erp-l", "code-i": "code-l", "web-i": "web-l",
+};
 const failed = new Set();
 const isLight = () => document.documentElement.getAttribute("data-theme") === "light";
 const artFor = (slug) => (isLight() && LIGHT[slug] && !failed.has(slug) ? LIGHT[slug] : slug);
