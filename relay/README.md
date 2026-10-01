@@ -8,11 +8,12 @@ Single-page site for ITCAN Pte Ltd, built on the Relay template's motion system:
 relay/
   server.js          zero-dependency Node server (gzip, ETag, CSP, /healthz)
   fetch-awards.mjs   Railway build step: downloads the 28 award photos
-  fetch-services.mjs Railway build step: downloads the 7 hero card images (AI art made with Higgsfield)
+  fetch-services.mjs Railway build step: downloads the generated photographs (hero cards, ten sectors,
+                     nine practices, dark and daylight sets) into public/assets/ as webp
   web/art/           editable SVG source for the branded Staffing card art (rendered to public/assets/services/staff-*.webp)
   public/            what is served (built output is committed)
   web/               front-end source, built into public/ (not used by Railway)
-    html/            page partials (one per section)
+    html/            page partials (one per section); html/legal/ holds the Terms, Privacy and Disclaimer bodies
     css/             tokens, components and one file per section
     src/             motion engine, preloader, stream, transitions, sections
 ```
@@ -20,8 +21,10 @@ relay/
 ## Run locally
 
 ```bash
-npm install && npm run build   # award photos into public/awards (optional)
+npm install && npm run build   # downloads award photos and the generated photographs (needs internet)
 npm start                      # http://localhost:3000
+
+# legal pages are served at /terms-of-use/, /privacy-policy/ and /disclaimer/
 ```
 
 ## Change the front end
@@ -47,7 +50,10 @@ Add `?nogl` to the URL to skip the WebGL stream (handy for screenshots and tests
 |---|---|
 | Hero, numbers | Home page (960 projects, 1,200+ employees, 480 clients) |
 | Services (4 rows) | /services/ |
-| Practices strip (9) | /industrial-solutions/ |
+| Practices (9) | Current technology practices (AI, cloud, data, security, ERP and CRM, automation, web and mobile, modernisation, quality) |
+| Sectors (10) | Confirmed by ITCAN, Oct 2026 |
+| Terms of use, Disclaimer | /terms-of-use/, /disclaimer/ (lightly proofread) |
+| Privacy policy | New PDPA notice written from how the site handles data (needs ITCAN review) |
 | Awards dashboard + gallery (28 photos) | Home page awards slider, `public/data/awards.json` |
 | About, vision, mission, values | /about-us/, /about-us/vision-and-mission/ |
 | Careers, culture, testimonials | /career/corporate-culture/, home page |
@@ -64,7 +70,7 @@ Add `?nogl` to the URL to skip the WebGL stream (handy for screenshots and tests
 | `--blue` / `--stream-alt` | `#6D88FF` | ITCAN blue lifted for dark screens |
 | `--stream-core` | `#FFD6D9` | hottest part of the particle stream |
 
-Fonts are self-hosted: Inter, Instrument Serif italic, Fragment Mono (all SIL OFL).
+Fonts are self-hosted: Geist and Geist Mono (SIL OFL).
 
 ## Behaviour notes
 
