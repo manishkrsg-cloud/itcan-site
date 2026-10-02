@@ -129,7 +129,7 @@ E = [
  ["mobile", "ui", "services", "practices", "copy"], "web/css/mobile.css", "current"),
 
 ("phone-mockup-2026-10-02", "ui", "Phones follow MK's mobile mockup (2 Oct 2026)",
- "MK supplied four phone mockups (hero, services, sectors, contact). Style on phones: red-dot spaced-capital labels (.badge/.chip unset), white headings with a grey second line (#9b9da5, no gradient), rectangular red buttons with an arrow, left alignment. Hero: Start a project, Explore services link, a consult-p photo card replaces the 3D carousel; Watch our story hidden on phones. Services: four photo cards (.m-svcs) replace the worked examples. Sectors: rule row 01 — 10. Contact: form card. Header: round menu on top, full-width Talk to us fixed at the bottom (MK picked this over Talk-to-us-on-top). Mechanism: .m-only / .d-only classes so desktop is unchanged.",
+ "MK supplied four phone mockups (hero, services, sectors, contact). Style on phones: red-dot spaced-capital labels (.badge/.chip unset), white headings with a grey second line (#9b9da5, no gradient), rectangular red buttons with an arrow, left alignment. Hero: Start a project, Explore services link, a consult-p photo card replaces the 3D carousel; Watch our story hidden on phones. Services: four photo cards (.m-svcs) replace the worked examples. Sectors: rule row 01 — 10. Contact: form card. Header: MK first chose the mockup's bottom Talk to us, then (same evening) moved it back to the top next to the menu; the hero kept the animated 3D cards at a smaller phone size instead of the mockup's static photo card. Mechanism: .m-only / .d-only classes so desktop is unchanged.",
  ["mobile", "ui", "mockup"], "web/css/mobile.css", "current"),
 
 # ---------------------------------------------------------------- Security

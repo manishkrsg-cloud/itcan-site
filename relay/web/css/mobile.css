@@ -113,18 +113,13 @@
   .tz-foot { top: 17.5rem; }
 }
 
-/* ------------------------------------------------------------ phones: header + bottom CTA (Oct 2026, per MK's mobile mockup)
-   Top: logo and a round menu button. Bottom: one full-width "Talk to us" above the safe area, over a fade.
-   .nav has no transform or filter, so position: fixed here is relative to the viewport. */
+/* ------------------------------------------------------------ phones: header (Oct 2026, MK's final call)
+   Logo on the left; "Talk to us" and the round menu button together on the right. Nothing fixed to the bottom. */
 @media (width <= 580px) {
-  :root { --cta-h: 3.25rem; --cta-gap: max(0.75rem, env(safe-area-inset-bottom)); }
-  body { padding-bottom: calc(var(--cta-h) + var(--cta-gap) + 1.5rem); }
-  .nav-actions .cta--md { position: fixed; left: 1.25rem; right: 1.25rem; bottom: var(--cta-gap); z-index: 2; height: var(--cta-h); min-height: 44px; font-size: 1rem; font-weight: 600; }
-  .nav-actions::after { content: ""; position: fixed; left: 0; right: 0; bottom: 0; z-index: 1; pointer-events: none;
-    height: calc(var(--cta-h) + var(--cta-gap) + 1.75rem); background: linear-gradient(to bottom, transparent, var(--background, #000) 55%); }
-  :root[data-theme="light"] .nav-actions::after { background: linear-gradient(to bottom, transparent, #f4f5f8 55%); }
-  .nav-actions .menu-btn { width: 3rem; height: 3rem; border-color: rgba(255, 255, 255, 0.16); }
-  .menu-btn i:nth-child(1) { left: 15px; top: 17px; } .menu-btn i:nth-child(2) { left: 15px; top: 23px; } .menu-btn i:nth-child(3) { left: 18px; top: 28px; }
+  .nav-actions { gap: 0.5rem; }
+  .nav-actions .cta--md { height: 44px; min-height: 44px; padding: 0 1rem; font-size: 0.9375rem; font-weight: 600; }
+  .nav-actions .menu-btn { width: 2.75rem; height: 2.75rem; border-color: rgba(255, 255, 255, 0.16); }
+  .menu-btn i:nth-child(1) { left: 13px; top: 14px; } .menu-btn i:nth-child(2) { left: 13px; top: 20px; } .menu-btn i:nth-child(3) { left: 16px; top: 25px; }
 }
 @media (width <= 580px) {
   /* compact two-column sheet so all eleven sections and the theme switch fit on one screen */
@@ -190,7 +185,7 @@ html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
 }
 /* narrowest phones (320-360): tighter gutters so nothing runs off the edge */
 @media (width <= 360px) {
-  .nav-actions .cta--md { left: 1rem; right: 1rem; }
+  .nav-actions .cta--md { padding: 0 0.875rem; }
   .menu-card { left: 0.5rem; right: 0.5rem; }
 }
 
@@ -322,7 +317,6 @@ html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
   .hc-actions .cta .cta-label { position: static; }
   .hc-actions .cta .cta-ink { display: none; }
   .hc-actions .cta::after { content: "\2197"; position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); z-index: 2; font-weight: 400; font-size: 1.25rem; color: #fff; }
-  .nav-actions .cta--md .cta-label::after { content: " \2197"; font-weight: 400; }
 
   /* ---- hero */
   .hero-frame { padding-top: 1.5rem; row-gap: 0; }
@@ -334,7 +328,7 @@ html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
   .hc-actions > .cta { flex-basis: 100%; }
   .hc-actions > .glass-btn { display: none; }
   .m-textlink { display: inline-flex; align-items: center; gap: 0.375rem; min-height: 44px; margin: 0.75rem 1.25rem 0; color: #e7e8ea; font-size: 1rem; }
-  .hero-spectra { display: none; }
+  .hero-spectra { margin-top: 0.5rem; }
   .m-herocard { position: relative; margin: 1.75rem 1.25rem 0; aspect-ratio: 4 / 4.6; overflow: hidden; border-radius: var(--m-radius); border: 1px solid #303137; background: #191a1d; }
   .m-herocard img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
   .m-herocard::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(4, 5, 8, 0.6) 62%, rgba(4, 5, 8, 0.95) 100%); }
@@ -375,3 +369,11 @@ html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
   :root[data-theme="light"] .m-textlink { color: #101114; }
 }
 @media (width <= 580px) { .ca-big em { background: none !important; -webkit-text-fill-color: currentColor; color: var(--m-muted); } }
+@media (width <= 360px) { .hero-h1 { font-size: 1.75rem; } }
+@media (width <= 360px) {
+  /* 320-360: the small hero card keeps its photo readable; the control bar fits inside the margins */
+  .sp-tags { display: none; }
+  .sp-foot { padding: 0 0.75rem; }
+  .sp-nav { max-width: 100%; }
+  .sp-kicker { font-size: 0.75rem; }
+}

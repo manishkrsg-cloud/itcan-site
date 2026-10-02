@@ -98,3 +98,4 @@ Audit method: Playwright at 320/375/390/430/768/1440 on the live site; checks fo
 | MK-05 | Contact (phones): "Let's work together", "goes straight to our sales team", form card; select placeholder "Choose a service" (all sizes). |
 | MK-06 | Header (phones): round menu button on top, full-width "Talk to us ↗" fixed at the bottom (MK chose the mockup over Talk-to-us-on-top). |
 | MK-07 | Mechanism: phone-only content is `.m-only`, desktop-only `.d-only` (mobile.css); desktop renders exactly as before. The hero's primary label is "Start a project" again on all sizes, per the mockup. |
+| MK-08 | MK 2 Oct (later): "Talk to us" back at the top next to the menu (bottom button removed). The hero keeps the animated 3D service cards on phones, at a smaller size (active card about 294 x 390 at 390px; 264 x 350 at 320px, tags hidden below 360px) instead of the static photo card. |
