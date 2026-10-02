@@ -54,3 +54,14 @@ Priority: **P1** blocks the itcan.biz cut-over · **P2** visible quality problem
 | M-FIX-18 | "01" row numbers and "Step 1" prefixes in Services. | Hidden on phones; step names carry the sequence. |
 | M-FIX-19 | En-dashes in "1–3", "4–30", "2007–2023". | Plain hyphens. |
 | M-FIX-20 | Office coordinates truncated in the swipe cards. | Hidden on phones; the maps button remains. |
+
+## Ready for review (2 Oct 2026, mobile responsiveness pass, not deployed)
+
+| ID | Change |
+|---|---|
+| M-FIX-21 | Sectors on phones and tablets: clean image grid (2 columns up to 580px, 3 columns 581-1000px) with index number and name on a dark fade, all ten sectors. Replaces the phone stack-to-spread animation (M-FIX-12). Desktop spread unchanged. |
+| M-FIX-22 | `#services` now resolves (alias inside the Services section, whose id stays `#product`); `scroll-padding-top` lands direct links below the fixed header. |
+| M-FIX-23 | Menu: focus moves to the first item on open, Escape closes and returns focus to the menu button, the closed menu is `inert`. |
+| M-FIX-24 | Touch targets 44 x 44 CSS px on phones and tablets in px (rem shrank to 40px at 320 because the phone root font scales down). Covers menu, theme, hero card controls, CTAs, chips, filters, maps, inbox and footer links. |
+| M-FIX-25 | Hero service cards on phones: 44px prev/next/pause, card copy at least 14px. Services step copy 14px. |
+| M-FIX-26 | 320-360px: dock and menu gutters 8px; the services example summary is hidden where it collided with the kicker. |

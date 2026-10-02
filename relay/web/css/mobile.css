@@ -182,3 +182,45 @@
   .sy-title[data-when]::before { content: none; display: none; }
 }
 @media (width <= 580px) { .of-grid .of-coord { display: none; } }
+
+/* ------------------------------------------------------------ mobile responsiveness pass (Oct 2026, review build) */
+/* direct links (#services, #sectors, ...) land below the fixed header */
+html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
+.services { position: relative; }
+.sec-alias { position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none; }
+
+@media (width <= 580px) {
+  /* hero service cards: 44px controls, readable card copy */
+  .sp-arrow { width: 2.75rem; height: 2.75rem; }
+  .sp-desc { font-size: max(0.875rem, calc(15px * var(--card-f, 1))); line-height: 1.5; }
+  .sp-tags i { font-size: max(0.75rem, calc(11.5px * var(--card-f, 1))); }
+  .sp-cta { min-height: 2.75rem; }
+  /* services section: step copy at a readable size */
+  .sy-text { font-size: 0.875rem; line-height: 1.35rem; }
+  .sy-title { font-size: 1rem; }
+}
+/* narrowest phones (320-360): tighter gutters so nothing runs off the edge */
+@media (width <= 360px) {
+  .nav-actions { left: 0.5rem; right: 0.5rem; }
+  .menu-card { left: 0.5rem; right: 0.5rem; }
+}
+
+/* touch screens up to tablet width: every control at least 44 x 44 CSS px.
+   Pixels, not rem: the phone root font scales down to 14.67px, so 2.75rem would be 40px at 320. */
+@media (width <= 1000px) {
+  .menu-btn, .theme-btn, .sp-arrow, .aw-arrow, .ft-social a { min-width: 44px; min-height: 44px; }
+  .nav-actions .cta, .hc-actions > *, .sp-cta, .plan-btns > *, .pr-chip, .filters button, .seg button,
+  .of-map, .mt-cta, .ft-form button, .ft-form input, .brief button, .brief input, .brief select, .ca-btns > * { min-height: 44px; }
+  .brand { min-height: 44px; display: flex; align-items: center; }
+  .skip, .aw-full { min-height: 44px; display: inline-flex; align-items: center; }
+  /* inline phone and email links in the office cards get a 44px tall hit area without moving the text */
+  .of-grid a[href^="tel:"], .of-grid a[href^="mailto:"], .of-card a[href^="tel:"], .of-card a[href^="mailto:"] { display: inline-block; padding: 13px 0; margin: -13px 0; }
+}
+@media (width <= 1000px) {
+  .nav-actions .menu-btn { min-width: 44px; min-height: 44px; }
+  .ft-logo { min-height: 44px; display: inline-flex; align-items: center; }
+  /* list links (inboxes, footer columns, footer contact): 44px tall hit areas, same visual rhythm */
+  .inboxes a, .ft-cols a, .ft-ccomp a { display: inline-block; padding: 13px 0; margin: -13px 0; }
+}
+@media (width <= 1000px) { .ft-cols a { min-width: 44px; } }
+@media (width <= 360px) { .story > .sy-sum { display: none; } } /* the kicker and summary collide below 360px; the kicker carries the example */

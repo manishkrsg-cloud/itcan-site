@@ -50,6 +50,9 @@ export function initNav() {
     btn.setAttribute("aria-expanded", String(v));
     btn.setAttribute("aria-label", v ? "Close menu" : "Open menu");
     t.start(v ? 1 : 0, { config: SPRING });
+    // closed: out of the tab order and the accessibility tree; open: focus lands on the first section
+    card.inert = !v;
+    if (v) requestAnimationFrame(() => { const first = card.querySelector("a, button"); if (first) first.focus({ preventScroll: true }); });
     clearTimeout(trail);
     if (v) trail = setTimeout(runTrail, 60);
     else rowSp.forEach((s) => s.start(0, { config: SPRING }));
@@ -64,7 +67,12 @@ export function initNav() {
     });
   }
   btn.addEventListener("click", () => setOpen(!open));
-  addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+  card.inert = true;
+  addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !open) return;
+    setOpen(false);
+    btn.focus(); // Escape returns focus to the button that opened the menu
+  });
   addEventListener("pointerdown", (e) => { if (open && !card.contains(e.target) && !btn.contains(e.target)) setOpen(false); });
   card.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
   matchMedia("(max-width: 1180px)").addEventListener("change", (e) => { if (!e.matches) setOpen(false); });
