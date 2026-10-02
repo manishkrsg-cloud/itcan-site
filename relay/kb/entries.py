@@ -135,6 +135,10 @@ E = [
  "MK supplied four phone mockups (hero, services, sectors, contact). Style on phones: red-dot spaced-capital labels (.badge/.chip unset), white headings with a grey second line (#9b9da5, no gradient), rectangular red buttons with an arrow, left alignment. Hero: Start a project, Explore services link, a consult-p photo card replaces the 3D carousel; Watch our story hidden on phones. Services: four photo cards (.m-svcs) replace the worked examples. Sectors: rule row 01 — 10. Contact: form card. Header: MK first chose the mockup's bottom Talk to us, then (same evening) moved it back to the top next to the menu; the hero kept the animated 3D cards at a smaller phone size instead of the mockup's static photo card. Mechanism: .m-only / .d-only classes so desktop is unchanged.",
  ["mobile", "ui", "mockup"], "web/css/mobile.css", "current"),
 
+("phone-header-theme-2026-10-02", "ui", "Phone header: theme button, Talk to us, menu; practices in two columns",
+ "MK 2 Oct 2026 (night): the light/dark switch is a 44px round button in the phone header, left of Talk to us (not a row in the menu; .menu-theme hidden). Light mode keeps the Talk to us label white on red. Practices list on phones is two cards per row (icon on top, name, full description, no truncation).",
+ ["mobile", "navigation", "theme", "practices"], "web/css/mobile.css", "current"),
+
 # ---------------------------------------------------------------- Security
 ("security-headers", "Security", "Security headers on every response",
  "CSP (self scripts, YouTube frames, itcan.biz and ytimg images, form-action self and mailto, frame-ancestors self), HSTS 1 year with includeSubDomains, X-Frame-Options SAMEORIGIN, nosniff, strict-origin-when-cross-origin referrer, Permissions-Policy camera/mic/geolocation off, COOP same-origin. Since 1 Oct 2026 also on /healthz, the award 302 and 500 responses. Path check requires ROOT + path.sep.",

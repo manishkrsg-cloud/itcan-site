@@ -377,3 +377,22 @@ html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
   .sp-nav { max-width: 100%; }
   .sp-kicker { font-size: 0.75rem; }
 }
+@media (width <= 580px) {
+  /* Practices: two cards per row, icon on top, name, then a short description */
+  .practices.is-list .pr-nodes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.625rem; }
+  .practices.is-list .pr-nodes li { grid-template-columns: 1fr; row-gap: 0.5rem; padding: 0.875rem; align-content: start; }
+  .practices.is-list .pr-node { grid-row: auto; width: 2.5rem; height: 2.5rem; }
+  .practices.is-list .pr-name { font-size: 0.9375rem; line-height: 1.25rem; hyphens: auto; -webkit-hyphens: auto; }
+  .practices.is-list .pr-nodes li::after { grid-column: 1; font-size: 0.8125rem; line-height: 1.25rem; }
+}
+@media (width <= 580px) {
+  /* theme switch: a small round button in the header, not a row in the menu */
+  .nav-actions > .theme-btn { display: grid !important; width: 44px; height: 44px; min-width: 44px; border-color: rgba(255, 255, 255, 0.16); }
+  .nav-actions > .theme-btn svg { width: 18px; height: 18px; }
+  .menu-theme { display: none !important; }
+}
+@media (width <= 360px) {
+  .nav-actions { gap: 0.375rem; }
+  .nav-actions .cta--md { padding: 0 0.75rem; font-size: 0.875rem; }
+}
+@media (width <= 580px) { :root[data-theme="light"] .nav-actions .cta .cta-label { color: #fff; } }
