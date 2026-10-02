@@ -120,6 +120,10 @@ E = [
  "MK 2 Oct 2026: mobile layout still needed proper design. Reviewed with ui-ux-pro-max and taste-skill. On phones (580px and below) the offices grid, the engage plans and the proof number/quote columns are horizontal scroll-snap rows (cards 86% wide, next card peeking, scrollbar hidden). Section badges hidden except the hero chip and sectors; services row numbers and Step N prefixes hidden; en-dashes replaced with hyphens; office coordinates hidden in the swipe cards. Page went from 30.4 to about 25 screens. Desktop unchanged.",
  ["mobile", "ui", "carousel"], "web/css/mobile.css", "current"),
 
+("mobile-audit-2026-10-02", "ui", "Mobile audit 2 Oct 2026: method and fixes",
+ "Playwright audit (scratch script audit.mjs + clip.mjs) at 320/375/390/430/768/1440 on the live site. Found and fixed: 14.67px phone root font (labels 11px, inputs under 16px) now fixed 16px; drawn panels cut text at 320 because --u is 1px for a 350px card, now rescaled below 390px; footer tap areas overlapped; heat map 1fr columns overflowed (minmax(0,1fr)); office card header collision; menu landing re-checked on scrollend; one 56px section rhythm, 30px headings, 20px card padding. Rule: check for text clipped by overflow:clip ancestors, not just page overflow, because cards hide what spills.",
+ ["mobile", "audit", "qa"], "relay/docs/ISSUES.md", "current"),
+
 # ---------------------------------------------------------------- Security
 ("security-headers", "Security", "Security headers on every response",
  "CSP (self scripts, YouTube frames, itcan.biz and ytimg images, form-action self and mailto, frame-ancestors self), HSTS 1 year with includeSubDomains, X-Frame-Options SAMEORIGIN, nosniff, strict-origin-when-cross-origin referrer, Permissions-Policy camera/mic/geolocation off, COOP same-origin. Since 1 Oct 2026 also on /healthz, the award 302 and 500 responses. Path check requires ROOT + path.sep.",

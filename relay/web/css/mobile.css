@@ -25,7 +25,7 @@
 
 /* small phones: the type keeps a readable floor and the frame narrows to the screen instead */
 @media (width <= 580px) {
-  html { font-size: clamp(14.667px, 4.102564vw, 16px); } /* 0.75rem never drops below 11px */
+  html { font-size: 16px; } /* phones keep the full 16px scale: labels at 0.75rem stay 12px and inputs stay 16px (no iOS zoom) */
   :root { --page-width: min(24.375rem, 100vw); }
 
   /* type floors */
@@ -206,7 +206,50 @@ html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
   .nav-actions .menu-btn { min-width: 44px; min-height: 44px; }
   .ft-logo { min-height: 44px; display: inline-flex; align-items: center; }
   /* list links (inboxes, footer columns, footer contact): 44px tall hit areas, same visual rhythm */
-  .inboxes a, .ft-cols a, .ft-ccomp a { display: inline-block; padding: 13px 0; margin: -13px 0; }
+  .inboxes a, .ft-ccomp a { display: inline-block; padding: 13px 0; margin: -13px 0; }
+  /* footer columns: each link is its own 44px row, so tap areas never overlap */
+  .ft-cols ul { gap: 0; }
+  .ft-cols a { display: flex; align-items: center; min-height: 44px; padding: 0; margin: 0; }
 }
 @media (width <= 1000px) { .ft-cols a { min-width: 44px; } }
 @media (width <= 360px) { .story > .sy-sum { display: none; } } /* the kicker and summary collide below 360px; the kicker carries the example */
+
+/* ------------------------------------------------------------ 320-389px: the drawn panels scale to the screen
+   --u is 1px and these panels are drawn for a 350px card (390 phone). Below 390 they are rescaled so no text is cut. */
+@media (width <= 389px) {
+  .meter, .ft-brand, .ft-cta, .story, .wg { --u: calc((100vw - 2.5rem) / 350); }
+  .of-label, .of-label span { white-space: normal; right: 0; }
+  .tz-art .of-label { line-height: 1.125rem; }
+  .tz-rows { top: 3rem; }
+  .tz-art { height: 20.75rem; }
+  .tz-foot { top: 18.75rem; }
+  .tz-lane, .tz-head { left: calc(100% - 7.75rem); }
+  .tz-lane { width: 4rem; }
+}
+
+@media (width <= 580px) {
+  /* label floors: nothing under 12px */
+  .sy-out { font-size: 0.75rem !important; }
+  .hm .yr { font-size: 0.75rem; }
+}
+
+/* ------------------------------------------------------------ phones: one rhythm (design audit, Oct 2026) */
+@media (width <= 580px) {
+  /* every content section starts 56px below the previous one; no section adds space at its foot */
+  #integrations, #product, #scale, #signals, #proof, #about, #careers, #media, #pricing, #contact,
+  .sectors:not(.is-spread) { padding-top: 3.5rem; padding-bottom: 0; }
+  /* all section headings at the same size */
+  .sectors:not(.is-spread) .ss-title { font-size: var(--type-section-title); line-height: var(--line-section-title); }
+  /* one inner padding for content cards */
+  .of-card, .plan-card, .pf-stat, .pf-quote, .about .card, .ca-card { padding: 1.25rem; }
+  /* small helper and legal text: comfortable line spacing */
+  .ct-hint, .ft-legal p, .ft-ccomp, .tz-foot span { line-height: 1.5; }
+}
+@media (width <= 389px) { .hm .yr { font-size: 0.6875rem; } } /* 17 year ticks share 280px; 11px is the most that fits */
+@media (width <= 580px) { .hm { grid-template-columns: repeat(17, minmax(0, 1fr)); } .hm .yr { white-space: nowrap; justify-self: center; } } /* columns never grow to fit their labels */
+@media (width <= 389px) {
+  /* the estimator's lower half is text in rem: size the box to it so the button is never cut */
+  .meter { height: calc(248 * var(--u) + 18.5rem); }
+  /* office cards: city code and clock share one line; the "After hours" word drops, the coloured dot stays */
+  .of-grid .of-state { display: none; }
+}

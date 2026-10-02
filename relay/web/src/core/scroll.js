@@ -36,10 +36,18 @@ export function initScroll() {
 export function scrollTo(target) {
   const nav = document.querySelector(".nav");
   const off = -(nav ? nav.offsetHeight : 0) + 1;
-  if (lenis) lenis.scrollTo(target === document.body ? 0 : target, { offset: off, duration: 1.2 });
+  // content above can still grow while the smooth scroll runs (late images, reveals);
+  // once it settles, land the target exactly under the header
+  const settle = () => {
+    if (target === document.body) return;
+    const miss = target.getBoundingClientRect().top + off;
+    if (Math.abs(miss) > 4) { if (lenis) lenis.scrollTo(target, { offset: off, immediate: true }); else window.scrollTo({ top: window.scrollY + miss, behavior: "auto" }); }
+  };
+  if (lenis) lenis.scrollTo(target === document.body ? 0 : target, { offset: off, duration: 1.2, onComplete: settle });
   else {
     const top = target === document.body ? 0 : target.getBoundingClientRect().top + window.scrollY + off;
     window.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
+    if ("onscrollend" in window) window.addEventListener("scrollend", settle, { once: true }); else setTimeout(settle, 900);
   }
 }
 

@@ -68,3 +68,18 @@ Priority: **P1** blocks the itcan.biz cut-over · **P2** visible quality problem
 | M-FIX-27 | Phone header per relay-mobile-design: logo and menu button at the top (menu drops down from the top again), one full-width "Talk to us" fixed at the bottom above the safe area, over a fade; body padding keeps the last content clear. Replaces the floating bottom dock (M-FIX-11). |
 | M-FIX-28 | MK 2 Oct: "Talk to us" goes on top next to the menu. Phone header = logo, then Talk to us (44px) and the menu button on the right; nothing fixed to the bottom. Replaces M-FIX-27's bottom button. |
 | M-FIX-29 | MK 2 Oct: "10 sector animation not working at mobile". The grid's rise-in fired for all ten cards when the top of the grid appeared, so rows 3-5 had finished before you reached them. Each card now rises in as it enters the viewport (12% in), staggered 90ms by column. Reduced motion: all visible at once. |
+
+## Closed (2 Oct 2026, mobile audit)
+
+| ID | Finding | Fix |
+|---|---|---|
+| A-01 | Below 390px the phone root font dropped to 14.67px: labels at 11px, form fields under 16px (iOS zooms on focus). | Phone root font fixed at 16px. |
+| A-02 | At 320px drawn panels (time-zone card, team estimator, footer brand card) cut text off; their positions are in a 1px `--u` drawn for 350px cards. | Below 390px `--u` scales to the screen for those panels; time-zone label wraps; estimator height follows its text. |
+| A-03 | Footer link tap areas overlapped (negative-margin hit areas on 24px rows). | Each footer link is its own 44px row. |
+| A-04 | Award heat map wider than its card at 320px (1fr columns grew to fit year labels). | `minmax(0, 1fr)` columns. |
+| A-05 | Office card header: city code and clock collided at 320px. | "After hours" word hidden below 390px; clock and dot stay. |
+| A-06 | Menu links could land a few px off when content above grew mid-scroll. | Position re-checked when the smooth scroll ends. |
+| A-07 | Uneven spacing above sections (0 to 56px), sectors heading 36px vs 30px, card padding 15 to 20px, tight 1.33 helper text. | 56px above every section on phones, all headings 30px, 20px card padding, 1.5 line height. |
+| A-08 | Service step chips 10px, award year ticks 9px. | 12px; year ticks 11px below 390px (17 ticks share 280px). |
+
+Audit method: Playwright at 320/375/390/430/768/1440 on the live site; checks for overflow, cut-off text, text under 12px, overlapping text and tap areas, targets under 44px, broken images, inputs under 16px, dead anchors, wrapped CTAs, every menu link landing, reduced motion. Result after fixes: clean at every phone width.
