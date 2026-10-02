@@ -65,3 +65,4 @@ Priority: **P1** blocks the itcan.biz cut-over · **P2** visible quality problem
 | M-FIX-24 | Touch targets 44 x 44 CSS px on phones and tablets in px (rem shrank to 40px at 320 because the phone root font scales down). Covers menu, theme, hero card controls, CTAs, chips, filters, maps, inbox and footer links. |
 | M-FIX-25 | Hero service cards on phones: 44px prev/next/pause, card copy at least 14px. Services step copy 14px. |
 | M-FIX-26 | 320-360px: dock and menu gutters 8px; the services example summary is hidden where it collided with the kicker. |
+| M-FIX-27 | Phone header per relay-mobile-design: logo and menu button at the top (menu drops down from the top again), one full-width "Talk to us" fixed at the bottom above the safe area, over a fade; body padding keeps the last content clear. Replaces the floating bottom dock (M-FIX-11). |

@@ -113,31 +113,28 @@
   .tz-foot { top: 17.5rem; }
 }
 
-/* ------------------------------------------------------------ phones: bottom dock (Oct 2026)
-   "Talk to us" and the menu move to a floating dock within thumb reach; the menu opens upward.
+/* ------------------------------------------------------------ phones: header + bottom CTA (Oct 2026, per relay-mobile-design)
+   Top: logo and the menu button; the menu drops down from the top as before.
+   Bottom: one full-width "Talk to us", above the home indicator, over a fade so text never sits under it.
    .nav has no transform or filter, so position: fixed here is relative to the viewport. */
 @media (width <= 580px) {
-  :root { --dock-h: 3.75rem; --dock-gap: max(0.75rem, env(safe-area-inset-bottom)); }
-  body { padding-bottom: calc(var(--dock-h) + var(--dock-gap) + 0.75rem); }
-  .nav-actions {
-    position: fixed; left: 0.75rem; right: 0.75rem; bottom: var(--dock-gap); z-index: 41;
-    height: var(--dock-h); padding: 0.5rem; gap: 0.5rem; border-radius: 999px;
-    background: rgba(14, 15, 19, 0.88); -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.7);
+  :root { --cta-h: 3.25rem; --cta-gap: max(0.75rem, env(safe-area-inset-bottom)); }
+  body { padding-bottom: calc(var(--cta-h) + var(--cta-gap) + 1.5rem); }
+  .nav-actions .cta--md {
+    position: fixed; left: 1.25rem; right: 1.25rem; bottom: var(--cta-gap); z-index: 2;
+    height: var(--cta-h); min-height: 44px; font-size: 1rem; font-weight: 600;
   }
-  .nav-actions .cta--md { flex: 1; height: 2.75rem; font-size: 1rem; }
-  .nav-actions .menu-btn { width: 2.75rem; height: 2.75rem; min-width: 2.75rem; }
+  .nav-actions::after {
+    content: ""; position: fixed; left: 0; right: 0; bottom: 0; z-index: 1; pointer-events: none;
+    height: calc(var(--cta-h) + var(--cta-gap) + 1.75rem);
+    background: linear-gradient(to bottom, transparent, var(--background, #000) 55%);
+  }
+  :root[data-theme="light"] .nav-actions::after { background: linear-gradient(to bottom, transparent, #f4f5f8 55%); }
+  .nav-actions .menu-btn { width: 2.75rem; height: 2.75rem; }
   .menu-btn i:nth-child(1) { left: 13px; top: 14px; } .menu-btn i:nth-child(2) { left: 13px; top: 20px; } .menu-btn i:nth-child(3) { left: 16px; top: 25px; }
-  .menu-card {
-    position: fixed; top: auto; left: 0.75rem; right: 0.75rem; width: auto; z-index: 40;
-    bottom: calc(var(--dock-gap) + var(--dock-h) + 0.5rem);
-    max-height: calc(100dvh - var(--dock-h) - var(--dock-gap) - 5rem);
-    padding: 0.5rem; transform-origin: bottom right;
-  }
-  :root[data-theme="light"] .nav-actions { background: rgba(255, 255, 255, 0.9); border-color: var(--hair); box-shadow: 0 12px 32px -12px rgba(16, 24, 40, 0.25); }
 }
 @media (width <= 580px) {
-  /* compact two-column sheet so all eleven sections and the theme switch fit above the dock */
+  /* compact two-column sheet so all eleven sections and the theme switch fit on one screen */
   .menu-card ul { grid-template-columns: 1fr 1fr; gap: 0.25rem; }
   .menu-card a, .menu-theme button { min-height: 2.75rem; padding: 0.375rem 0.5rem; gap: 0.625rem; }
   .menu-card em { display: none; }
@@ -201,7 +198,7 @@ html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
 }
 /* narrowest phones (320-360): tighter gutters so nothing runs off the edge */
 @media (width <= 360px) {
-  .nav-actions { left: 0.5rem; right: 0.5rem; }
+  .nav-actions .cta--md { left: 1rem; right: 1rem; }
   .menu-card { left: 0.5rem; right: 0.5rem; }
 }
 
