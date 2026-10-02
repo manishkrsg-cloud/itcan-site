@@ -23,6 +23,19 @@ const L = [
   { x: 18, y: 30, w: 14, a: 1.1, sx: -4, sy: 8, sr: -12 },
   { x: 36, y: 30, w: 14, a: 1.1, sx: 1, sy: 1, sr: 3 },
 ];
+// phones (portrait): the same stack-to-spread with small cards, two rows above the heading (3 + 2), two below (2 + 3)
+const LP = [
+  { x: -32, y: -40, w: 22, a: 1.1, sx: -5, sy: -5, sr: -14 },
+  { x: 0, y: -40, w: 22, a: 1.1, sx: 6, sy: -7, sr: 12 },
+  { x: 32, y: -40, w: 22, a: 1.1, sx: -2, sy: -8, sr: -5 },
+  { x: -16, y: -25, w: 22, a: 1.1, sx: 7, sy: -3, sr: 15 },
+  { x: 16, y: -25, w: 22, a: 1.1, sx: -7, sy: 2, sr: -9 },
+  { x: -16, y: 25, w: 22, a: 1.1, sx: 4, sy: 5, sr: 7 },
+  { x: 16, y: 25, w: 22, a: 1.1, sx: -6, sy: 6, sr: -6 },
+  { x: -32, y: 40, w: 22, a: 1.1, sx: 6, sy: 7, sr: 10 },
+  { x: 0, y: 40, w: 22, a: 1.1, sx: -4, sy: 8, sr: -12 },
+  { x: 32, y: 40, w: 22, a: 1.1, sx: 1, sy: 1, sr: 3 },
+];
 const HOLD = 0.08, END = 0.86, STAGGER = 0.016, STACK_S = 0.86, LEN = 280;
 const PAR_X = 1.6, PAR_Y = 1.4; // pointer drift once spread, in vw / vh at full depth
 
@@ -33,6 +46,8 @@ export function initSectors() {
   const cards = Array.from(sec.querySelectorAll(".ss-card"));
   const n = cards.length;
   const wide = matchMedia("(min-width: 1001px) and (min-height: 600px)");
+  const phone = matchMedia("(max-width: 580px) and (min-height: 560px)");
+  let lay = L;
 
   // grid mode (phones, tablets): each card rises in as it scrolls into view, staggered across its row,
   // so the lower rows of a five-row phone grid still animate when you reach them
@@ -50,10 +65,11 @@ export function initSectors() {
     if (!on) return;
     vw = innerWidth; vh = stage.clientHeight || innerHeight;
     nh = nav ? Math.min(nav.offsetHeight, vh * 0.15) : 0; rh = vh - nh;
+    lay = phone.matches ? LP : L;
     sec.style.setProperty("--ss-top", `${nh}px`);
     u = Math.min(vw, rh * 1.6) / 100;
     cards.forEach((c, i) => {
-      const w = L[i].w * u, h = w * L[i].a;
+      const w = lay[i].w * u, h = w * lay[i].a;
       size[i] = [w, h];
       c.style.width = `${w}px`; c.style.height = `${h}px`;
     });
@@ -71,7 +87,7 @@ export function initSectors() {
     const p = clamp((raw - HOLD) / (END - HOLD));
     const spread = p >= 1 ? 1 : 0;
     cards.forEach((c, i) => {
-      const o = L[i], d = (n - 1 - i) * STAGGER;
+      const o = lay[i], d = (n - 1 - i) * STAGGER;
       const t = smooth(clamp((p - d) / (1 - (n - 1) * STAGGER)));
       const depth = 0.55 + (i / (n - 1)) * 0.75;
       const px = (o.sx + (o.x - o.sx) * t) * vw / 100 - cx * PAR_X * depth * t * vw / 100;
@@ -122,8 +138,10 @@ export function initSectors() {
     lenisResize();
   };
 
-  set(!reduced && wide.matches);
-  wide.addEventListener("change", () => set(!reduced && wide.matches));
+  const want = () => !reduced && (wide.matches || phone.matches);
+  set(want());
+  wide.addEventListener("change", () => set(want()));
+  phone.addEventListener("change", () => set(want()));
   onScroll(render);
   addEventListener("resize", measure);
   new ResizeObserver(() => { if (on) { const t = sec.getBoundingClientRect().top + getScroll(); if (Math.abs(t - top) > 0.5) measure(); } }).observe(document.body);
