@@ -34,11 +34,12 @@ export function initSectors() {
   const n = cards.length;
   const wide = matchMedia("(min-width: 1001px) and (min-height: 600px)");
 
-  // grid mode: the cards rise in as the grid comes into view
-  const grid = cards.map((c, i) => ({ r: rise(c.querySelector(".ss-face")), d: (i % 4) * 70 + Math.floor(i / 4) * 50 }));
-  let gridShown = false;
-  const showGrid = () => { gridShown = true; if (!on) grid.forEach((g) => g.r.play(g.d)); };
-  if (!reduced) { grid.forEach((g) => g.r.reset()); onSeen(sec.querySelector(".ss-cards"), showGrid); }
+  // grid mode (phones, tablets): each card rises in as it scrolls into view, staggered across its row,
+  // so the lower rows of a five-row phone grid still animate when you reach them
+  const grid = cards.map((c) => ({ r: rise(c.querySelector(".ss-face"), undefined, 32), shown: false }));
+  const colOf = (c) => cards.filter((o) => Math.abs(o.offsetTop - c.offsetTop) < 4).indexOf(c);
+  const showCard = (i) => { const g = grid[i]; if (g.shown) return; g.shown = true; if (!on) g.r.play(Math.max(0, colOf(cards[i])) * 90); };
+  if (!reduced) { grid.forEach((g) => g.r.reset()); cards.forEach((c, i) => onSeen(c, () => showCard(i), "0px 0px -12% 0px")); }
 
   let on = false, top = 0, len = 1, vw = 1, vh = 1, nh = 0, rh = 1, u = 1, last = -9;
   const nav = document.querySelector(".nav");
@@ -116,7 +117,7 @@ export function initSectors() {
       ["--copy", "--copy-s", "--names", "--hint", "--ss-len", "--ss-top"].forEach((k) => sec.style.removeProperty(k));
       sec.classList.remove("is-open");
       cards.forEach((c) => { c.style.transform = c.style.width = c.style.height = ""; });
-      if (gridShown || reduced) grid.forEach((g) => g.r.play(0));
+      grid.forEach((g) => { if (g.shown || reduced) g.r.play(0); });
     }
     lenisResize();
   };
