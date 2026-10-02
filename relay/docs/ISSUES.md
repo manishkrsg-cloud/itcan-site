@@ -86,3 +86,15 @@ Audit method: Playwright at 320/375/390/430/768/1440 on the live site; checks fo
 | A-09 | Services was the longest phone section (four worked examples stacked, ~2,900px). | The four examples are one swipeable row on phones (88% cards, next peeking): ~985px. Rows wrapped in `.svc-rows`; desktop unchanged. |
 | A-10 | Practices ring took a full screen on phones with no labels. | Phones (`.practices.is-list`, set by practices.js) show a list: icon, name and the description from `data-desc`; ring, chips and pop-up card hidden, nodes out of the tab order, no ring animation. |
 | A-11 | Nine differently worded buttons to the contact section. | Every button that goes to #contact says "Talk to us" (hero, estimator, three plans). Form submits ("Send brief", "Call me back") and "Send your CV" keep their own wording. Applies on desktop too. |
+
+## Closed (2 Oct 2026, MK's mobile mockup)
+
+| ID | Change |
+|---|---|
+| MK-01 | Phones follow MK's four mockups (Downloads, 2 Oct 21:14): red-dot capital labels instead of pills, white headings with a grey second line, rectangular red buttons with an arrow, left-aligned hero. |
+| MK-02 | Hero (phones): "Start a project ↗", "Explore services ↓", a photo card ("Expertise. With accountability." / "From your first brief to lasting business value.") instead of the 3D card carousel; shorter sub copy. "Watch our story" is not shown on phones (not in the mockup). |
+| MK-03 | Services (phones): "What we do", four photo cards (photo, 01 / Service, title, description, link to #contact) instead of the worked examples. |
+| MK-04 | Sectors (phones): "Industries we serve", rule row "Experience across industries 01 — 10", two-column grid. |
+| MK-05 | Contact (phones): "Let's work together", "goes straight to our sales team", form card; select placeholder "Choose a service" (all sizes). |
+| MK-06 | Header (phones): round menu button on top, full-width "Talk to us ↗" fixed at the bottom (MK chose the mockup over Talk-to-us-on-top). |
+| MK-07 | Mechanism: phone-only content is `.m-only`, desktop-only `.d-only` (mobile.css); desktop renders exactly as before. The hero's primary label is "Start a project" again on all sizes, per the mockup. |

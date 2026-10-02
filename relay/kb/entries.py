@@ -128,6 +128,10 @@ E = [
  "MK 2 Oct 2026 asked to fix the audit's design suggestions. Services: .svc-rows wraps the four .frow examples; on phones it is a scroll-snap row (88% cards), section ~2,900px to ~985px. Practices: practices.js sets .is-list at max-width 580px, skips ring maths and animation, sets node tabIndex -1; CSS shows icon + name + data-desc as a list and hides ring, chips, card and the Select-a-practice sentence. Contact intent: every link to #contact reads Talk to us; form submits and Send your CV keep their wording (site-wide copy change).",
  ["mobile", "ui", "services", "practices", "copy"], "web/css/mobile.css", "current"),
 
+("phone-mockup-2026-10-02", "ui", "Phones follow MK's mobile mockup (2 Oct 2026)",
+ "MK supplied four phone mockups (hero, services, sectors, contact). Style on phones: red-dot spaced-capital labels (.badge/.chip unset), white headings with a grey second line (#9b9da5, no gradient), rectangular red buttons with an arrow, left alignment. Hero: Start a project, Explore services link, a consult-p photo card replaces the 3D carousel; Watch our story hidden on phones. Services: four photo cards (.m-svcs) replace the worked examples. Sectors: rule row 01 — 10. Contact: form card. Header: round menu on top, full-width Talk to us fixed at the bottom (MK picked this over Talk-to-us-on-top). Mechanism: .m-only / .d-only classes so desktop is unchanged.",
+ ["mobile", "ui", "mockup"], "web/css/mobile.css", "current"),
+
 # ---------------------------------------------------------------- Security
 ("security-headers", "Security", "Security headers on every response",
  "CSP (self scripts, YouTube frames, itcan.biz and ytimg images, form-action self and mailto, frame-ancestors self), HSTS 1 year with includeSubDomains, X-Frame-Options SAMEORIGIN, nosniff, strict-origin-when-cross-origin referrer, Permissions-Policy camera/mic/geolocation off, COOP same-origin. Since 1 Oct 2026 also on /healthz, the award 302 and 500 responses. Path check requires ROOT + path.sep.",
