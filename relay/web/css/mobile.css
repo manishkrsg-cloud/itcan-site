@@ -156,3 +156,29 @@
 }
 @media (width <= 580px) { .filters { justify-content: flex-start; } }
 @media (width <= 580px) { .gal-head .filters, .awards .filters { justify-content: flex-start; } }
+
+/* ------------------------------------------------------------ phones: shorter page (Oct 2026 design pass)
+   Long stacks of like-for-like cards become one swipeable row with the next card peeking,
+   section labels and step numbers come off, so the page reads in about two thirds the scroll. */
+@media (width <= 580px) {
+  .of-grid, .plans, .pf-cols {
+    display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 86%;
+    gap: 0.75rem; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding-inline: 1.25rem;
+    margin-inline: -1.25rem; padding: 0.25rem 1.25rem 0.75rem;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .of-grid::-webkit-scrollbar, .plans::-webkit-scrollbar, .pf-cols::-webkit-scrollbar { display: none; }
+  .of-grid > *, .plans > *, .pf-cols > * { scroll-snap-align: start; min-width: 0; }
+  .pf-cols { grid-template-rows: auto; }
+  .pf-col { grid-row: auto; grid-template-rows: auto 1fr; }
+  .of-grid > * { height: 100%; }
+
+  /* one label per few sections: the hero chip and the sectors spread keep theirs */
+  .shead .badge, .pf-head .badge, .pr-copy .badge, .awards .shead .badge { display: none; }
+  /* services: no "01" row numbers or "Step 1" prefixes; the step names carry the sequence */
+  .frow-idx, .sy-when { display: none; }
+  .sy-title { margin-top: 0; }
+  .sy-title[data-when]::before { content: none; display: none; }
+}
+@media (width <= 580px) { .of-grid .of-coord { display: none; } }

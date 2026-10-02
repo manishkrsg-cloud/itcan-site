@@ -44,3 +44,13 @@ Priority: **P1** blocks the itcan.biz cut-over · **P2** visible quality problem
 | M-FIX-13 | The hero card was inset 26px; every other card sits at 20px. | Phone card width is the page width minus the margins (`spectra.js`). |
 | M-FIX-14 | The "Awards over time" chart was hidden on phones. | Restored as a fifth tile. |
 | M-FIX-15 | Award filter chips were centred under left-aligned headings. | Left-aligned on phones. |
+
+## Closed (2 Oct 2026, phone design pass)
+
+| ID | Issue | Fix |
+|---|---|---|
+| M-FIX-16 | Phone page was about 30 screens long; offices (3,521px), plans and the number/quote cards were long stacks of like cards. | Offices, plans and number/quote cards are swipeable rows with the next card peeking (scroll-snap). Page is about 25 screens. |
+| M-FIX-17 | 11 uppercase section labels on phones (taste rule: one per three sections). | Section labels hidden on phones; the hero chip and the sectors label stay. |
+| M-FIX-18 | "01" row numbers and "Step 1" prefixes in Services. | Hidden on phones; step names carry the sequence. |
+| M-FIX-19 | En-dashes in "1–3", "4–30", "2007–2023". | Plain hyphens. |
+| M-FIX-20 | Office coordinates truncated in the swipe cards. | Hidden on phones; the maps button remains. |
