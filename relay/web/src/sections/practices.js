@@ -40,9 +40,14 @@ export function initPractices() {
     card.style.top = `${(cy - r + (W < 520 ? 78 : 98)).toFixed(1)}px`;
   };
 
+  // ---- phones: the ring becomes a plain list (CSS), so nothing here positions or animates it
+  const phone = matchMedia("(max-width: 580px)");
+  const listMode = () => phone.matches;
+
   // ---- place every node for the current ring angle
   let rot = 0, open = -1;
   const paint = () => {
+    if (listMode()) return;
     for (let i = 0; i < N; i++) {
       const a = (((i / N) * 360 + rot) * Math.PI) / 180;
       const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
@@ -135,9 +140,17 @@ export function initPractices() {
     paint();
     if (inView && (target !== null || (open < 0 && !reduced))) raf = requestAnimationFrame(frame);
   };
-  const kick = () => { if (!raf && inView) { last = 0; raf = requestAnimationFrame(frame); } };
+  const kick = () => { if (!raf && inView && !listMode()) { last = 0; raf = requestAnimationFrame(frame); } };
+  const applyMode = () => {
+    const list = listMode();
+    sec.classList.toggle("is-list", list);
+    nodes.forEach((b) => { b.tabIndex = list ? -1 : 0; });
+    if (list) { items.forEach((li) => { li.style.transform = ""; li.style.zIndex = ""; }); card.hidden = true; }
+    else { measure(); paint(); kick(); }
+  };
+  phone.addEventListener("change", applyMode);
 
-  measure(); paint();
+  measure(); paint(); applyMode();
   orbit.classList.add("is-ready");
   new ResizeObserver(() => { measure(); paint(); }).observe(orbit);
   onView(orbit, (hit) => {

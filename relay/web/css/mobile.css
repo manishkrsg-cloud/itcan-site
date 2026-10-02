@@ -253,3 +253,37 @@ html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
   /* office cards: city code and clock share one line; the "After hours" word drops, the coloured dot stays */
   .of-grid .of-state { display: none; }
 }
+
+/* ------------------------------------------------------------ phones: shorter, simpler sections (Oct 2026) */
+@media (width <= 580px) {
+  /* Services: the four worked examples are one swipeable row, next card peeking */
+  .svc-rows {
+    display: grid; grid-auto-flow: column; grid-auto-columns: 88%; gap: 0.75rem; align-items: start;
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 1.25rem;
+    margin-inline: -1.25rem; padding: 0.5rem 1.25rem 1rem; scrollbar-width: none;
+  }
+  .svc-rows::-webkit-scrollbar { display: none; }
+  .svc-rows > .hair { display: none; }
+  .svc-rows > .frow { scroll-snap-align: start; min-width: 0; flex-direction: column; align-items: stretch; padding: 0; gap: 1rem; }
+  .svc-rows > .frow.rev { flex-direction: column; }
+  .svc-rows .frow-copy { width: auto; }
+  .svc-rows .story, .svc-rows .frow > :not(.frow-copy) { width: 100%; max-width: 100%; }
+
+  /* Practices: a readable list instead of the turning ring */
+  .practices.is-list .pr-chips, .practices.is-list .pr-lede-select,
+  .practices.is-list .pr-ring, .practices.is-list .pr-core, .practices.is-list .pr-card, .practices.is-list .pr-glow { display: none !important; }
+  .practices.is-list .pr-orbit { height: auto !important; aspect-ratio: auto; margin-top: 1.5rem; }
+  .practices.is-list .pr-nodes { position: static; inset: auto; height: auto !important; width: auto; display: grid; gap: 0.625rem; margin: 0; padding: 0; list-style: none; }
+  .practices.is-list .pr-nodes li {
+    position: relative !important; left: auto !important; top: auto !important; width: auto !important; height: auto !important; transform: none !important; opacity: 1 !important;
+    display: grid; grid-template-columns: 3rem 1fr; column-gap: 0.875rem; row-gap: 0.25rem; align-items: start;
+    padding: 0.875rem 1rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.09); background: rgba(255, 255, 255, 0.025);
+  }
+  .practices.is-list .pr-node { position: relative; left: auto; top: auto; width: 3rem; height: 3rem; grid-row: 1 / span 2; pointer-events: none; }
+  .practices.is-list .pr-name { position: static; transform: none; opacity: 1 !important; width: auto; text-align: left; white-space: normal;
+    font-size: 1rem; line-height: 1.375rem; font-weight: 500; letter-spacing: 0; color: var(--foreground); }
+  .practices.is-list .pr-nodes li::after { content: attr(data-desc); grid-column: 2; font-size: 0.875rem; line-height: 1.35rem; color: var(--foreground-muted); }
+  :root[data-theme="light"] .practices.is-list .pr-nodes li { border-color: var(--hair); background: #fff; }
+}
+@media (width <= 580px) { .story > .sy-sum { display: none; } } /* the summary collides with the kicker in the narrower swipe cards */
+@media (width <= 580px) { .practices.is-list .pr-orbit::before, .practices.is-list .pr-orbit::after, .practices.is-list .pr-ping { display: none; } }

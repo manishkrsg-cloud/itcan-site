@@ -83,3 +83,6 @@ Priority: **P1** blocks the itcan.biz cut-over · **P2** visible quality problem
 | A-08 | Service step chips 10px, award year ticks 9px. | 12px; year ticks 11px below 390px (17 ticks share 280px). |
 
 Audit method: Playwright at 320/375/390/430/768/1440 on the live site; checks for overflow, cut-off text, text under 12px, overlapping text and tap areas, targets under 44px, broken images, inputs under 16px, dead anchors, wrapped CTAs, every menu link landing, reduced motion. Result after fixes: clean at every phone width.
+| A-09 | Services was the longest phone section (four worked examples stacked, ~2,900px). | The four examples are one swipeable row on phones (88% cards, next peeking): ~985px. Rows wrapped in `.svc-rows`; desktop unchanged. |
+| A-10 | Practices ring took a full screen on phones with no labels. | Phones (`.practices.is-list`, set by practices.js) show a list: icon, name and the description from `data-desc`; ring, chips and pop-up card hidden, nodes out of the tab order, no ring animation. |
+| A-11 | Nine differently worded buttons to the contact section. | Every button that goes to #contact says "Talk to us" (hero, estimator, three plans). Form submits ("Send brief", "Call me back") and "Send your CV" keep their own wording. Applies on desktop too. |
