@@ -36,6 +36,7 @@ const LP = [
   { x: 0, y: 40, w: 22, a: 1.1, sx: -4, sy: 8, sr: -12 },
   { x: 32, y: 40, w: 22, a: 1.1, sx: 1, sy: 1, sr: 3 },
 ];
+const LEN_PHONE = 150;
 const HOLD = 0.08, END = 0.86, STAGGER = 0.016, STACK_S = 0.86, LEN = 280;
 const PAR_X = 1.6, PAR_Y = 1.4; // pointer drift once spread, in vw / vh at full depth
 
@@ -126,7 +127,7 @@ export function initSectors() {
     on = want;
     sec.classList.toggle("is-spread", on);
     if (on) {
-      sec.style.setProperty("--ss-len", `${LEN}vh`);
+      sec.style.setProperty("--ss-len", `${phone.matches ? LEN_PHONE : LEN}vh`); // phones: a shorter pin, the fan-out still completes
       cards.forEach((c) => { c.querySelector(".ss-face").style.cssText = ""; });
       measure();
     } else {
@@ -141,7 +142,7 @@ export function initSectors() {
   const want = () => !reduced && (wide.matches || phone.matches);
   set(want());
   wide.addEventListener("change", () => set(want()));
-  phone.addEventListener("change", () => set(want()));
+  phone.addEventListener("change", () => { if (on) { set(false); } set(want()); });
   onScroll(render);
   addEventListener("resize", measure);
   new ResizeObserver(() => { if (on) { const t = sec.getBoundingClientRect().top + getScroll(); if (Math.abs(t - top) > 0.5) measure(); } }).observe(document.body);
