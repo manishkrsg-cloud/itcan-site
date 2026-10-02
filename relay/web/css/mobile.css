@@ -113,23 +113,12 @@
   .tz-foot { top: 17.5rem; }
 }
 
-/* ------------------------------------------------------------ phones: header + bottom CTA (Oct 2026, per relay-mobile-design)
-   Top: logo and the menu button; the menu drops down from the top as before.
-   Bottom: one full-width "Talk to us", above the home indicator, over a fade so text never sits under it.
-   .nav has no transform or filter, so position: fixed here is relative to the viewport. */
+/* ------------------------------------------------------------ phones: header (Oct 2026)
+   Logo on the left; "Talk to us" and the menu button together on the right; the menu drops down from the top.
+   Nothing is fixed to the bottom of the screen. */
 @media (width <= 580px) {
-  :root { --cta-h: 3.25rem; --cta-gap: max(0.75rem, env(safe-area-inset-bottom)); }
-  body { padding-bottom: calc(var(--cta-h) + var(--cta-gap) + 1.5rem); }
-  .nav-actions .cta--md {
-    position: fixed; left: 1.25rem; right: 1.25rem; bottom: var(--cta-gap); z-index: 2;
-    height: var(--cta-h); min-height: 44px; font-size: 1rem; font-weight: 600;
-  }
-  .nav-actions::after {
-    content: ""; position: fixed; left: 0; right: 0; bottom: 0; z-index: 1; pointer-events: none;
-    height: calc(var(--cta-h) + var(--cta-gap) + 1.75rem);
-    background: linear-gradient(to bottom, transparent, var(--background, #000) 55%);
-  }
-  :root[data-theme="light"] .nav-actions::after { background: linear-gradient(to bottom, transparent, #f4f5f8 55%); }
+  .nav-actions { gap: 0.5rem; }
+  .nav-actions .cta--md { height: 44px; min-height: 44px; padding: 0 1.125rem; font-size: 0.9375rem; font-weight: 600; }
   .nav-actions .menu-btn { width: 2.75rem; height: 2.75rem; }
   .menu-btn i:nth-child(1) { left: 13px; top: 14px; } .menu-btn i:nth-child(2) { left: 13px; top: 20px; } .menu-btn i:nth-child(3) { left: 16px; top: 25px; }
 }
@@ -198,7 +187,7 @@ html { scroll-padding-top: calc(var(--nav-h) + 0.5rem); }
 }
 /* narrowest phones (320-360): tighter gutters so nothing runs off the edge */
 @media (width <= 360px) {
-  .nav-actions .cta--md { left: 1rem; right: 1rem; }
+  .nav-actions .cta--md { padding: 0 0.875rem; }
   .menu-card { left: 0.5rem; right: 0.5rem; }
 }
 

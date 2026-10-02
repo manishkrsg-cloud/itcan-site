@@ -66,3 +66,4 @@ Priority: **P1** blocks the itcan.biz cut-over · **P2** visible quality problem
 | M-FIX-25 | Hero service cards on phones: 44px prev/next/pause, card copy at least 14px. Services step copy 14px. |
 | M-FIX-26 | 320-360px: dock and menu gutters 8px; the services example summary is hidden where it collided with the kicker. |
 | M-FIX-27 | Phone header per relay-mobile-design: logo and menu button at the top (menu drops down from the top again), one full-width "Talk to us" fixed at the bottom above the safe area, over a fade; body padding keeps the last content clear. Replaces the floating bottom dock (M-FIX-11). |
+| M-FIX-28 | MK 2 Oct: "Talk to us" goes on top next to the menu. Phone header = logo, then Talk to us (44px) and the menu button on the right; nothing fixed to the bottom. Replaces M-FIX-27's bottom button. |
