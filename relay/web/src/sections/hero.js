@@ -25,7 +25,6 @@ export function initHero() {
   const spectra = initSpectra(spRoot);
 
   // ---------------------------------------------------------- load sequence
-  const chip = rise(q(".hc-chip")), chipT = type(q('[data-h="chiptext"]'));
   const title = rise(q(".hc-title")), titleF = focus(q(".hero-h1"), 10);
   const sub = fade(q(".hc-sub"));
   const actions = rise(q(".hc-actions"));
@@ -36,7 +35,6 @@ export function initHero() {
   });
 
   const play = () => {
-    chip.play(0); chipT.play(120);
     title.play(70); titleF.play(70);
     sub.play(140);
     actions.play(210);
@@ -45,11 +43,11 @@ export function initHero() {
     setTimeout(() => window.dispatchEvent(new Event("itcan:stream")), 416);
   };
   if (reduced) {
-    [chip, chipT, title, titleF, sub, actions].forEach((c) => c.play(0));
+    [title, titleF, sub, actions].forEach((c) => c.play(0));
     spIn.set({ o: 1, y: 0, s: 1 });
   } else {
-    [chip, title, actions].forEach((c) => c.reset());
-    chipT.reset(); titleF.reset(); sub.reset();
+    [title, actions].forEach((c) => c.reset());
+    titleF.reset(); sub.reset();
     whenReleased(() => requestAnimationFrame(play));
   }
   if (document.fonts) document.fonts.ready.then(() => spectra && spectra.layout());

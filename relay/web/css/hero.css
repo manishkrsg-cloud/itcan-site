@@ -14,6 +14,7 @@
 .hc-title { margin-top: 1.75rem; }
 .hero-h1 { font-size: clamp(2.5rem, 4.1vw, 3.75rem); line-height: 1.08; letter-spacing: -0.045em; }
 .hero-h1 em { font-size: inherit; }
+.hero-h1 .h1-l2 { white-space: nowrap; }
 .hc-sub { margin-top: 1.5rem; max-width: 31rem; font-size: 1.125rem; line-height: 1.75rem; color: var(--foreground-muted); }
 .hc-actions { margin-top: 2.25rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
 

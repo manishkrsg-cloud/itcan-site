@@ -44,7 +44,10 @@ function stillStream(canvas) {
   img.className = "stream stream-still";
   img.alt = ""; img.setAttribute("aria-hidden", "true"); img.decoding = "async";
   img.src = innerHeight > innerWidth ? "/assets/stream-portrait.webp" : "/assets/stream-landscape.webp";
-  canvas.replaceWith(img);
+  // a blurred copy on top stands in for the WebGL bloom and breathes, so the still still glows
+  const glow = img.cloneNode();
+  glow.className = "stream stream-still stream-glow";
+  canvas.replaceWith(img, glow);
 }
 
 function initStream() {

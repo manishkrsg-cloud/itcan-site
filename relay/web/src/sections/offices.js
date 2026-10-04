@@ -75,7 +75,7 @@ export function initOffices() {
   if (hub) initHub(hub);
   if (zones) initZones(zones);
   // live clocks on the address cards
-  const cards = Array.from(sec.querySelectorAll(".of-addr[data-tz]"));
+  const cards = Array.from(document.querySelectorAll(".of-addr[data-tz]"));
   const tickCards = () => cards.forEach((c) => {
     const t = c.querySelector(".of-clock"), st = c.querySelector(".of-state"), on = isOpen(c.dataset.tz);
     t.textContent = localTime(c.dataset.tz, false);
@@ -85,8 +85,9 @@ export function initOffices() {
   });
   tickCards();
   let iv = 0;
-  const grid = sec.querySelector(".of-grid");
-  onView(sec, (hit) => { clearInterval(iv); if (hit) { tickCards(); iv = setInterval(tickCards, 15000); } });
+  // the address cards sit at the end of the contact section
+  const grid = document.querySelector(".of-grid");
+  onView(grid || sec, (hit) => { clearInterval(iv); if (hit) { tickCards(); iv = setInterval(tickCards, 15000); } });
   // the map pins only ping while the cards are on screen
   if (grid) onView(grid, (hit) => grid.classList.toggle("is-live", hit));
 }

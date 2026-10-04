@@ -7,7 +7,8 @@
 :root[data-theme="light"] .logo-light { display: block; }
 
 :root[data-theme="light"] {
-  color-scheme: light;
+  /* "only" stops Samsung Internet and Chrome auto-dark from greying the light theme */
+  color-scheme: only light;
   --paper: #f5f6f8;
   --ink: #0b1233;
   --blue: #1f3fd6;

@@ -96,10 +96,12 @@ export function initTheme() {
   const root = document.documentElement;
   const btns = Array.from(document.querySelectorAll("[data-theme-toggle]"));
   const meta = document.querySelector('meta[name="theme-color"]');
+  const scheme = document.querySelector('meta[name="color-scheme"]');
   const apply = (light) => {
     if (light) root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
     btns.forEach((b) => { b.setAttribute("aria-pressed", String(light)); b.setAttribute("aria-label", light ? "Switch to dark theme" : "Switch to light theme"); });
     if (meta) meta.setAttribute("content", light ? "#f4f5f8" : "#000000");
+    if (scheme) scheme.setAttribute("content", light ? "only light" : "dark light");
     window.dispatchEvent(new CustomEvent("itcan:theme", { detail: { light } }));
   };
   apply(root.getAttribute("data-theme") === "light");
