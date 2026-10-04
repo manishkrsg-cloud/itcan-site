@@ -1,183 +1,81 @@
-// 03 Practices: a radial orbit. Nine small nodes circle a gradient core on one flat ring and
-// turn slowly. Picking a practice (on the ring or in the list) stops the turn, swings it to
-// the top, lights the practices it works with and opens a card under it. Picking it again,
-// pressing Escape or clicking the empty ring closes the card and the turn resumes.
-// The frame loop only runs while the orbit is on screen and something moves.
-import { reduced } from "../core/engine.js";
-import { onView, onSeen } from "../core/seen.js";
+// 03 Practices: a 3D coverflow of the nine practices, on desktop and phones alike.
+// The centre card is the open practice; the caption under it gives its number, category,
+// description and the practices it works with. Swipe, drag, arrow keys, the arrows or a chip
+// all move the deck; it autoplays while on screen. The nine practices live in .pr-data
+// (screen-reader text and the data source), so the content is edited in one place.
+import { createCoverflow } from "../coverflow.js";
 
-const SPEED = 6; // degrees per second, one turn a minute
 const pad = (n) => String(n).padStart(2, "0");
-const wrap180 = (a) => { a = (a + 180) % 360; if (a < 0) a += 360; return a - 180; };
 const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
 
 export function initPractices() {
   const sec = document.getElementById("integrations");
-  if (!sec) return;
-  // a daylight photo that fails to load is removed, so the line icon shows instead
-  sec.querySelectorAll(".pr-thumb--l").forEach((img) => {
-    const drop = () => img.remove();
-    if (img.complete && !img.naturalWidth && img.currentSrc) drop(); else img.addEventListener("error", drop, { once: true });
-  });
-  const orbit = sec.querySelector("[data-orbit]");
-  if (!orbit) return;
-  const items = Array.from(orbit.querySelectorAll(".pr-nodes li"));
-  const nodes = items.map((li) => li.querySelector(".pr-node"));
+  const root = sec && sec.querySelector("[data-pr-flow]");
+  if (!root) return;
+  const data = Array.from(sec.querySelectorAll(".pr-data li")).map((li) => ({
+    name: li.dataset.name, cat: li.dataset.cat, desc: li.querySelector("p").textContent,
+    img: li.dataset.img, imgL: li.dataset.imgL,
+    rel: (li.dataset.rel || "").split(",").filter(Boolean).map(Number),
+  }));
+  const N = data.length;
+  if (!N) return;
   const chips = Array.from(sec.querySelectorAll("[data-pr]"));
-  const N = items.length;
-  const data = items.map((li) => ({ name: li.dataset.name, cat: li.dataset.cat, desc: li.dataset.desc, rel: (li.dataset.rel || "").split(",").filter(Boolean).map(Number) }));
-  const card = orbit.querySelector(".pr-card");
-  const cBadge = card.querySelector("[data-pr-badge]"), cN = card.querySelector("[data-pr-n]"), cTitle = card.querySelector("[data-pr-title]"), cDesc = card.querySelector("[data-pr-desc]"), cRel = card.querySelector("[data-pr-rel]");
+  const cN = root.querySelector("[data-pr-n]"), cCat = root.querySelector("[data-pr-cat]"), cTitle = root.querySelector("[data-pr-title]");
+  const cDesc = root.querySelector("[data-pr-desc]"), cRel = root.querySelector("[data-pr-rel]"), cap = root.querySelector(".pr-cap");
+  const chipRow = sec.querySelector(".pr-chips");
 
-  // ---- geometry
-  let cx = 0, cy = 0, r = 200;
-  const measure = () => {
-    const W = orbit.clientWidth, H = orbit.clientHeight;
-    cx = W / 2; cy = H / 2;
-    const edge = W < 520 ? 48 : 70; // phones show names only for the open practice, so the ring can sit wider
-    r = Math.max(90, Math.min(205, W / 2 - edge, H / 2 - edge));
-    orbit.style.setProperty("--r", `${r.toFixed(1)}px`);
-    card.style.top = `${(cy - r + (W < 520 ? 78 : 98)).toFixed(1)}px`;
-  };
-
-  // ---- phones: the ring becomes a plain list (CSS), so nothing here positions or animates it
-  const phone = matchMedia("(max-width: 580px)");
-  const listMode = () => phone.matches;
-
-  // ---- place every node for the current ring angle
-  let rot = 0, open = -1;
-  const paint = () => {
-    if (listMode()) return;
-    for (let i = 0; i < N; i++) {
-      const a = (((i / N) * 360 + rot) * Math.PI) / 180;
-      const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
-      const li = items[i], isOpen = i === open;
-      // depth reads through size, never through fading: every tile stays clear
-      const s = isOpen ? 1 : 0.86 + 0.14 * ((1 + Math.sin(a)) / 2);
-      li.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${s.toFixed(3)})`;
-      li.style.zIndex = String(isOpen ? 200 : Math.round(100 + 50 * Math.cos(a)));
-    }
-  };
-
-  // ---- open and close
-  let target = null, showT = 0;
-  const setRel = (list) => {
-    items.forEach((li, k) => li.classList.toggle("is-rel", list.includes(k)));
-    chips.forEach((c, k) => c.classList.toggle("is-rel", list.includes(k)));
-  };
-  const close = () => {
-    if (open < 0) return;
-    items[open].classList.remove("is-open");
-    nodes[open].setAttribute("aria-expanded", "false");
-    chips[open] && chips[open].setAttribute("aria-pressed", "false");
-    open = -1; target = null;
-    setRel([]);
-    clearTimeout(showT);
-    card.classList.remove("is-in");
-    showT = setTimeout(() => { if (open < 0) card.hidden = true; }, reduced ? 0 : 320);
-    kick();
-  };
-  const show = (i) => {
-    if (open === i) { close(); return; }
-    if (open >= 0) { items[open].classList.remove("is-open"); nodes[open].setAttribute("aria-expanded", "false"); chips[open] && chips[open].setAttribute("aria-pressed", "false"); }
-    open = i;
+  const build = (i) => {
     const d = data[i];
-    items[i].classList.add("is-open");
-    nodes[i].setAttribute("aria-expanded", "true");
-    chips[i] && chips[i].setAttribute("aria-pressed", "true");
-    setRel(d.rel);
-    // swing it to the top (270 degrees), the short way round
-    const want = 270 - (i / N) * 360;
-    target = rot + wrap180(want - rot);
-    if (reduced) { rot = target; target = null; }
-    cBadge.textContent = d.cat;
+    const el = document.createElement("div");
+    el.setAttribute("role", "button");
+    el.setAttribute("aria-label", `${d.name}, ${i + 1} of ${N}`);
+    el.innerHTML =
+      `<img class="pr-img" src="${d.img}" width="1024" height="1024" alt="" loading="lazy" decoding="async" draggable="false">` +
+      `<img class="pr-img pr-img--l" src="${d.imgL}" width="1024" height="1024" alt="" loading="lazy" decoding="async" draggable="false">` +
+      `<span class="pr-fc-shade" aria-hidden="true"></span>` +
+      `<span class="pr-fc-n mono" aria-hidden="true">${pad(i + 1)}</span>` +
+      `<span class="pr-fc-name" aria-hidden="true">${d.name}</span>`;
+    // a daylight image that fails to load is removed, so the dark art shows instead
+    const l = el.querySelector(".pr-img--l");
+    l.addEventListener("error", () => l.remove(), { once: true });
+    return el;
+  };
+
+  let flow = null;
+  const show = (i) => {
+    const d = data[i];
     cN.textContent = `${pad(i + 1)} / ${pad(N)}`;
+    cCat.textContent = d.cat;
     cTitle.textContent = d.name;
     cDesc.textContent = d.desc;
-    cRel.innerHTML = d.rel.map((k) => `<button type="button" data-go="${k}">${data[k].name}${ARROW}</button>`).join("");
-    clearTimeout(showT);
-    card.classList.remove("is-in");
-    card.hidden = false;
-    showT = setTimeout(() => card.classList.add("is-in"), reduced ? 0 : 260);
-    paint();
-    kick();
-  };
-
-  nodes.forEach((b, i) => {
-    b.addEventListener("click", (e) => { e.stopPropagation(); show(i); });
-    b.addEventListener("keydown", (e) => {
-      const go = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
-      if (!go) return;
-      e.preventDefault();
-      nodes[(i + go + N) % N].focus({ preventScroll: true });
+    cRel.innerHTML = d.rel.map((r) => `<button type="button" data-go="${r}">${data[r].name}${ARROW}</button>`).join("");
+    chips.forEach((c, k) => {
+      c.setAttribute("aria-pressed", String(k === i));
+      c.classList.toggle("is-rel", d.rel.includes(k));
     });
-  });
-  chips.forEach((c) => c.addEventListener("click", () => show(+c.dataset.pr)));
-  cRel.addEventListener("click", (e) => {
-    const b = e.target.closest("button[data-go]");
-    if (!b) return;
-    e.stopPropagation();
-    const k = +b.dataset.go;
-    show(k);
-    nodes[k].focus({ preventScroll: true });
-  });
-  card.addEventListener("click", (e) => e.stopPropagation());
-  orbit.addEventListener("click", () => close());
-  sec.addEventListener("keydown", (e) => { if (e.key === "Escape" && open >= 0) { const k = open; close(); nodes[k].focus({ preventScroll: true }); } });
-
-  // ---- motion: a slow turn while nothing is open, an eased swing when something opens
-  let raf = 0, last = 0, inView = false;
-  const frame = (now) => {
-    raf = 0;
-    const dt = Math.min(0.1, last ? (now - last) / 1000 : 0.016);
-    last = now;
-    if (target !== null) {
-      rot += (target - rot) * (1 - Math.exp(-dt * 6));
-      if (Math.abs(target - rot) < 0.05) { rot = target; target = null; }
-    } else if (open < 0 && !reduced) {
-      rot = (rot + SPEED * dt) % 360;
+    // keep the pressed chip in view when the chip row scrolls sideways (phones)
+    const on = chips[i];
+    if (on && chipRow && chipRow.scrollWidth > chipRow.clientWidth) {
+      const x = on.offsetLeft - (chipRow.clientWidth - on.offsetWidth) / 2;
+      chipRow.scrollTo({ left: x, behavior: "smooth" });
     }
-    paint();
-    if (inView && (target !== null || (open < 0 && !reduced))) raf = requestAnimationFrame(frame);
+    // the caption re-enters on each change, so the text change reads as a new card
+    cap.classList.remove("is-in"); void cap.offsetWidth; cap.classList.add("is-in");
   };
-  const kick = () => { if (!raf && inView && !listMode()) { last = 0; raf = requestAnimationFrame(frame); } };
-  const applyMode = () => {
-    const list = listMode();
-    sec.classList.toggle("is-list", list);
-    nodes.forEach((b) => { b.tabIndex = list ? -1 : 0; });
-    if (list) { items.forEach((li) => { li.style.transform = ""; li.style.zIndex = ""; }); card.hidden = true; }
-    else { items.forEach((li) => li.classList.remove("is-focus")); measure(); paint(); kick(); }
-  };
-  phone.addEventListener("change", applyMode);
 
-  // phones (list mode): rows rise in one after another as they reach the screen, and the row
-  // crossing the middle of the screen is lit (.is-focus), so the list tracks your scroll
-  // .pr-pre only has an effect in list mode (mobile.css), so the orbit's inline transforms are untouched
-  if (!reduced) {
-    let batch = 0, batchT = 0;
-    items.forEach((li) => li.classList.add("pr-pre"));
-    items.forEach((li) => onSeen(li, () => {
-      // rows that arrive together cascade 60ms apart; a row scrolled to on its own plays at once
-      clearTimeout(batchT); batchT = setTimeout(() => { batch = 0; }, 120);
-      li.style.setProperty("--d", `${batch++ * 60}ms`);
-      li.classList.remove("pr-pre");
-    }, "0px 0px -8% 0px"));
-  }
-  const band = new IntersectionObserver((es) => {
-    if (!listMode()) return;
-    es.forEach((e) => {
-      if (e.isIntersecting) items.forEach((li) => li.classList.toggle("is-focus", li === e.target)); // one lit row at a time
-      else e.target.classList.remove("is-focus");
-    });
-  }, { rootMargin: "-46% 0px -46% 0px" });
-  items.forEach((li) => band.observe(li));
-
-  measure(); paint(); applyMode();
-  orbit.classList.add("is-ready");
-  new ResizeObserver(() => { measure(); paint(); }).observe(orbit);
-  onView(orbit, (hit) => {
-    inView = hit;
-    sec.classList.toggle("is-live", hit && !reduced);
-    if (hit) kick(); else { cancelAnimationFrame(raf); raf = 0; }
+  flow = createCoverflow({
+    root, stage: root.querySelector(".pr-stage"), deck: root.querySelector(".pr-deck"),
+    count: N, build, cardClass: "pr-fc", cardW: 340, cardH: 340, persp: 1700,
+    geo: { gap: 205, rotate: 42, depth: 190, drop: 0, shrink: 0.1, fade: 0.2, dim: 0.28, visible: 3 },
+    autoplayMs: 3800, firstMs: 1600,
+    // phones: a 62%-wide centre card with both neighbours peeking; desktop: up to 340px
+    fit: (w) => (w < 700 ? (w * 0.62) / 340 : Math.min(1, w / 1100)),
+    onActive: show,
   });
+  flow.start();
+
+  root.querySelector("[data-pr-prev]").addEventListener("click", () => flow.prev());
+  root.querySelector("[data-pr-next]").addEventListener("click", () => flow.next());
+  chips.forEach((c) => c.addEventListener("click", () => flow.go(+c.dataset.pr)));
+  cRel.addEventListener("click", (e) => { const b = e.target.closest("[data-go]"); if (b) flow.go(+b.dataset.go); });
 }
