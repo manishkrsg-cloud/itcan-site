@@ -1,7 +1,8 @@
 // 03 Practices: a 3D coverflow of the nine practices, on desktop and phones alike.
 // The centre card is the open practice; the caption under it gives its number, category,
-// description and the practices it works with. Swipe, drag, arrow keys, the arrows or a chip
-// all move the deck; it autoplays while on screen. The nine practices live in .pr-data
+// description and the practices it works with. Under it, a rail of nine numbered segments
+// with a glowing marker that glides to the open practice. Swipe, drag, arrow keys, a side
+// card, the arrows or a segment move the deck; it autoplays while on screen. The nine practices live in .pr-data
 // (screen-reader text and the data source), so the content is edited in one place.
 import { createCoverflow } from "../coverflow.js";
 
@@ -19,19 +20,28 @@ export function initPractices() {
   }));
   const N = data.length;
   if (!N) return;
-  const chips = Array.from(sec.querySelectorAll("[data-pr]"));
   const cN = root.querySelector("[data-pr-n]"), cCat = root.querySelector("[data-pr-cat]"), cTitle = root.querySelector("[data-pr-title]");
   const cDesc = root.querySelector("[data-pr-desc]"), cRel = root.querySelector("[data-pr-rel]"), cap = root.querySelector(".pr-cap");
-  const chipRow = sec.querySelector(".pr-chips");
+  const rail = root.querySelector("[data-pr-rail]");
+  rail.style.setProperty("--n", N);
+  const segs = data.map((d, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "pr-seg"; b.dataset.pr = i;
+    b.setAttribute("aria-label", d.name);
+    b.innerHTML = `<i class="pr-seg-bar" aria-hidden="true"></i><span class="pr-seg-n mono" aria-hidden="true">${pad(i + 1)}</span><span class="pr-seg-tip" aria-hidden="true">${d.name}</span>`;
+    rail.appendChild(b);
+    return b;
+  });
 
+  // 640px for phones and small cards, 1200px for large cards on dense screens
+  const img = (base, cls) => `<img class="${cls}" src="${base}-640.webp" srcset="${base}-640.webp 640w, ${base}-1200.webp 1200w" sizes="(width > 700px) 340px, 62vw" width="1200" height="1200" alt="" loading="lazy" decoding="async" draggable="false">`;
   const build = (i) => {
     const d = data[i];
     const el = document.createElement("div");
     el.setAttribute("role", "button");
     el.setAttribute("aria-label", `${d.name}, ${i + 1} of ${N}`);
     el.innerHTML =
-      `<img class="pr-img" src="${d.img}" width="1024" height="1024" alt="" loading="lazy" decoding="async" draggable="false">` +
-      `<img class="pr-img pr-img--l" src="${d.imgL}" width="1024" height="1024" alt="" loading="lazy" decoding="async" draggable="false">` +
+      img(d.img, "pr-img") + img(d.imgL, "pr-img pr-img--l") +
       `<span class="pr-fc-shade" aria-hidden="true"></span>` +
       `<span class="pr-fc-n mono" aria-hidden="true">${pad(i + 1)}</span>` +
       `<span class="pr-fc-name" aria-hidden="true">${d.name}</span>`;
@@ -49,16 +59,8 @@ export function initPractices() {
     cTitle.textContent = d.name;
     cDesc.textContent = d.desc;
     cRel.innerHTML = d.rel.map((r) => `<button type="button" data-go="${r}">${data[r].name}${ARROW}</button>`).join("");
-    chips.forEach((c, k) => {
-      c.setAttribute("aria-pressed", String(k === i));
-      c.classList.toggle("is-rel", d.rel.includes(k));
-    });
-    // keep the pressed chip in view when the chip row scrolls sideways (phones)
-    const on = chips[i];
-    if (on && chipRow && chipRow.scrollWidth > chipRow.clientWidth) {
-      const x = on.offsetLeft - (chipRow.clientWidth - on.offsetWidth) / 2;
-      chipRow.scrollTo({ left: x, behavior: "smooth" });
-    }
+    rail.style.setProperty("--i", i);
+    segs.forEach((b, k) => { b.setAttribute("aria-pressed", String(k === i)); b.classList.toggle("is-past", k < i); b.classList.toggle("is-rel", d.rel.includes(k)); });
     // the caption re-enters on each change, so the text change reads as a new card
     cap.classList.remove("is-in"); void cap.offsetWidth; cap.classList.add("is-in");
   };
@@ -76,6 +78,6 @@ export function initPractices() {
 
   root.querySelector("[data-pr-prev]").addEventListener("click", () => flow.prev());
   root.querySelector("[data-pr-next]").addEventListener("click", () => flow.next());
-  chips.forEach((c) => c.addEventListener("click", () => flow.go(+c.dataset.pr)));
+  segs.forEach((b, i) => b.addEventListener("click", () => flow.go(i)));
   cRel.addEventListener("click", (e) => { const b = e.target.closest("[data-go]"); if (b) flow.go(+b.dataset.go); });
 }

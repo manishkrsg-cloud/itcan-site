@@ -1,6 +1,6 @@
 /* ------------------------------------------------------------ 03 practices: a 3D coverflow
    Heading on top, nine practice cards raked in 3D across the full width, and a caption under
-   the centre card (number, category, description, works-with). The chips and arrows drive it.
+   the centre card (number, category, description, works-with). Swipe, drag or keys drive it.
    Same layout on desktop and phones; practices.js builds the deck from .pr-data. */
 .practices { position: relative; padding: 5.5rem 5rem 5rem; overflow: clip; }
 .pr-wrap { display: flex; flex-direction: column; align-items: center; }
@@ -45,37 +45,60 @@
 .pr-rel button svg { width: 0.6rem; height: 0.6rem; opacity: 0.7; }
 .pr-rel button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
-/* controls: arrows either side of the nine chips */
-.pr-ctrl { margin-top: 1.75rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; width: min(64rem, 100%); }
-.pr-arrow { flex: none; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.05); color: #fff; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
-.pr-arrow:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.34); }
-.pr-arrow:active { transform: scale(0.95); }
-.pr-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* controls: glass arrows either side of a nine-segment rail. The marker (.pr-knob) glides to
+   the open segment; segments before it read as done, its related practices glow faintly. */
+.pr-ctrl { margin-top: 2rem; display: flex; align-items: center; justify-content: center; gap: 1rem; width: min(46rem, 100%); }
+.pr-arrow { flex: none; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; color: #fff; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.14); background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 10px 24px -14px rgba(0, 0, 0, 0.9); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  transition: border-color 0.25s, background 0.25s, transform 0.25s var(--pr-ease); }
+.pr-arrow:hover { border-color: rgba(255, 110, 118, 0.6); background: linear-gradient(180deg, rgba(255, 61, 72, 0.22), rgba(255, 61, 72, 0.06)); }
+.pr-arrow:active { transform: scale(0.94); }
+.pr-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .pr-arrow svg { width: 1.125rem; height: 1.125rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.pr-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; min-width: 0; }
-.pr-chip { height: 2.25rem; padding: 0 0.875rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.14); background: transparent; color: rgba(236, 238, 243, 0.72); font: 500 0.8125rem/1 var(--font-inter), system-ui, sans-serif; letter-spacing: 0.01em; white-space: nowrap; cursor: pointer; transition: background 0.25s, color 0.25s, border-color 0.25s; }
-.pr-chip:hover { border-color: rgba(255, 255, 255, 0.34); color: #fff; }
-.pr-chip.is-rel { border-color: rgba(255, 255, 255, 0.4); color: #fff; }
-.pr-chip[aria-pressed="true"] { background: #fff; border-color: #fff; color: #08090b; }
-.pr-chip:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.pr-rail { --i: 0; position: relative; flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(var(--n, 9), minmax(0, 1fr)); }
+.pr-seg { position: relative; height: 2.75rem; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.pr-seg-bar { position: absolute; left: 3px; right: 3px; top: 0.875rem; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.14); transition: background 0.4s; }
+.pr-seg.is-past .pr-seg-bar { background: rgba(255, 110, 118, 0.45); }
+.pr-seg.is-rel .pr-seg-bar { background: rgba(255, 255, 255, 0.32); }
+.pr-seg:hover .pr-seg-bar { background: rgba(255, 255, 255, 0.5); }
+.pr-seg-n { position: absolute; left: 50%; top: 1.5rem; transform: translateX(-50%); font-size: 0.6875rem; letter-spacing: 0.08em; color: var(--foreground-dim); transition: color 0.3s; }
+.pr-seg[aria-pressed="true"] .pr-seg-n { color: #fff; }
+.pr-seg:focus-visible { outline: none; }
+.pr-seg:focus-visible .pr-seg-bar { box-shadow: 0 0 0 2px #fff; }
+/* the hover name: a small glass label above the segment (pointer devices only) */
+.pr-seg-tip { position: absolute; left: 50%; bottom: calc(100% - 0.25rem); transform: translate(-50%, 4px); padding: 0.3rem 0.6rem; border-radius: 0.5rem; white-space: nowrap; pointer-events: none;
+  font-size: 0.75rem; font-weight: 500; color: #fff; background: rgba(16, 17, 21, 0.92); border: 1px solid rgba(255, 255, 255, 0.14); opacity: 0; transition: opacity 0.2s, transform 0.25s var(--pr-ease); z-index: 3; }
+@media (hover: hover) { .pr-seg:hover .pr-seg-tip { opacity: 1; transform: translate(-50%, 0); } }
+/* the marker: one segment wide, glides on a soft overshoot, with a light sweeping through it */
+.pr-knob { position: absolute; left: 0; top: calc(0.875rem - 2px); width: calc(100% / var(--n, 9)); height: 7px; padding: 0 3px; pointer-events: none; z-index: 1;
+  transform: translateX(calc(var(--i) * 100%)); transition: transform 0.6s cubic-bezier(0.34, 1.4, 0.5, 1); }
+.pr-knob::before { content: ""; position: absolute; inset: 0 3px; border-radius: 7px; overflow: hidden;
+  background: linear-gradient(90deg, #ff3d48, #ff7a82 50%, #ff3d48) 0 0 / 200% 100%; box-shadow: 0 0 14px rgba(255, 61, 72, 0.75), 0 0 2px rgba(255, 255, 255, 0.6) inset;
+  animation: pr-sweep 2.4s linear infinite; }
+@keyframes pr-sweep { to { background-position: -200% 0; } }
 
 /* light theme */
 :root[data-theme="light"] .pr-fc { background: #eef2ff; box-shadow: 0 0 0 1px rgba(15, 20, 35, 0.08), 0 30px 60px -30px rgba(19, 35, 143, 0.35); }
 :root[data-theme="light"] .pr-fc.is-active { box-shadow: 0 0 0 1px rgba(31, 63, 214, 0.45), 0 18px 36px -24px rgba(31, 63, 214, 0.45); }
 :root[data-theme="light"] .pr-img--l { display: block; }
+/* daylight cards fade back instead of dimming, which would turn the white art grey */
+:root[data-theme="light"] .pr-fc { filter: none !important; }
+:root[data-theme="light"] .pr-fc-shade { background: linear-gradient(to bottom, rgba(12, 20, 60, 0), rgba(12, 20, 60, 0.62)); }
 :root[data-theme="light"] .pr-halo { background: radial-gradient(closest-side, rgba(31, 63, 214, 0.14), transparent 72%); }
 :root[data-theme="light"] .pr-cap-title { color: var(--ink); }
 :root[data-theme="light"] .pr-cap-cat { border-color: rgba(31, 63, 214, 0.4); color: var(--blue, #1f3fd6); }
-:root[data-theme="light"] .pr-rel button, :root[data-theme="light"] .pr-arrow { border-color: rgba(11, 18, 51, 0.14); background: #fff; color: var(--ink); }
-:root[data-theme="light"] .pr-chip { border-color: rgba(11, 18, 51, 0.14); color: rgba(11, 18, 51, 0.72); }
-:root[data-theme="light"] .pr-chip.is-rel { border-color: rgba(31, 63, 214, 0.4); color: #1f3fd6; }
-:root[data-theme="light"] .pr-chip[aria-pressed="true"] { background: var(--blue, #1f3fd6); border-color: var(--blue, #1f3fd6); color: #fff; }
+:root[data-theme="light"] .pr-arrow { border-color: rgba(11, 18, 51, 0.14); background: #fff; color: var(--ink); box-shadow: 0 8px 20px -14px rgba(19, 35, 143, 0.4); }
+:root[data-theme="light"] .pr-seg-bar { background: rgba(11, 18, 51, 0.12); }
+:root[data-theme="light"] .pr-seg.is-rel .pr-seg-bar { background: rgba(31, 63, 214, 0.3); }
+:root[data-theme="light"] .pr-seg[aria-pressed="true"] .pr-seg-n { color: var(--ink); }
+:root[data-theme="light"] .pr-rel button { border-color: rgba(11, 18, 51, 0.14); background: #fff; color: var(--ink); }
 
 @media (width <= 1200px) { .practices { padding: 4.5rem 3rem 4rem; } }
 @media (width <= 900px) { .practices { padding: 4rem 1.5rem 3rem; } }
 
 /* phones: left-aligned heading like the other sections, a smaller deck with both neighbours
-   peeking, and the chips as one sideways-scrolling row between the arrows */
+   peeking */
 @media (width <= 580px) {
   .practices { padding: 3.5rem 1.25rem 2.5rem; }
   .pr-wrap { align-items: stretch; }
@@ -88,13 +111,14 @@
   .pr-cap { margin-top: -0.25rem; }
   .pr-cap-title { font-size: 1.375rem; line-height: 1.75rem; }
   .pr-cap-desc { font-size: 0.9375rem; line-height: 1.45rem; }
-  .pr-ctrl { margin-top: 1.25rem; gap: 0.5rem; }
-  .pr-chips { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; padding: 2px; -webkit-mask: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent); mask: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent); }
-  .pr-chips::-webkit-scrollbar { display: none; }
-  .pr-chips li { scroll-snap-align: center; }
+  .pr-ctrl { margin-top: 1.5rem; gap: 0.5rem; }
+  .pr-seg-bar { left: 2px; right: 2px; }
+  .pr-seg-n { font-size: 0.625rem; letter-spacing: 0.02em; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pr-img, .pr-fc { transition: none; }
   .pr-cap.is-in { animation: none; }
+  .pr-knob { transition: none; }
+  .pr-knob::before { animation: none; }
 }
-@media (pointer: coarse) { .pr-chip { height: 44px; } .pr-rel button { height: 44px; } }
+@media (pointer: coarse) { .pr-rel button { height: 44px; } }

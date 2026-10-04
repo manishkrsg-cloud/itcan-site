@@ -59,28 +59,29 @@ const LIST = [
   ['sec-tech', 'hf_20261001_095435_267fa85f-97a0-41fd-bb85-9d76894220a9'],
 ];
 
-// nine practice thumbnails (the modern practice set, 1 Oct 2026), one photograph each
+// nine practice visuals for the coverflow (4 Oct 2026, GPT Image 2.5 at 2K), dark and daylight sets.
+// Saved at 1200px and 640px so the 340px card stays sharp on 3x phones.
 const PRACTICE_OUT = path.join(__dirname, 'public', 'assets', 'practices');
 const PRACTICES = [
-  ['ai', 'hf_20261001_115730_61aa476c-ba4a-4936-a4ec-75fb9faf9f7c'],
-  ['cloud', 'hf_20261001_115730_90c41d20-7e05-4f8d-a86e-fdcc0c5ddc51'],
-  ['data', 'hf_20261001_115730_983b0403-9007-4746-ae60-52f4d7a34d9e'],
-  ['security', 'hf_20261001_115730_26bdf9d9-9ee9-4923-aade-db14df3cb6c3'],
-  ['erpcrm', 'hf_20261001_115730_9b069751-bbd5-4294-beb5-d82c2c9b2a0f'],
-  ['automation', 'hf_20261001_115730_353ecd9c-178b-420a-9457-792f810ebc5d'],
-  ['webmobile', 'hf_20261001_115730_9e25f222-7ac1-4e8b-9555-11beddc7cb07'],
-  ['modern', 'hf_20261001_115730_146ff282-dcda-4260-bf18-b248450451f7'],
-  ['quality', 'hf_20261001_115730_5c14d088-d1d6-4f11-9ad3-84de4870b09c'],
+  ['ai', 'hf_20261004_080036_5f7aacde-fb20-4363-ac4b-27e60840e137'],
+  ['cloud', 'hf_20261004_080035_1242ffae-0f3c-49e9-aea6-d54c2996e827'],
+  ['data', 'hf_20261004_080034_050d8442-8e75-458c-91bb-a93ecce37f5f'],
+  ['security', 'hf_20261004_080035_303cf6fd-c4a8-46f8-a24c-065d884aca43'],
+  ['erpcrm', 'hf_20261004_080036_84aa6e03-fe99-4250-b1b9-4e5513cb018a'],
+  ['automation', 'hf_20261004_080035_e2ebddbe-1bd5-4f55-8198-f9b5eb9ca053'],
+  ['webmobile', 'hf_20261004_080035_9e9a7bf7-6b7e-47a0-a784-1cd6be917946'],
+  ['modern', 'hf_20261004_080036_7e78324c-87c9-445a-aba5-f05b5f585b5c'],
+  ['quality', 'hf_20261004_080036_203d7567-f21f-478f-8808-7de7a6b881f4'],
   // daylight versions of the same scenes, used in the light theme
-  ['ai-l', 'hf_20261001_120729_5636854b-d977-49aa-8c9f-24a6de1a1de6'],
-  ['cloud-l', 'hf_20261001_120728_97341205-343f-48e2-8ddc-8cc18f9f6b54'],
-  ['data-l', 'hf_20261001_120728_aa16f9b6-256d-4afb-9f02-87ad132a1fd0'],
-  ['security-l', 'hf_20261001_120729_f468d9b4-ffb4-437c-ba32-15db05a89b62'],
-  ['erpcrm-l', 'hf_20261001_120729_0621f70f-e00d-4dbe-93d0-233fa907cca0'],
-  ['automation-l', 'hf_20261001_120729_32b64ac3-e7a6-482e-b059-ca20535e2b82'],
-  ['webmobile-l', 'hf_20261001_120729_158de9e7-f5d8-48df-9a9a-98703be5c46b'],
-  ['modern-l', 'hf_20261001_120729_b8c1ebe1-5b82-44a8-91e3-d1aaf83f7ae9'],
-  ['quality-l', 'hf_20261001_120729_a6bc1122-f856-4789-9295-9470b4098ffe'],
+  ['ai-l', 'hf_20261004_080117_7dbbae80-6275-48cd-ac8a-f99e71b4dc95'],
+  ['cloud-l', 'hf_20261004_080115_bfc6ad14-fd7f-431f-9c7e-34b89f86486b'],
+  ['data-l', 'hf_20261004_080116_fdd72c3a-0955-4b3f-aa80-9041fb746464'],
+  ['security-l', 'hf_20261004_080115_5fdbbd5a-e915-4df4-9523-1246a468098d'],
+  ['erpcrm-l', 'hf_20261004_080115_648a8ba1-3027-4f94-921f-bfa305d2ff25'],
+  ['automation-l', 'hf_20261004_080117_cb351507-a4c5-44e3-9b23-d0f164214b7f'],
+  ['webmobile-l', 'hf_20261004_080116_eecd8ffc-f62c-40af-a4c6-0038065a69de'],
+  ['modern-l', 'hf_20261004_080116_b2ed7a40-be67-4098-9c88-f0cc0bb9cef8'],
+  ['quality-l', 'hf_20261004_080116_c75aa283-a77e-4711-89e0-9dc8073bc796'],
 ];
 
 const VIDEO_OUT = path.join(__dirname, 'public', 'assets', 'video');
@@ -132,12 +133,15 @@ async function processOne([slug, id]) {
 async function practices() {
   await fs.mkdir(PRACTICE_OUT, { recursive: true });
   await Promise.all(PRACTICES.map(async ([name, id]) => {
-    const out = path.join(PRACTICE_OUT, name + '.webp');
-    if (await exists(out)) return console.log(`[practices] cached ${name}`);
+    const big = path.join(PRACTICE_OUT, name + '-1200.webp');
+    const small = path.join(PRACTICE_OUT, name + '-640.webp');
+    if (await exists(big) && await exists(small)) return console.log(`[practices] cached ${name}`);
     try {
       const buf = await get(BASE + id + '.png');
-      if (sharp) await sharp(buf).resize(200, 200, { fit: 'cover' }).webp({ quality: 80, effort: 5 }).toFile(out);
-      else await fs.writeFile(out, buf);
+      if (sharp) {
+        await sharp(buf).resize(1200, 1200, { fit: 'cover' }).webp({ quality: 84, effort: 5 }).toFile(big);
+        await sharp(buf).resize(640, 640, { fit: 'cover' }).webp({ quality: 80, effort: 5 }).toFile(small);
+      } else { await fs.writeFile(big, buf); await fs.writeFile(small, buf); }
       console.log(`[practices] ok     ${name}`);
     } catch (err) { console.log(`[practices] FAILED ${name}: ${err.message}`); }
   }));
