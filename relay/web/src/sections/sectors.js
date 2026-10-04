@@ -23,20 +23,23 @@ const L = [
   { x: 18, y: 30, w: 14, a: 1.1, sx: -4, sy: 8, sr: -12 },
   { x: 36, y: 30, w: 14, a: 1.1, sx: 1, sy: 1, sr: 3 },
 ];
-// phones (portrait): the same stack-to-spread with small cards, two rows above the heading (3 + 2), two below (2 + 3)
+// phones (portrait): the same stack-to-spread with small cards, two rows above the heading (3 + 2), two below (2 + 3).
+// row = which band (-2 outer top ... 2 outer bottom); measure() packs the rows against the heading in px, so tall
+// phones don't open a big empty gap between the cards and the title.
 const LP = [
-  { x: -32, y: -40, w: 22, a: 1.1, sx: -5, sy: -5, sr: -14 },
-  { x: 0, y: -40, w: 22, a: 1.1, sx: 6, sy: -7, sr: 12 },
-  { x: 32, y: -40, w: 22, a: 1.1, sx: -2, sy: -8, sr: -5 },
-  { x: -16, y: -25, w: 22, a: 1.1, sx: 7, sy: -3, sr: 15 },
-  { x: 16, y: -25, w: 22, a: 1.1, sx: -7, sy: 2, sr: -9 },
-  { x: -16, y: 25, w: 22, a: 1.1, sx: 4, sy: 5, sr: 7 },
-  { x: 16, y: 25, w: 22, a: 1.1, sx: -6, sy: 6, sr: -6 },
-  { x: -32, y: 40, w: 22, a: 1.1, sx: 6, sy: 7, sr: 10 },
-  { x: 0, y: 40, w: 22, a: 1.1, sx: -4, sy: 8, sr: -12 },
-  { x: 32, y: 40, w: 22, a: 1.1, sx: 1, sy: 1, sr: 3 },
+  { x: -32, y: -40, w: 22, row: -2, a: 1.1, sx: -5, sy: -5, sr: -14 },
+  { x: 0, y: -40, w: 22, row: -2, a: 1.1, sx: 6, sy: -7, sr: 12 },
+  { x: 32, y: -40, w: 22, row: -2, a: 1.1, sx: -2, sy: -8, sr: -5 },
+  { x: -16, y: -25, w: 22, row: -1, a: 1.1, sx: 7, sy: -3, sr: 15 },
+  { x: 16, y: -25, w: 22, row: -1, a: 1.1, sx: -7, sy: 2, sr: -9 },
+  { x: -16, y: 25, w: 22, row: 1, a: 1.1, sx: 4, sy: 5, sr: 7 },
+  { x: 16, y: 25, w: 22, row: 1, a: 1.1, sx: -6, sy: 6, sr: -6 },
+  { x: -32, y: 40, w: 22, row: 2, a: 1.1, sx: 6, sy: 7, sr: 10 },
+  { x: 0, y: 40, w: 22, row: 2, a: 1.1, sx: -4, sy: 8, sr: -12 },
+  { x: 32, y: 40, w: 22, row: 2, a: 1.1, sx: 1, sy: 1, sr: 3 },
 ];
 const LEN_PHONE = 150;
+const P_ROW_GAP = 3, P_COPY_GAP = 6; // phones: vw between card rows, and between the heading and the nearest row
 const HOLD = 0.08, END = 0.86, STAGGER = 0.016, STACK_S = 0.86, LEN = 280;
 const PAR_X = 1.6, PAR_Y = 1.4; // pointer drift once spread, in vw / vh at full depth
 
@@ -61,6 +64,8 @@ export function initSectors() {
   const nav = document.querySelector(".nav");
   let mx = 0, my = 0, cx = 0, cy = 0, drift = null;
   const size = [];
+  const rowY = []; // phones: resting y offset in px from the centre, per card (null = use lay[i].y)
+  const copy = sec.querySelector(".ss-copy");
 
   const measure = () => {
     if (!on) return;
@@ -74,6 +79,12 @@ export function initSectors() {
       size[i] = [w, h];
       c.style.width = `${w}px`; c.style.height = `${h}px`;
     });
+    rowY.length = 0;
+    if (lay === LP) {
+      const h = size[0][1], ch = copy ? copy.offsetHeight : 0;
+      const inner = ch / 2 + (P_COPY_GAP * vw) / 100 + h / 2, outer = inner + h + (P_ROW_GAP * vw) / 100;
+      lay.forEach((o, i) => { rowY[i] = Math.sign(o.row) * (Math.abs(o.row) === 1 ? inner : outer); });
+    }
     top = sec.getBoundingClientRect().top + getScroll();
     len = Math.max(1, sec.offsetHeight - vh);
     last = -9;
@@ -92,7 +103,8 @@ export function initSectors() {
       const t = smooth(clamp((p - d) / (1 - (n - 1) * STAGGER)));
       const depth = 0.55 + (i / (n - 1)) * 0.75;
       const px = (o.sx + (o.x - o.sx) * t) * vw / 100 - cx * PAR_X * depth * t * vw / 100;
-      const py = (o.sy + (o.y - o.sy) * t) * rh / 100 - cy * PAR_Y * depth * t * rh / 100;
+      const ty = rowY[i] ?? (o.y * rh) / 100;
+      const py = (o.sy * rh) / 100 * (1 - t) + ty * t - cy * PAR_Y * depth * t * rh / 100;
       const [w, h] = size[i];
       const r = o.sr * (1 - t), s = STACK_S + (1 - STACK_S) * t;
       c.style.transform = `translate3d(${(vw / 2 + px - w / 2).toFixed(1)}px, ${(nh + rh / 2 + py - h / 2).toFixed(1)}px, 0) rotate(${r.toFixed(2)}deg) scale(${s.toFixed(4)})`;

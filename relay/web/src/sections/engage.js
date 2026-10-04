@@ -116,7 +116,15 @@ export function initEngage() {
     setLit();
   };
   const syncInput = () => { input.max = F.len; input.value = Math.round(pxOf(pos)); };
-  input.addEventListener("input", () => { pos = Math.min(maxPos(), posOf(+input.value)); apply(false); });
+  // phones: the plans are a swipe row, so dragging the meter glides the row to the plan it suggests
+  const row = sec.querySelector(".plans"), swipe = matchMedia("(max-width: 580px)");
+  const glideTo = (i) => {
+    if (!row || !swipe.matches || row.scrollWidth <= row.clientWidth) return;
+    const pad = parseFloat(getComputedStyle(row).scrollPaddingInlineStart) || 0;
+    const dx = cards[i].getBoundingClientRect().left - row.getBoundingClientRect().left;
+    row.scrollTo({ left: row.scrollLeft + dx - pad, behavior: reduced ? "auto" : "smooth" });
+  };
+  input.addEventListener("input", () => { const was = plan; pos = Math.min(maxPos(), posOf(+input.value)); apply(false); if (plan !== was) glideTo(plan); });
   syncInput();
   apply(true);
   if (document.fonts) document.fonts.ready.then(() => { roll.measure(); apply(true); });

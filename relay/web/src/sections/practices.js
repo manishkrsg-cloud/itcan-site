@@ -4,7 +4,7 @@
 // pressing Escape or clicking the empty ring closes the card and the turn resumes.
 // The frame loop only runs while the orbit is on screen and something moves.
 import { reduced } from "../core/engine.js";
-import { onView } from "../core/seen.js";
+import { onView, onSeen } from "../core/seen.js";
 
 const SPEED = 6; // degrees per second, one turn a minute
 const pad = (n) => String(n).padStart(2, "0");
@@ -146,9 +146,31 @@ export function initPractices() {
     sec.classList.toggle("is-list", list);
     nodes.forEach((b) => { b.tabIndex = list ? -1 : 0; });
     if (list) { items.forEach((li) => { li.style.transform = ""; li.style.zIndex = ""; }); card.hidden = true; }
-    else { measure(); paint(); kick(); }
+    else { items.forEach((li) => li.classList.remove("is-focus")); measure(); paint(); kick(); }
   };
   phone.addEventListener("change", applyMode);
+
+  // phones (list mode): rows rise in one after another as they reach the screen, and the row
+  // crossing the middle of the screen is lit (.is-focus), so the list tracks your scroll
+  // .pr-pre only has an effect in list mode (mobile.css), so the orbit's inline transforms are untouched
+  if (!reduced) {
+    let batch = 0, batchT = 0;
+    items.forEach((li) => li.classList.add("pr-pre"));
+    items.forEach((li) => onSeen(li, () => {
+      // rows that arrive together cascade 60ms apart; a row scrolled to on its own plays at once
+      clearTimeout(batchT); batchT = setTimeout(() => { batch = 0; }, 120);
+      li.style.setProperty("--d", `${batch++ * 60}ms`);
+      li.classList.remove("pr-pre");
+    }, "0px 0px -8% 0px"));
+  }
+  const band = new IntersectionObserver((es) => {
+    if (!listMode()) return;
+    es.forEach((e) => {
+      if (e.isIntersecting) items.forEach((li) => li.classList.toggle("is-focus", li === e.target)); // one lit row at a time
+      else e.target.classList.remove("is-focus");
+    });
+  }, { rootMargin: "-46% 0px -46% 0px" });
+  items.forEach((li) => band.observe(li));
 
   measure(); paint(); applyMode();
   orbit.classList.add("is-ready");
